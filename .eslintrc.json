@@ -1,0 +1,21 @@
+{
+  "parser": "babel-eslint",
+  "plugins": [
+    "react",
+    "mocha"
+  ],
+  "extends": [
+    "standard",
+    "plugin:react/recommended"
+  ],
+  "env": {
+    "mocha": true,
+    "browser": true
+  },
+  "rules": {
+    "semi": [
+      "error",
+      "always"
+    ]
+  }
+}
