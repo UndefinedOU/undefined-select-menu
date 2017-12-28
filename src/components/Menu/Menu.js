@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import MenuItem from './MenuItem';
 import styled from 'styled-components';
 import ReactDOM from 'react-dom';
@@ -151,6 +152,10 @@ class Menu extends Component {
 }
 // TODO: contenteditable={true}
 // TODO: scrolling
+
+Menu.propTypes = {
+  menuMeta: PropTypes.object
+}
 
 Menu.defaultProps = {
   select: {

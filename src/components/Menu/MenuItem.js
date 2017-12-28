@@ -299,19 +299,19 @@ function ExpandableArrow(props) {
 
 MenuItem.propTypes = {
   //icon: 'fa-coffee',
-  isChecked:        PropTypes.boolean,
+  isChecked:        PropTypes.bool,
   shortcut:         PropTypes.string,
   label:            PropTypes.string,
   color:            PropTypes.string,
   dColor:           PropTypes.string,
   font:             PropTypes.node,
   tips:             PropTypes.array,
-  disabled:         PropTypes.boolean,
+  disabled:         PropTypes.bool,
   labelWidth:       PropTypes.string,
   backgroundColor:  PropTypes.string,
   hBackgroundColor: PropTypes.string,
-  editable:         PropTypes.boolean,
-  subMenu:          PropTypes.boolean,
+  editable:         PropTypes.bool,
+  subMenu:          PropTypes.bool,
   id:               PropTypes.node,
 }
 
