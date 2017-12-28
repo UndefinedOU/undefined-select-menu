@@ -22,20 +22,6 @@ const StyledLabel = styled.div`
   margin: 1em;
 `;
 
-//Todo - delete this when we refactor the editable label
-const StyledEditableLabel = styled.div`
-  cursor: ${props => props.cursor};
-  width: ${props => props.width};
-  max-width: ${props => props.width};
-  display: table-cell;
-  text-align: left;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  background-color: ${props => props.backgroundColor};
-  color: ${props => props.color};
-  margin: 1em;
-`;
 
 const StyledTip = styled.div`
   display: table-cell;
@@ -128,6 +114,7 @@ class MenuItem extends Component {
           width={this.props.labelWidth}
           update={this.updateItemLabel}
           label={this.props.label}>
+          id={this.props.id}
         </EditableLabel>
 
         <Label
