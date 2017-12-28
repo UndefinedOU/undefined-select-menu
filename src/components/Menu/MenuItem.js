@@ -51,9 +51,6 @@ const StyledShortcut = styled.div`
 `;
 
 class MenuItem extends Component {
-  constructor(props) {
-    super(props);
-  }
 
   handleMouseOver = (event) => {
       event.preventDefault();
