@@ -1,6 +1,8 @@
 
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
+import EditableMenuItem from './EditableMenuItem';
 
 const StyledMenuItem = styled.div`
   display: table;
@@ -80,6 +82,9 @@ class MenuItem extends Component {
   getCursor = () => {
     return this.props.disabled ? 'not-allowed' : 'default';
   }
+  updateItemLabel = () => {
+    console.log("Todo on label update");
+  }
 
   // handleKeyDown = (event) => {
   //   console.log("MenuItem KEYDOWN!");
@@ -121,6 +126,7 @@ class MenuItem extends Component {
           cursor={this.getCursor()}
           backgroundColor={this.getBackgroundColor()}
           width={this.props.labelWidth}
+          update={updateItemLabel}
           label={this.props.label}>
         </EditableLabel>
 
@@ -211,13 +217,14 @@ function EditableLabel(props) {
   }
 
   return (
-    <StyledEditableLabel contentEditable="true"
-      color={props.color}
-      cursor={props.cursor}
-      backgroundColor={props.backgroundColor}
-      width={props.width}>
-      {props.label}
-    </StyledEditableLabel>
+    <EditableMenuItem
+      color={this.getColor()}
+      cursor={this.getCursor()}
+      backgroundColor={this.getBackgroundColor()}
+      width={this.props.labelWidth}
+      label={this.props.label}
+      update={this.props.update}
+    />
   );
 }
 
@@ -288,25 +295,43 @@ function ExpandableArrow(props) {
     );
   }
 
+
+MenuItem.propTypes = {
+  //icon: 'fa-coffee',
+  isChecked:        PropTypes.boolean,
+  shortcut:         PropTypes.string,
+  label:            PropTypes.string,
+  color:            PropTypes.string,
+  dColor:           PropTypes.string,
+  font:             PropTypes.node,
+  tips:             PropTypes.array,
+  disabled:         PropTypes.boolean,
+  labelWidth:       PropTypes.string,
+  backgroundColor:  PropTypes.string,
+  hBackgroundColor: PropTypes.string,
+  editable:         PropTypes.boolean,
+  subMenu:          PropTypes.boolean
+}
+
 // TODO group what data goes to menu and what goes to item
 // TODO disabled choices
 // TODO overriding font property if not a font list?
 // TODO: platform shortcuts
 MenuItem.defaultProps = {
   //icon: 'fa-coffee',
-  isChecked: true,
-  shortcut: '#T',
-  label: 'foo',
-  color: 'red',
-  dColor: 'lightgray',
-  font: null,
-  tips: [100, 200, 300, 'coffee', 'fa-coffee'],
-  disabled: false,
-  labelWidth: '10em',
-  backgroundColor: 'white',
+  isChecked:        true,
+  shortcut:         '#T',
+  label:            'foo',
+  color:            'red',
+  dColor:           'lightgray',
+  font:             null,
+  tips:             [100, 200, 300, 'coffee', 'fa-coffee'],
+  disabled:         false,
+  labelWidth:       '10em',
+  backgroundColor:  'white',
   hBackgroundColor: 'blue',
-  editable: true,
-  subMenu: true,
+  editable:         true,
+  subMenu:          true
 }
 
 export default MenuItem;

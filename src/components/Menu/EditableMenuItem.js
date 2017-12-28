@@ -86,7 +86,7 @@ EditableMenuItem.propTypes = {
   color: PropTypes.string,
   backgroundColor: PropTypes.string,
   width: PropTypes.string  //TODO: handle edge case of 0
-
+  cursor: PropTypes.string.isRequired
 };
 
 EditableMenuItem.defaultProps = {

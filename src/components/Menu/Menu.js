@@ -123,6 +123,7 @@ class Menu extends Component {
           ?
           <MenuItem
             ref={instance => { this.child = instance; }}
+            editable={this.props.menuMeta.editable}
             onClick={this.handleClick}
             onMouseOver={this.handleMouseOver}
             onMouseLeave={this.handleMouseLeave}
@@ -134,6 +135,7 @@ class Menu extends Component {
           :
           <MenuItem
             ref={instance => { this.child = instance; }}
+            editable={this.props.menuMeta.editable}
             onClick={this.handleClick}
             onMouseOver={this.handleMouseOver}
             onMouseLeave={this.handleMouseLeave}

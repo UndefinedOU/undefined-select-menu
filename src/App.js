@@ -9,6 +9,8 @@ class App extends Component {
     return (
       <div>
         <Menu />
+        <h1> editable menu <h1>
+        <Menu editable={true} />
       </div>
     );
   }
