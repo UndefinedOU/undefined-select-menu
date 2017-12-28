@@ -20,6 +20,7 @@ const StyledLabel = styled.div`
   margin: 1em;
 `;
 
+//Todo - delete this when we refactor the editable label
 const StyledEditableLabel = styled.div`
   cursor: ${props => props.cursor};
   width: ${props => props.width};
