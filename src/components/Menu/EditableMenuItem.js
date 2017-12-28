@@ -46,7 +46,10 @@ class EditableMenuItem extends Component {
     this.setState('label', newLabel);
   }
   propegateUpdate () {
-    this.props.update(this.state.label);
+    this.props.update({
+      id: this.props.id,
+      label: this.state.label
+    });
   }
   renderDisplay() {
 
@@ -87,7 +90,8 @@ EditableMenuItem.propTypes = {
   color: PropTypes.string,
   backgroundColor: PropTypes.string,
   width: PropTypes.string,  //TODO: handle edge case of 0
-  cursor: PropTypes.string.isRequired
+  cursor: PropTypes.string.isRequired,
+  id: PropTypes.node.isRequired
 };
 
 EditableMenuItem.defaultProps = {

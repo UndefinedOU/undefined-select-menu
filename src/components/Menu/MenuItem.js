@@ -224,6 +224,7 @@ function EditableLabel(props) {
       width={this.props.labelWidth}
       label={this.props.label}
       update={this.props.update}
+      id={this.props.id}
     />
   );
 }
@@ -310,7 +311,8 @@ MenuItem.propTypes = {
   backgroundColor:  PropTypes.string,
   hBackgroundColor: PropTypes.string,
   editable:         PropTypes.boolean,
-  subMenu:          PropTypes.boolean
+  subMenu:          PropTypes.boolean,
+  id:               PropTypes.node,
 }
 
 // TODO group what data goes to menu and what goes to item
