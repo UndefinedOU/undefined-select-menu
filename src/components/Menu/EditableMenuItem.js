@@ -85,7 +85,7 @@ EditableMenuItem.propTypes = {
   truncateBy: PropTypes.number, //how many are allowed before cutting it off and adding ...
   color: PropTypes.string,
   backgroundColor: PropTypes.string,
-  width: PropTypes.string  //TODO: handle edge case of 0
+  width: PropTypes.string,  //TODO: handle edge case of 0
   cursor: PropTypes.string.isRequired
 };
 
