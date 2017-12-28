@@ -58,6 +58,7 @@ class EditableMenuItem extends Component {
 
   }
   render () {
+    const props = this.props;
     return (
       <StyledEditableLabel contentEditable="true"
         color={props.color}

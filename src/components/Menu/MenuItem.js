@@ -126,7 +126,7 @@ class MenuItem extends Component {
           cursor={this.getCursor()}
           backgroundColor={this.getBackgroundColor()}
           width={this.props.labelWidth}
-          update={updateItemLabel}
+          update={this.updateItemLabel}
           label={this.props.label}>
         </EditableLabel>
 
