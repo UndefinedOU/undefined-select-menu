@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import IconDisplay from './IconDisplay';
 
 /*
   Editable component encapsulates the menu item where clicking on it 
   truncates the menu
 */
 
-const editIcon  = 'fa-pencil-square-o';
-const trashIcon = 'fa-trash-o';
+const editIcon  = 'fa-edit';
+const trashIcon = 'fa-trash';
 
 const Noop = styled.span`
   margin: 0px
@@ -59,7 +60,8 @@ class EditableMenuItem extends Component {
   renderDisplay() {
     const props = this.props;
     return (
-      <StyledEditableLabel contentEditable="true"
+      <StyledEditableLabel
+        contentEditable={true}
         color={props.color}
         cursor={props.cursor}
         backgroundColor={props.backgroundColor}
@@ -71,16 +73,19 @@ class EditableMenuItem extends Component {
   renderHovering() {
     const props = this.props;
     return (
-      <StyledEditableLabel contentEditable="true"
+      <StyledEditableLabel
+        contentEditable={true}
         color={props.color}
         cursor={props.cursor}
         backgroundColor={props.backgroundColor}
         width={props.width}>
         { truncate(props.truncateBy, props.label) }
+        <IconDisplay iconType={editIcon} />
+        <IconDisplay iconType={trashIcon} />
       </StyledEditableLabel>
     );
   }
-  renderEdit() {
+  renderEdit () {
 
   }
   render () {
@@ -90,7 +95,8 @@ class EditableMenuItem extends Component {
         onMouseEnter={() => this.setState({'hovering': true})}
         onMouseLeave={() => this.setState({'hovering': false})}
       >
-        {`${this.state.hovering}`} {this.renderDisplay()}
+        
+        {this.renderHovering()}
       </span>
     );
   }
