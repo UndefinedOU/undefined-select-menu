@@ -3,6 +3,18 @@ import PropTypes from 'prop-types';
 import MenuItem from './MenuItem';
 import styled from 'styled-components';
 import ReactDOM from 'react-dom';
+import {observable, autorun} from 'mobx';
+
+/*
+  root of he menu,
+
+  On creastion, should instantiate a Observer based on the initial values
+  We need 3 different observables
+    1. menuMeta
+    2. menuItems
+
+*/
+
 
 const StyledMenuBox = styled.div`
   display: inline-block;
@@ -154,8 +166,21 @@ class Menu extends Component {
 // TODO: scrolling
 
 Menu.propTypes = {
-  menuMeta: PropTypes.object
-}
+  menuMeta: PropTypes.shape({
+    checkable: PropTypes.bool,
+    addable: PropTypes.bool,
+    editable: PropTypes.bool,
+    draggable: PropTypes.bool,
+    //defaultSelection: null, //label or?
+    highlightColor: PropTypes.string,
+    backgroundColor: PropTypes.string,
+  }),
+  menuItems: PropTypes.arrayOf(PropTypes.shape({
+    icon: PropTypes.string,
+    label: PropTypes.string.isRequired,
+    disabled: PropTypes.bool
+  }))
+};
 
 Menu.defaultProps = {
   select: {

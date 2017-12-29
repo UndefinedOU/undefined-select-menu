@@ -7,6 +7,8 @@
     "@fortawesome/react-fontawesome": "^0.0.17",
     "classnames": "^2.2.5",
     "font-awesome": "^4.7.0",
+    "mobx": "^3.4.1",
+    "mobx-react": "^4.3.5",
     "prop-types": "^15.6.0",
     "react": "^16.2.0",
     "react-awesome": "^0.0.2",
