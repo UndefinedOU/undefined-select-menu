@@ -53,6 +53,12 @@ const DisplayItem = (props) => {
 };
 
 const HoveringItem = (props) => {
+  const setEditMode = (e) => {
+    e.preventDefault();
+    console.log(props.id);
+  }
+
+
   return (
     <StyledEditableLabel
       contentEditable={true}
@@ -61,8 +67,8 @@ const HoveringItem = (props) => {
       backgroundColor={props.backgroundColor}
       width={props.width}>
       { truncate(props.truncateBy, props.label) }
-      <IconDisplay iconType={editIcon} />
-      <IconDisplay iconType={trashIcon} />
+      <a href="" onClick={setEditMode}><IconDisplay iconType={editIcon} /></a>
+      <a href="" onClick={setEditMode}><IconDisplay iconType={trashIcon} /></a>
     </StyledEditableLabel>
   );
 };
@@ -90,7 +96,8 @@ class EditableMenuItem extends Component {
     
   }
   enterHover() {
-    this.props.store.hovering = this.props.id;
+    //this.props.store.hovering = this.props.id;
+    this.props.store.setHovering(this.props.id);
   }
   exitHover() {
 
@@ -135,7 +142,7 @@ EditableMenuItem.propTypes = {
 };
 
 EditableMenuItem.defaultProps = {
-  truncateBy: 20,
+  truncateBy: 10,
   color: 'black',
   backgroundColor: 'white',
   width: '100px'

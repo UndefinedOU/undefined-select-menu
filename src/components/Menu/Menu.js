@@ -27,11 +27,43 @@ const StyledMenuBox = styled.div`
 
 const createStore = ({ menuMeta, menuItems }) => {
   return observable({
-    selected: null,
+    trashbin: null,  //used for confirming deletion
+    selected: null,  
     hovering: null,
+    //editing is used for tracking changes to label on he editables
+    editing: { 
+      id: null,
+      label: null
+    },
     currMenuItem: -1,
     menuMeta,
-    menuItems
+    menuItems,
+    addItem({icon, label, disabled}) {
+      //TODO
+    },
+    setHovering(id) {
+      if (this.hovering !== id) {
+        this.hovering = id;
+      }
+    },
+    setEditing(id) {
+      //setup the editing for the item
+      if (this.editing.id !== id) {
+        this.editing = {
+          id: id,
+          label: this.menuItems[id].label
+        }
+      }
+    },
+    commitEdit() {
+      if (this.editing.id !== null) {
+        this.menuItems[this.editing.id].label = this.editing.label;
+        this.editing = {
+          id: null,
+          label: null
+        }
+      }
+    }
   });
 };
 
