@@ -150,9 +150,11 @@ const EditableMenuItem = observer(class EditableMenuItem extends Component {
       <span
         onMouseEnter={this.enterHover.bind(this)}
       >
-        {(this.isHoverState()) ?
-          ((this.isEditState()) ? (<EditItem {...props} />) : (<HoveringItem {...props} />))
-          : (<DisplayItem {...props} />) }
+        {(this.isEditState()) ? (<EditItem {...props} />) : (
+          (this.isHoverState())
+          ? (<HoveringItem {...props} />)
+          : (<DisplayItem {...props} />)
+        )}
       </span>
     );
   }
