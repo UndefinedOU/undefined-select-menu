@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import MenuItem from './MenuItem';
 import styled from 'styled-components';
 import ReactDOM from 'react-dom';
-import {observable, autorun} from 'mobx';
+import { observable, autorun} from 'mobx';
+import {Observer} from 'mobx-react';
+import keydown, { Keys } from 'react-keydown';
 
 /*
   root of he menu,
@@ -23,19 +25,32 @@ const StyledMenuBox = styled.div`
 
 // TODO: width determined by elements, but has max width
 
+const createStore = ({ menuMeta, menuItems }) => {
+  return observable({
+    selected: null,
+    hovering: null,
+    currMenuItem: -1,
+    menuMeta,
+    menuItems
+  });
+};
+
 class Menu extends Component {
   constructor(props) {
     super(props);
-
+    /*
     let menuItems = JSON.parse(JSON.stringify(this.props.menuItems));
     if (this.props.menuMeta.addable) {
       menuItems.push({label: "New Item +", newItem: true});
       // TODO, onclick of this item, add editable item above it
     }
+    */
+
     this.state = {
+      store: createStore(props),
       currMenuItem: -1,
-      menuItems,
-    }
+      //menuItems: props.menuItems,
+    };
   }
 
   componentWillMount() {
@@ -61,10 +76,13 @@ class Menu extends Component {
     // TODO: flash the highlight of a selection and return it to consumer
     // on Enter or click
   returnSelected = () => {
+    /*
     if (this.state.currMenuItem !== -1 &&
       !this.state.menuItems[this.state.currMenuItem].disabled) {
       console.log(this.state.menuItems[this.state.currMenuItem]);
     }
+    */
+
   }
 
   decrementCursor = () => {
@@ -129,36 +147,38 @@ class Menu extends Component {
   render () {
     // [icon or check] [label or html or editable] [tips] [shortcuts] [expandable]
     return (
-      <StyledMenuBox tabIndex="0" ref={instance => { this.topmenu = instance; }}>
-        {this.state.menuItems.map((item, i) =>
-          (this.state.currMenuItem === i &&
-           !this.state.menuItems[this.state.currMenuItem].disabled)
-          ?
-            <MenuItem
-              ref={instance => { this.child = instance; }}
-              editable={this.props.menuMeta.editable}
-              onClick={this.handleClick}
-              onMouseOver={this.handleMouseOver}
-              onMouseLeave={this.handleMouseLeave}
-              disabled={item.disabled}
-              label={item.label}
-              highlighted
-              key={i}
-              id={i} />
-          :
-            <MenuItem
-              ref={instance => { this.child = instance; }}
-              editable={this.props.menuMeta.editable}
-              onClick={this.handleClick}
-              onMouseOver={this.handleMouseOver}
-              onMouseLeave={this.handleMouseLeave}
-              disabled={item.disabled}
-              label={item.label}
-              key={i}
-              id={i} />
-            )}
+        <StyledMenuBox tabIndex="0" ref={instance => { this.topmenu = instance; }}>
+          {this.state.store.menuItems.map((item, i) =>
+            (this.state.store.currMenuItem === i &&
+            !this.state.store.menuItems[this.state.store.currMenuItem].disabled)
+            ?
+              <MenuItem
+                store={this.state.store}
+                ref={instance => { this.child = instance; }}
+                editable={this.props.menuMeta.editable}
+                onClick={this.handleClick}
+                onMouseOver={this.handleMouseOver}
+                onMouseLeave={this.handleMouseLeave}
+                disabled={item.disabled}
+                label={item.label}
+                highlighted
+                key={i}
+                id={i} />
+            :
+              <MenuItem
+                store={this.state.store}
+                ref={instance => { this.child = instance; }}
+                editable={this.props.menuMeta.editable}
+                onClick={this.handleClick}
+                onMouseOver={this.handleMouseOver}
+                onMouseLeave={this.handleMouseLeave}
+                disabled={item.disabled}
+                label={item.label}
+                key={i}
+                id={i} />
+              )}
 
-      </StyledMenuBox>
+        </StyledMenuBox>
     );
   }
 }

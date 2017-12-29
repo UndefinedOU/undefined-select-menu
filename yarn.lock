@@ -6239,6 +6239,12 @@ react-inspector@^2.2.2:
     babel-runtime "^6.26.0"
     is-dom "^1.0.9"
 
+react-keydown@^1.9.6:
+  version "1.9.6"
+  resolved "https://registry.yarnpkg.com/react-keydown/-/react-keydown-1.9.6.tgz#be449c1299e497af8aae945ef1052b4e1ac24044"
+  dependencies:
+    core-js "^2.5.0"
+
 react-modal@^3.1.8:
   version "3.1.10"
   resolved "https://registry.yarnpkg.com/react-modal/-/react-modal-3.1.10.tgz#8898b5cc4ebba78adbb8dea4c55a69818aa682cc"

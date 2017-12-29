@@ -39,6 +39,34 @@ const StyledEditableLabel = styled.div`
   margin: 1em;
 `;
 
+const DisplayItem = (props) => {
+  return (
+    <StyledEditableLabel
+      contentEditable={true}
+      color={props.color}
+      cursor={props.cursor}
+      backgroundColor={props.backgroundColor}
+      width={props.width}>
+      {props.label}
+    </StyledEditableLabel>
+  );
+};
+
+const HoveringItem = (props) => {
+  return (
+    <StyledEditableLabel
+      contentEditable={true}
+      color={props.color}
+      cursor={props.cursor}
+      backgroundColor={props.backgroundColor}
+      width={props.width}>
+      { truncate(props.truncateBy, props.label) }
+      <IconDisplay iconType={editIcon} />
+      <IconDisplay iconType={trashIcon} />
+    </StyledEditableLabel>
+  );
+};
+
 class EditableMenuItem extends Component {
   constructor (props) {
     super(props);
@@ -57,33 +85,18 @@ class EditableMenuItem extends Component {
       label: this.state.label
     });
   }
-  renderDisplay() {
-    const props = this.props;
-    return (
-      <StyledEditableLabel
-        contentEditable={true}
-        color={props.color}
-        cursor={props.cursor}
-        backgroundColor={props.backgroundColor}
-        width={props.width}>
-        {props.label}
-      </StyledEditableLabel>
-    );
-  }
   renderHovering() {
     const props = this.props;
-    return (
-      <StyledEditableLabel
-        contentEditable={true}
-        color={props.color}
-        cursor={props.cursor}
-        backgroundColor={props.backgroundColor}
-        width={props.width}>
-        { truncate(props.truncateBy, props.label) }
-        <IconDisplay iconType={editIcon} />
-        <IconDisplay iconType={trashIcon} />
-      </StyledEditableLabel>
-    );
+    
+  }
+  enterHover() {
+    this.props.store.hovering = this.props.id;
+  }
+  exitHover() {
+
+  }
+  isHoverState() {
+    return this.props.store.hovering === this.props.id;
   }
   renderEdit () {
 
@@ -92,15 +105,14 @@ class EditableMenuItem extends Component {
     const props = this.props;
     return (
       <span
-        onMouseEnter={() => this.setState({'hovering': true})}
-        onMouseLeave={() => this.setState({'hovering': false})}
+        onMouseEnter={this.enterHover.bind(this)}
       >
-        
-        {this.renderHovering()}
+        {(this.isHoverState()) ? (<HoveringItem {...props} />) : (<DisplayItem {...props} />) }
       </span>
     );
   }
 }
+
 
 //truncates the string when it is too long
 function truncate(by, str) {

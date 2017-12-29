@@ -115,6 +115,7 @@ class MenuItem extends Component {
           update={this.updateItemLabel}
           label={this.props.label}
           id={this.props.id}
+          store={this.props.store}
           >
         </EditableLabel>
 
@@ -213,6 +214,7 @@ function EditableLabel(props) {
       label={props.label}
       update={props.update}
       id={props.id}
+      store={props.store}
     />
   );
 }
@@ -301,6 +303,7 @@ MenuItem.propTypes = {
   editable:         PropTypes.bool,
   subMenu:          PropTypes.bool,
   id:               PropTypes.number,
+  store:            PropTypes.object
 }
 
 // TODO group what data goes to menu and what goes to item
