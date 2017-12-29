@@ -122,29 +122,29 @@ class Menu extends Component {
           (this.state.currMenuItem === i &&
            !this.state.menuItems[this.state.currMenuItem].disabled)
           ?
-          <MenuItem
-            ref={instance => { this.child = instance; }}
-            editable={this.props.menuMeta.editable}
-            onClick={this.handleClick}
-            onMouseOver={this.handleMouseOver}
-            onMouseLeave={this.handleMouseLeave}
-            disabled={item.disabled}
-            label={item.label}
-            highlighted
-            key={i}
-            id={i} />
+            <MenuItem
+              ref={instance => { this.child = instance; }}
+              editable={this.props.menuMeta.editable}
+              onClick={this.handleClick}
+              onMouseOver={this.handleMouseOver}
+              onMouseLeave={this.handleMouseLeave}
+              disabled={item.disabled}
+              label={item.label}
+              highlighted
+              key={i}
+              id={i} />
           :
-          <MenuItem
-            ref={instance => { this.child = instance; }}
-            editable={this.props.menuMeta.editable}
-            onClick={this.handleClick}
-            onMouseOver={this.handleMouseOver}
-            onMouseLeave={this.handleMouseLeave}
-            disabled={item.disabled}
-            label={item.label}
-            key={i}
-            id={i} />
-          )}
+            <MenuItem
+              ref={instance => { this.child = instance; }}
+              editable={this.props.menuMeta.editable}
+              onClick={this.handleClick}
+              onMouseOver={this.handleMouseOver}
+              onMouseLeave={this.handleMouseLeave}
+              disabled={item.disabled}
+              label={item.label}
+              key={i}
+              id={i} />
+            )}
 
       </StyledMenuBox>
     );

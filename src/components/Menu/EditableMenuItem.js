@@ -43,7 +43,8 @@ class EditableMenuItem extends Component {
     super(props);
     this.state = {
       label: props.label,
-      mode: 'display' // ['display', 'hovering', 'edit']
+      mode: 'display', // ['display', edit']
+      hovering: false
     }
   }
   updateLabel (newLabel) {
@@ -57,16 +58,27 @@ class EditableMenuItem extends Component {
   }
   renderDisplay() {
     const props = this.props;
-    <StyledEditableLabel contentEditable="true"
-      color={props.color}
-      cursor={props.cursor}
-      backgroundColor={props.backgroundColor}
-      width={props.width}>
-      {props.label}
-    </StyledEditableLabel>
+    return (
+      <StyledEditableLabel contentEditable="true"
+        color={props.color}
+        cursor={props.cursor}
+        backgroundColor={props.backgroundColor}
+        width={props.width}>
+        {props.label}
+      </StyledEditableLabel>
+    );
   }
   renderHovering() {
-
+    const props = this.props;
+    return (
+      <StyledEditableLabel contentEditable="true"
+        color={props.color}
+        cursor={props.cursor}
+        backgroundColor={props.backgroundColor}
+        width={props.width}>
+        { truncate(props.truncateBy, props.label) }
+      </StyledEditableLabel>
+    );
   }
   renderEdit() {
 
@@ -74,7 +86,12 @@ class EditableMenuItem extends Component {
   render () {
     const props = this.props;
     return (
-      <h1>yolo</h1>
+      <span
+        onMouseEnter={() => this.setState({'hovering': true})}
+        onMouseLeave={() => this.setState({'hovering': false})}
+      >
+        {`${this.state.hovering}`} {this.renderDisplay()}
+      </span>
     );
   }
 }

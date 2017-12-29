@@ -113,8 +113,9 @@ class MenuItem extends Component {
           backgroundColor={this.getBackgroundColor()}
           width={this.props.labelWidth}
           update={this.updateItemLabel}
-          label={this.props.label}>
+          label={this.props.label}
           id={this.props.id}
+          >
         </EditableLabel>
 
         <Label
@@ -299,7 +300,7 @@ MenuItem.propTypes = {
   hBackgroundColor: PropTypes.string,
   editable:         PropTypes.bool,
   subMenu:          PropTypes.bool,
-  id:               PropTypes.node,
+  id:               PropTypes.number,
 }
 
 // TODO group what data goes to menu and what goes to item
