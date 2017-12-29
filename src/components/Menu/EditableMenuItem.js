@@ -19,6 +19,10 @@ const EditForm = styled.form`
 
 `;
 
+const StyledInput = styled.input`
+
+`
+
 //pulled from MenuItem
 const StyledEditableLabel = styled.div`
   cursor: ${props => props.cursor};
@@ -52,7 +56,14 @@ class EditableMenuItem extends Component {
     });
   }
   renderDisplay() {
-
+    const props = this.props;
+    <StyledEditableLabel contentEditable="true"
+      color={props.color}
+      cursor={props.cursor}
+      backgroundColor={props.backgroundColor}
+      width={props.width}>
+      {props.label}
+    </StyledEditableLabel>
   }
   renderHovering() {
 
@@ -63,13 +74,7 @@ class EditableMenuItem extends Component {
   render () {
     const props = this.props;
     return (
-      <StyledEditableLabel contentEditable="true"
-        color={props.color}
-        cursor={props.cursor}
-        backgroundColor={props.backgroundColor}
-        width={props.width}>
-        {props.label}
-      </StyledEditableLabel>
+      <h1>yolo</h1>
     );
   }
 }

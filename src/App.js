@@ -4,6 +4,13 @@ import logo from './logo.svg';
 import './App.css';
 import Menu from './components/Menu/Menu';
 
+
+const editableMenuOpts = {
+  menuMeta: {
+    editable: true,
+  }
+}
+
 class App extends Component {
   render () {
     let fa = "fa fa-heart";
@@ -12,7 +19,7 @@ class App extends Component {
         <h1>wut</h1>
         <Menu />
         <h1> editable menu </h1>
-        <Menu editable={true} />
+        <Menu menuMeta={editableMenuOpts} />
       </div>
     );
   }

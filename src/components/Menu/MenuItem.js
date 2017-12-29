@@ -205,13 +205,13 @@ function EditableLabel(props) {
 
   return (
     <EditableMenuItem
-      color={this.getColor()}
-      cursor={this.getCursor()}
-      backgroundColor={this.getBackgroundColor()}
-      width={this.props.labelWidth}
-      label={this.props.label}
-      update={this.props.update}
-      id={this.props.id}
+      color={props.color}
+      cursor={props.cursor}
+      backgroundColor={props.backgroundColor}
+      width={props.labelWidth}
+      label={props.label}
+      update={props.update}
+      id={props.id}
     />
   );
 }
