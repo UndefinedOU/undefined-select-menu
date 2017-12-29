@@ -42,18 +42,18 @@ const StyledShortcut = styled.div`
 class MenuItem extends Component {
 
   handleMouseOver = (event) => {
-      event.preventDefault();
-      this.props.onMouseOver(event, this.props.id);
+    event.preventDefault();
+    this.props.onMouseOver(event, this.props.id);
   }
 
   handleMouseLeave = (event) => {
-      event.preventDefault();
-      this.props.onMouseLeave(event, this.props.id);
+    event.preventDefault();
+    this.props.onMouseLeave(event, this.props.id);
   }
 
   handleClick = (event) => {
-        event.preventDefault();
-        this.props.onClick(event, this.props.id);
+      event.preventDefault();
+      this.props.onClick(event, this.props.id);
   }
 
   getBackgroundColor = () => {
@@ -210,7 +210,7 @@ function EditableLabel(props) {
       color={props.color}
       cursor={props.cursor}
       backgroundColor={props.backgroundColor}
-      width={props.labelWidth}
+      width={props.width}
       label={props.label}
       update={props.update}
       id={props.id}

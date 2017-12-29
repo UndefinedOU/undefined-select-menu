@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import IconDisplay from './IconDisplay';
+import {observer} from "mobx-react";
 
 /*
   Editable component encapsulates the menu item where clicking on it 
@@ -28,7 +30,7 @@ const StyledInput = styled.input`
 const StyledEditableLabel = styled.div`
   cursor: ${props => props.cursor};
   width: ${props => props.width};
-  max-width: ${props => props.width};
+  /*max-width: ${props => props.width};*/
   display: table-cell;
   text-align: left;
   overflow: hidden;
@@ -39,10 +41,41 @@ const StyledEditableLabel = styled.div`
   margin: 1em;
 `;
 
+
+
+
+const EditItem = observer(class EditItem extends Component {
+  componentDidMount() {
+    //this.focusInput.focus();
+
+  }
+  updateValue(ev) {
+    ev.preventDefault();
+    this.props.store.updateLabel(ev.target.value);
+  }
+  commitChanges(ev) {
+    ev.preventDefault()
+    this.props.store.commitEditing();
+  }
+  render() {
+    return (
+      <form onSubmit={this.commitChanges.bind(this)}>
+        <StyledInput
+          type="text"
+          autoFocus
+          onBlur={this.updateValue.bind(this)}
+          onChange={this.updateValue.bind(this)}
+          defaultValue={this.props.store.editing.label}>
+        </StyledInput>
+      </form>
+    )
+  }
+})
+
+
 const DisplayItem = (props) => {
   return (
     <StyledEditableLabel
-      contentEditable={true}
       color={props.color}
       cursor={props.cursor}
       backgroundColor={props.backgroundColor}
@@ -53,27 +86,27 @@ const DisplayItem = (props) => {
 };
 
 const HoveringItem = (props) => {
-  const setEditMode = (e) => {
-    e.preventDefault();
+  const setEditMode = (ev) => {
+    //ev.preventDefault();
     console.log(props.id);
-  }
+    props.store.setEditing(props.id);
+  };
 
 
   return (
     <StyledEditableLabel
-      contentEditable={true}
       color={props.color}
       cursor={props.cursor}
       backgroundColor={props.backgroundColor}
       width={props.width}>
       { truncate(props.truncateBy, props.label) }
-      <a href="" onClick={setEditMode}><IconDisplay iconType={editIcon} /></a>
-      <a href="" onClick={setEditMode}><IconDisplay iconType={trashIcon} /></a>
+      <a href="#" onClick={setEditMode}><IconDisplay iconType={editIcon} /></a>
+      <a href=""  onClick={setEditMode}><IconDisplay iconType={trashIcon} /></a>
     </StyledEditableLabel>
   );
 };
 
-class EditableMenuItem extends Component {
+const EditableMenuItem = observer(class EditableMenuItem extends Component {
   constructor (props) {
     super(props);
     this.state = {
@@ -105,6 +138,9 @@ class EditableMenuItem extends Component {
   isHoverState() {
     return this.props.store.hovering === this.props.id;
   }
+  isEditState() {
+    return this.props.store.editing.id === this.props.id;
+  }
   renderEdit () {
 
   }
@@ -114,11 +150,13 @@ class EditableMenuItem extends Component {
       <span
         onMouseEnter={this.enterHover.bind(this)}
       >
-        {(this.isHoverState()) ? (<HoveringItem {...props} />) : (<DisplayItem {...props} />) }
+        {(this.isHoverState()) ?
+          ((this.isEditState()) ? (<EditItem {...props} />) : (<HoveringItem {...props} />))
+          : (<DisplayItem {...props} />) }
       </span>
     );
   }
-}
+})
 
 
 //truncates the string when it is too long

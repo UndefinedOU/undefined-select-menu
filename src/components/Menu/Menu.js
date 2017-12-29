@@ -55,14 +55,28 @@ const createStore = ({ menuMeta, menuItems }) => {
         }
       }
     },
-    commitEdit() {
+    clearEditing() {
+      this.editing = {
+        id: null,
+        label: null
+      }
+    },
+    updateLabel(label) {
+      this.editing.label = label;
+    },
+    commitEditing() {
       if (this.editing.id !== null) {
         this.menuItems[this.editing.id].label = this.editing.label;
-        this.editing = {
-          id: null,
-          label: null
-        }
+        this.clearEditing();   
       }
+    },
+    setTrashBin(id) {
+      this.clearEditing(); //so we don't get a editing and trash at the same time
+      this.trashbin = id;
+    },
+    destroyItem(id) {
+      //removes the item
+      this.menuItems = this.menuItems.filter((item, index) => index === id);
     }
   });
 };
@@ -86,11 +100,11 @@ class Menu extends Component {
   }
 
   componentWillMount() {
-     document.addEventListener("keydown", this.handleKeyDown.bind(this));
+     //document.addEventListener("keydown", this.handleKeyDown.bind(this));
   }
 
   componentWillUnmount() {
-      document.removeEventListener("keydown", this.handleKeyDown.bind(this));
+      //document.removeEventListener("keydown", this.handleKeyDown.bind(this));
   }
 
   // componentDidMount() {
@@ -100,10 +114,15 @@ class Menu extends Component {
   componentDidUpdate() {
     if(this.state.active)
       this.focusDiv();
-    }
-    focusDiv() {
-      ReactDOM.findDOMNode(this.refs.topmenu).focus();
-    }
+  }
+  
+  focusDiv() {
+    ReactDOM.findDOMNode(this.refs.topmenu).focus();
+  }
+
+  clearHover() {
+    this.state.store.hovering = null;
+  }
 
     // TODO: flash the highlight of a selection and return it to consumer
     // on Enter or click
@@ -179,7 +198,7 @@ class Menu extends Component {
   render () {
     // [icon or check] [label or html or editable] [tips] [shortcuts] [expandable]
     return (
-        <StyledMenuBox tabIndex="0" ref={instance => { this.topmenu = instance; }}>
+        <StyledMenuBox onMouseLeave={this.clearHover.bind(this)} tabIndex="0" ref={instance => { this.topmenu = instance; }}>
           {this.state.store.menuItems.map((item, i) =>
             (this.state.store.currMenuItem === i &&
             !this.state.store.menuItems[this.state.store.currMenuItem].disabled)
