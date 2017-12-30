@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import IconDisplay from './IconDisplay';
 import {observer} from "mobx-react";
+import keydown, { Keys } from 'react-keydown';
 
 /*
   Editable component encapsulates the menu item where clicking on it 
@@ -57,6 +58,9 @@ const EditItem = observer(class EditItem extends Component {
     ev.preventDefault()
     this.props.store.commitEditing();
   }
+  exitEditState() {
+    this.props.store.clearEditing();
+  }
   render() {
     return (
       <form onSubmit={this.commitChanges.bind(this)}>
@@ -106,6 +110,7 @@ const HoveringItem = (props) => {
   );
 };
 
+
 const EditableMenuItem = observer(class EditableMenuItem extends Component {
   constructor (props) {
     super(props);
@@ -135,14 +140,14 @@ const EditableMenuItem = observer(class EditableMenuItem extends Component {
   exitHover() {
 
   }
+  isSelectedState() {
+    return this.props.store.selected === this.props.id;
+  }
   isHoverState() {
     return this.props.store.hovering === this.props.id;
   }
   isEditState() {
     return this.props.store.editing.id === this.props.id;
-  }
-  renderEdit () {
-
   }
   render () {
     const props = this.props;
@@ -150,6 +155,7 @@ const EditableMenuItem = observer(class EditableMenuItem extends Component {
       <span
         onMouseEnter={this.enterHover.bind(this)}
       >
+        {`sel: ${this.isSelectedState()}`}
         {(this.isEditState()) ? (<EditItem {...props} />) : (
           (this.isHoverState())
           ? (<HoveringItem {...props} />)

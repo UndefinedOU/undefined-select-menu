@@ -4,7 +4,7 @@ import MenuItem from './MenuItem';
 import styled from 'styled-components';
 import ReactDOM from 'react-dom';
 import { observable, autorun} from 'mobx';
-import {Observer} from 'mobx-react';
+import {observer} from 'mobx-react';
 import keydown, { Keys } from 'react-keydown';
 
 /*
@@ -81,7 +81,7 @@ const createStore = ({ menuMeta, menuItems }) => {
   });
 };
 
-class Menu extends Component {
+const Menu = observer(class Menu extends Component {
   constructor(props) {
     super(props);
     /*
@@ -101,15 +101,19 @@ class Menu extends Component {
 
   componentWillMount() {
      //document.addEventListener("keydown", this.handleKeyDown.bind(this));
+    //focus on the first item
+
+
   }
 
   componentWillUnmount() {
       //document.removeEventListener("keydown", this.handleKeyDown.bind(this));
   }
 
-  // componentDidMount() {
-  //   this.focusDiv();
-  // }
+  componentDidMount() {
+    //this.focusDiv();
+    this.focusItem(0);
+  }
 
   componentDidUpdate() {
     if(this.state.active)
@@ -118,6 +122,11 @@ class Menu extends Component {
   
   focusDiv() {
     ReactDOM.findDOMNode(this.refs.topmenu).focus();
+  }
+
+  focusItem(i) {
+    this.state.store.selected = i;
+    ReactDOM.findDOMNode(this[`child_${i}`]).focus();
   }
 
   clearHover() {
@@ -156,9 +165,6 @@ class Menu extends Component {
       cursor = this.state.menuItems.length - 1;
     }
     this.setState({currMenuItem: cursor});
-  }
-
-  componentDidMount () {
   }
 
   handleClick = (event, id) => {
@@ -205,7 +211,7 @@ class Menu extends Component {
             ?
               <MenuItem
                 store={this.state.store}
-                ref={instance => { this.child = instance; }}
+                ref={instance => { this[`child_${i}`] = instance; }}
                 editable={this.props.menuMeta.editable}
                 onClick={this.handleClick}
                 onMouseOver={this.handleMouseOver}
@@ -218,7 +224,7 @@ class Menu extends Component {
             :
               <MenuItem
                 store={this.state.store}
-                ref={instance => { this.child = instance; }}
+                ref={instance => { this[`child_${i}`] = instance; }}
                 editable={this.props.menuMeta.editable}
                 onClick={this.handleClick}
                 onMouseOver={this.handleMouseOver}
@@ -232,7 +238,7 @@ class Menu extends Component {
         </StyledMenuBox>
     );
   }
-}
+})
 // TODO: contenteditable={true}
 // TODO: scrolling
 
