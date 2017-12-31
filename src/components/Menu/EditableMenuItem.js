@@ -25,7 +25,11 @@ const EditForm = styled.form`
 
 const StyledInput = styled.input`
 
-`
+`;
+
+const StyledDeletable = styled.div`
+
+`;
 
 //pulled from MenuItem
 const StyledEditableLabel = styled.div`
@@ -91,11 +95,13 @@ const DisplayItem = (props) => {
 
 const HoveringItem = (props) => {
   const setEditMode = (ev) => {
-    //ev.preventDefault();
-    console.log(props.id);
+    ev.preventDefault();
     props.store.setEditing(props.id);
   };
-
+  const setDeleteMode = (ev) => {
+    ev.preventDefault();
+    props.store.setTrashBin(ev.target.value);
+  };
 
   return (
     <StyledEditableLabel
@@ -105,11 +111,39 @@ const HoveringItem = (props) => {
       width={props.width}>
       { truncate(props.truncateBy, props.label) }
       <a href="#" onClick={setEditMode}><IconDisplay iconType={editIcon} /></a>
-      <a href=""  onClick={setEditMode}><IconDisplay iconType={trashIcon} /></a>
+      <a href=""  onClick={setDeleteMode}><IconDisplay iconType={trashIcon} /></a>
     </StyledEditableLabel>
   );
 };
 
+const DeletableItem = (props) => {
+
+  const commitDeletion = (ev) => {
+    ev.preventDefault();
+    props.store.destroyItem(props.store.trashbin);
+  };
+
+  const abortDeletion = (ev) => {
+    ev.preventDefault();
+    props.store.trashbin = null;
+  };
+
+  return (
+    <div>
+      <StyledDeletable
+        color={props.color}
+        cursor={props.cursor}
+        backgroundColor={props.backgroundColor}
+        width={props.width}
+      >
+        <IconDisplay iconType={trashIcon} />
+        Are You Sure? 
+        <a href=""  onClick={commitDeletion}>Yes</a>
+        <a href=""  onClick={abortDeletion}>No</a>
+      </StyledDeletable>
+    </div>
+  );
+};
 
 const EditableMenuItem = observer(class EditableMenuItem extends Component {
   constructor (props) {
