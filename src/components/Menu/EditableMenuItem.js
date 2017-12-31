@@ -93,14 +93,14 @@ const DisplayItem = (props) => {
   );
 };
 
-const HoveringItem = (props) => {
+const HoveringItem = observer((props) => {
   const setEditMode = (ev) => {
     ev.preventDefault();
     props.store.setEditing(props.id);
   };
   const setDeleteMode = (ev) => {
     ev.preventDefault();
-    props.store.setTrashBin(ev.target.value);
+    props.store.setTrashBin(props.id);
   };
 
   return (
@@ -110,13 +110,13 @@ const HoveringItem = (props) => {
       backgroundColor={props.backgroundColor}
       width={props.width}>
       { truncate(props.truncateBy, props.label) }
-      <a href="#" onClick={setEditMode}><IconDisplay iconType={editIcon} /></a>
+      <a href="" onClick={setEditMode}><IconDisplay iconType={editIcon} /></a>
       <a href=""  onClick={setDeleteMode}><IconDisplay iconType={trashIcon} /></a>
     </StyledEditableLabel>
   );
-};
+});
 
-const DeletableItem = (props) => {
+const DeletableItem = observer((props) => {
 
   const commitDeletion = (ev) => {
     ev.preventDefault();
@@ -125,7 +125,7 @@ const DeletableItem = (props) => {
 
   const abortDeletion = (ev) => {
     ev.preventDefault();
-    props.store.trashbin = null;
+    props.store.clearTrashBin();
   };
 
   return (
@@ -143,7 +143,7 @@ const DeletableItem = (props) => {
       </StyledDeletable>
     </div>
   );
-};
+});
 
 const EditableMenuItem = observer(class EditableMenuItem extends Component {
   constructor (props) {
@@ -163,10 +163,6 @@ const EditableMenuItem = observer(class EditableMenuItem extends Component {
       label: this.state.label
     });
   }
-  renderHovering() {
-    const props = this.props;
-    
-  }
   enterHover() {
     //this.props.store.hovering = this.props.id;
     this.props.store.setHovering(this.props.id);
@@ -183,23 +179,31 @@ const EditableMenuItem = observer(class EditableMenuItem extends Component {
   isEditState() {
     return this.props.store.editing.id === this.props.id;
   }
-  render () {
+  isDeleteState() {
+    return this.props.store.trashbin === this.props.id;
+  }
+  renderState() {
     const props = this.props;
+    if (this.isEditState()) {
+      return (<EditItem {...props} />);
+    } else if (this.isDeleteState()) {
+      return (<DeletableItem {...props} />);
+    } else if (this.isHoverState()) {
+      return (<HoveringItem {...props} />);
+    } else {
+      return (<DisplayItem {...props} />);
+    }
+  }
+  render () {
     return (
       <span
         onMouseEnter={this.enterHover.bind(this)}
       >
-        {`sel: ${this.isSelectedState()}`}
-        {(this.isEditState()) ? (<EditItem {...props} />) : (
-          (this.isHoverState())
-          ? (<HoveringItem {...props} />)
-          : (<DisplayItem {...props} />)
-        )}
+        {this.renderState()}
       </span>
     );
   }
-})
-
+});
 
 //truncates the string when it is too long
 function truncate(by, str) {

@@ -73,10 +73,16 @@ const createStore = ({ menuMeta, menuItems }) => {
     setTrashBin(id) {
       this.clearEditing(); //so we don't get a editing and trash at the same time
       this.trashbin = id;
+      debugger
     },
     destroyItem(id) {
       //removes the item
-      this.menuItems = this.menuItems.filter((item, index) => index === id);
+      this.menuItems = this.menuItems.filter((item, index) => index !== id);
+      this.clearTrashBin();
+      
+    },
+    clearTrashBin() {
+      this.trashbin = null;
     }
   });
 };
