@@ -14,7 +14,7 @@ const editableMenuOpts = {
 const addableMenuOpts = {
   menuMeta: {
     addable: true,
-    editable: false,
+    editable: false
   }
 }
 
