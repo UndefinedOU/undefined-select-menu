@@ -152,16 +152,6 @@ class MenuItem extends Component {
           backgroundColor={this.getBackgroundColor()}>
         </ExpandableArrow>
 
-        {(this.props.addable) ? 
-          (<AddableMenuItem
-            color={this.getColor()}
-            cursor={this.getCursor()}
-            backgroundColor={this.getBackgroundColor()}
-            width={this.props.labelWidth}
-            label={this.props.label}
-          ></AddableMenuItem>)
-           : null}
-
       </StyledMenuItem>
     );
   }

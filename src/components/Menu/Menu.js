@@ -6,6 +6,7 @@ import ReactDOM from 'react-dom';
 import { observable, autorun} from 'mobx';
 import {observer} from 'mobx-react';
 import keydown, { Keys } from 'react-keydown';
+import AddableMenuItem from './AddableMenuItem';
 
 /*
   root of he menu,
@@ -45,6 +46,7 @@ const createStore = ({ menuMeta, menuItems }) => {
     },
     commitStaging() {
       this.menuItems.push(this.staging);
+      this.clearStaging();
     },
     updateStaging(label) {
       if (this.staging)
@@ -219,6 +221,20 @@ const Menu = observer(class Menu extends Component {
         return;
     }
   }
+  //copppying these for now from MenuItem till I figure out a way to dry them up
+  getBackgroundColor = () => {
+    return this.props.highlighted ? this.props.hBackgroundColor :
+      this.props.backgroundColor;
+  }
+
+  getColor = () => {
+    return this.props.disabled ? this.props.dColor : this.props.color;
+  }
+
+  getCursor = () => {
+    return this.props.disabled ? 'not-allowed' : 'default';
+  }
+  // end
 
   render () {
     // [icon or check] [label or html or editable] [tips] [shortcuts] [expandable]
@@ -253,6 +269,17 @@ const Menu = observer(class Menu extends Component {
                 key={i}
                 id={i} />
               )}
+
+          {(this.props.menuMeta.addable) ? 
+            (<AddableMenuItem
+              store={this.state.store}
+              color={this.getColor()}
+              cursor={this.getCursor()}
+              backgroundColor={this.getBackgroundColor()}
+              width={this.props.labelWidth}
+          ></AddableMenuItem>)
+
+          : null}
 
         </StyledMenuBox>
     );
