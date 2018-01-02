@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import EditableMenuItem from './EditableMenuItem';
+import AddableMenuItem from './AddableMenuItem';
 
 const StyledMenuItem = styled.div`
   display: table;
@@ -97,7 +98,7 @@ class MenuItem extends Component {
         onMouseLeave={this.handleMouseLeave}
         onKeyDown={this.handleKeyDown}
         ref={(ref) => { this.ref = ref; }}>
-
+        {`${this.props.editable}`}
         <Icon
           show={this.props.icon || this.props.isChecked}
           color={this.getColor()}
@@ -151,6 +152,16 @@ class MenuItem extends Component {
           backgroundColor={this.getBackgroundColor()}>
         </ExpandableArrow>
 
+        {(this.props.addable) ? 
+          (<AddableMenuItem
+            color={this.getColor()}
+            cursor={this.getCursor()}
+            backgroundColor={this.getBackgroundColor()}
+            width={this.props.labelWidth}
+            label={this.props.label}
+          ></AddableMenuItem>)
+           : null}
+
       </StyledMenuItem>
     );
   }
@@ -161,6 +172,14 @@ class MenuItem extends Component {
 function convertToFAName(FAName) {
   let fullClass = `fa ${FAName}`;
   return fullClass;
+}
+
+const AddMenuTab = (props) => {
+  if (props.addable) {
+
+  } else {
+    return null;
+  }
 }
 
 // TODO: Background color

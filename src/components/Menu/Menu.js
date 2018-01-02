@@ -35,9 +35,23 @@ const createStore = ({ menuMeta, menuItems }) => {
       id: null,
       label: null
     },
+    //staging is for anyting added via addable
+    staging: null,
     currMenuItem: -1,
     menuMeta,
     menuItems,
+    clearStaging() {
+      this.staging = null;
+    },
+    commitStaging() {
+      this.menuItems.push(this.staging);
+    },
+    updateStaging(label) {
+      if (this.staging)
+        this.staging.label = label;
+      else 
+        this.staging = { label: label };
+    },
     addItem({icon, label, disabled}) {
       //TODO
     },
@@ -270,7 +284,7 @@ Menu.defaultProps = {
   },
   menuMeta: {
     checkable: false,
-    addable: true,
+    addable: false,
     editable: false,
     draggable: false,
     defaultSelection: null, //label or?
