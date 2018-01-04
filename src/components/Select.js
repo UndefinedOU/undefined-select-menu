@@ -31,7 +31,10 @@ import createStore from '../store/menu'
 import Menu from './Menu/Menu';
 
 
+const ITEM_HEIGHT = '20px';  //we need to work with fixed sizes for now. otherwise it won't work
+
 const Wrapper = styled.div`
+  padding: 0px;
   width: ${(props) => props.width}
   height: ${(props) => props.height}
 `;
@@ -41,19 +44,27 @@ const DisplayElement = styled.div`
   background-color: blue;
   opacity: 0.5;
   cursor: pointer;
+  z-index: 0;
+  overflow: visible;
+  height: ${(props) => ITEM_HEIGHT};
 `;
 
 const StyledSelector = styled.ul`
+  padding: 0px;
   width: ${(props) => props.width};
   height: ${(props) => props.height};
+  border: 1px solid black;
+  overflow: visible;
+  z-index: 1;
 `;
 
 const StyledOption = styled.li`
   display: ${(props) => props.visible ? 'block' : 'hidden'};
-  position: absolute;
   top: ${(props) => props.top};
   left: ${(props) => props.left};
+  height: ${(props) => ITEM_HEIGHT};
   list-style-type: none;
+  margin: ${(props) => 1 - props.offset}
 `;
 
 /* 
@@ -67,6 +78,7 @@ const createSelectPositioningStore = (props) => {
     cursorPosition: {x: 0, y: 0},
     spawnPoint: {x: 0, y: 0},
     menuOpen: false,
+
     openMenu () {
       this.menuOpen = true;
     },
@@ -93,18 +105,25 @@ class Select extends Component {
       positioning: createSelectPositioningStore(props),
     };
   }
+  componentDidMount() { 
+    this._ismounted = true;
+    this.state.positioning.displayHeight = ReactDOM.findDOMNode(this.displayElement).style.height;
+  }
+  componentWillUnmount() {
+     this._ismounted = false;
+  }
   getDisplayHeight() {
     // https://stackoverflow.com/questions/39767482/is-there-a-way-to-check-if-the-react-component-is-unmounted
     //TODO: is an antipattern but it will do for now
-    if (this._isMounted) {
-      return ReactDOM.findDOMNode(this.displayElement).height;
+    if (this._ismounted) {
+      return this.state.positioning.displayHeight;
     } else {
       return '0px';
     }
   }
   getDisplayWidth() {
-    if (this._isMounted) {
-      return ReactDOM.findDOMNode(this.displayElement).width;
+    if (this._ismounted) {
+      return ReactDOM.findDOMNode(this.displayElement).style.width;
     } else {
       return '0px';
     }
@@ -124,13 +143,20 @@ class Select extends Component {
         width={this.props.width}
         height={this.props.height}
       >
-        <DisplayElement  ref={(el) => this.displayElement = el } onClick={this.openSelect.bind(this)}>Display element</DisplayElement>
-        {(this.state.positioning.menuOpen) ? (
-          <StyledSelector
-            width={this.getDisplayWidth()}
-            height={this.getDisplayHeight()}
-
-          ><StyledOption>selections</StyledOption></StyledSelector>
+        <DisplayElement 
+          height={this.props.height}
+          ref={(el) => {this.displayElement = el} } onClick={this.openSelect.bind(this)}>
+            Display element {this.children}
+        </DisplayElement>
+         {(this.state.positioning.menuOpen) ? (
+          <Menu
+            position="relative"
+            itemHeight={ITEM_HEIGHT}
+            positoning={this.state.positioning}
+            menuItems={this.props.menuItems}
+            store={this.state.store}
+            menuMeta={this.props.menuMeta}
+          />
          ) : null}
       
       </Wrapper>

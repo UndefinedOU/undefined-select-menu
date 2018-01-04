@@ -6,6 +6,7 @@ import Menu from './components/Menu/Menu';
 import MenuLauncher from './components/MenuLauncher';
 import { Select } from './components/Select';
 import { observer } from "mobx-react";
+import ReactDOM from 'react-dom';
 
 const Square = styled.div`
   height: ${(props) => props.height};

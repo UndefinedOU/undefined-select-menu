@@ -21,8 +21,11 @@ import createStore from '../../store/menu';
 
 
 const StyledMenuBox = styled.ul`
+  position: ${(props) => props.position || 'relative'};
   display: inline-block;
   border: 1px solid blue;
+  margin-top: 0px;
+  margin-left: 0px;
 `;
 
 const Menu = observer(class Menu extends Component {
@@ -168,7 +171,12 @@ const Menu = observer(class Menu extends Component {
   render () {
     // [icon or check] [label or html or editable] [tips] [shortcuts] [expandable]
     return (
-        <StyledMenuBox onMouseLeave={this.clearHover.bind(this)} tabIndex="0" ref={instance => { this.topmenu = instance; }}>
+        <StyledMenuBox
+          onMouseLeave={this.clearHover.bind(this)}
+          tabIndex="0"
+          ref={instance => { this.topmenu = instance; }}
+          position={this.props.position}
+        >
           {this.state.store.menuItems.map((item, i) =>
             (this.state.store.currMenuItem === i &&
             !this.state.store.menuItems[this.state.store.currMenuItem].disabled)
@@ -229,6 +237,8 @@ Menu.propTypes = {
     //defaultSelection: null, //label or?
     highlightColor: PropTypes.string,
     backgroundColor: PropTypes.string,
+    height: PropTypes.string,
+    width: PropTypes.string
   }),
   menuItems: PropTypes.arrayOf(PropTypes.shape({
     icon: PropTypes.string,
@@ -250,6 +260,8 @@ Menu.defaultProps = {
     defaultSelection: null, //label or?
     highlightColor: '#00FFFF',
     backgroundColor: '#FFFFFF',
+    height: '100%',
+    width: '100%',
     // maxWidth
     // TODO: show fonts as images
     // TODO: HTML is a passable prop in our own code
