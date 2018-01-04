@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import EditableMenuItem from './EditableMenuItem';
 import AddableMenuItem from './AddableMenuItem';
 
-const StyledMenuItem = styled.div`
+const StyledMenuItem = styled.li`
   display: table;
 `;
 
@@ -193,7 +193,7 @@ function Icon(props) {
   );
 }
 
-function Label(props) {
+function Label (props) {
   if (!props.show) {
     return null;
   }
@@ -209,7 +209,7 @@ function Label(props) {
   );
 }
 
-function EditableLabel(props) {
+function EditableLabel (props) {
   if (!props.show) {
     return null;
   }
@@ -228,7 +228,7 @@ function EditableLabel(props) {
   );
 }
 
-function Tips(props) {
+function Tips (props) {
   if (!props.show) {
     return null;
   }
@@ -262,7 +262,7 @@ function Tips(props) {
   );
 }
 
-function Shortcut(props) {
+function Shortcut (props) {
   if (!props.show) {
     return null;
   }
@@ -277,7 +277,7 @@ function Shortcut(props) {
   );
 }
 
-function ExpandableArrow(props) {
+function ExpandableArrow (props) {
     if (!props.show) {
       return null;
     }

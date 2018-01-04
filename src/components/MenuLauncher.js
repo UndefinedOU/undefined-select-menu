@@ -70,8 +70,8 @@ class MenuLauncher extends Component {
   onRightClick (ev) {
     ev.preventDefault();
     console.log('right clicked!!');
-    this.positioning.setSpawnPoint();
-    this.positioning.openMenu();
+    this.state.positioning.setSpawnPoint();
+    this.state.positioning.openMenu();
   }
   onMouseEnter (ev) {
 

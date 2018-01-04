@@ -20,7 +20,7 @@ import createStore from '../../store/menu';
 */
 
 
-const StyledMenuBox = styled.div`
+const StyledMenuBox = styled.ul`
   display: inline-block;
   border: 1px solid blue;
 `;

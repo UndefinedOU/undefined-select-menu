@@ -4,6 +4,7 @@ import logo from './logo.svg';
 import './App.css';
 import Menu from './components/Menu/Menu';
 import MenuLauncher from './components/MenuLauncher';
+import { Select } from './components/Select';
 import { observer } from "mobx-react";
 
 const Square = styled.div`
@@ -53,6 +54,11 @@ class App extends Component {
             here is a clickable area 
           </TestSquare>
         </MenuLauncher>
+        <h1>Select Menu</h1>
+        <Select>
+
+        </Select>
+
       </div>
     );
   }

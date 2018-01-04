@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import IconDisplay from './IconDisplay';
 import {observer} from "mobx-react";
 import keydown, { Keys } from 'react-keydown';
-
+import { EditForm, StyledDeletable, Noop, StyledInput } from './styles';
 /*
   Editable component encapsulates the menu item where clicking on it 
   truncates the menu
@@ -13,23 +13,6 @@ import keydown, { Keys } from 'react-keydown';
 
 const editIcon  = 'fa-edit';
 const trashIcon = 'fa-trash';
-
-const Noop = styled.span`
-  margin: 0px
-  padding: 0px
-`;
-
-const EditForm = styled.form`
-
-`;
-
-const StyledInput = styled.input`
-
-`;
-
-const StyledDeletable = styled.div`
-
-`;
 
 //pulled from MenuItem
 const StyledEditableLabel = styled.div`

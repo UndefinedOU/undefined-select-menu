@@ -6,32 +6,7 @@ import IconDisplay from './IconDisplay';
 import { observer } from "mobx-react";
 import keydown, { Keys } from 'react-keydown';
 import { observable, autorun} from 'mobx';
-
-const StyledMenuItem = styled.div`
-  display: table;
-`;
-
-const StyledLabel = styled.div`
-  cursor: ${props => props.cursor};
-  width: ${props => props.width};
-  max-width: ${props => props.width};
-  display: table-cell;
-  text-align: left;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  background-color: ${props => props.backgroundColor};
-  color: ${props => props.color};
-  margin: 1em;
-`;
-
-const EditForm = styled.form`
-
-`;
-
-const StyledInput = styled.input`
-
-`;
+import { StyledMenuItem, StyledLabel, EditForm, StyledInput } from './styles';
 
 //handles lifecycle for the form
 //todo, change thsi to class so we can focus on it
