@@ -31,13 +31,31 @@ import Menu from './Menu/Menu';
 const WrapperEl = styled.div`
   margin: 0;
   padding: 0;
+  height: ${(props) => props.height};
+  width: ${(props) => props.width};
 `;
 
 
 //here we create a store
 const createPositioningStore = (props) => {
   return observable({
-    cursorPosition: {x: 0, y: 0}
+    cursorPosition: {x: 0, y: 0},
+    spawnPoint: {x: 0, y: 0},
+    menuOpen: false,
+    openMenu () {
+      this.menuOpen = true;
+    },
+    closeMenu () {
+      this.menuOpen = false;
+    },
+    setCursorPosition(x, y) {
+      this.cursorPosition.x = x;
+      this.cursorPosition.y = y;
+    },
+    setSpawnPoint() {
+      this.spawnPoint.x = this.cursorPosition.x;
+      this.spawnPoint.y = this.cursorPosition.y;
+    }
   });
 }
 
@@ -46,21 +64,21 @@ class MenuLauncher extends Component {
     super(props)
     this.state = {
       menu: createStore(props),
-      positioning: createPositioningStore(props)
+      positioning: createPositioningStore(props),
     };
-
   }
   onRightClick (ev) {
     ev.preventDefault();
     console.log('right clicked!!');
+    this.positioning.setSpawnPoint();
+    this.positioning.openMenu();
   }
-  onMouseEnter () {
+  onMouseEnter (ev) {
 
   }
   onMouseMove (ev) {
-    this.state.positioning.cursorPosition.x = ev.pageX;
-    this.state.positioning.cursorPosition.y = ev.pageY;
-  
+    ev.preventDefault();
+    this.state.positioning.setCursorPosition(ev.pageX, ev.pageY);
   }
   onMouseLeave() {
 
@@ -68,6 +86,8 @@ class MenuLauncher extends Component {
   render() {
     return (
       <WrapperEl
+        width={this.props.width}
+        height={this.props.height}
         onMouseMove={this.onMouseMove.bind(this)}
         onContextMenu={this.onRightClick.bind(this)}
       >

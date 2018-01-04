@@ -7,8 +7,8 @@ import MenuLauncher from './components/MenuLauncher';
 import { observer } from "mobx-react";
 
 const Square = styled.div`
-  width: 400px;
-  height: 400px;
+  height: ${(props) => props.height};
+  width: ${(props) => props.width};
   border: 1px solid black;
 `;
 
@@ -48,7 +48,7 @@ class App extends Component {
         <h1> addable menu</h1>
         <Menu {...addableMenuOpts} />
         <h1>launchable menu</h1>
-        <MenuLauncher>
+        <MenuLauncher width="400px" height="400px">
           <TestSquare> 
             here is a clickable area 
           </TestSquare>
