@@ -7,6 +7,7 @@ import { observable, autorun} from 'mobx';
 import {observer} from 'mobx-react';
 import keydown, { Keys } from 'react-keydown';
 import AddableMenuItem from './AddableMenuItem';
+import createStore from '../../store/menu';
 
 /*
   root of he menu,
@@ -24,84 +25,6 @@ const StyledMenuBox = styled.div`
   border: 1px solid blue;
 `;
 
-// TODO: width determined by elements, but has max width
-
-const createStore = ({ menuMeta, menuItems }) => {
-  return observable({
-    trashbin: null,  //used for confirming deletion
-    selected: null,  
-    hovering: null,
-    //editing is used for tracking changes to label on he editables
-    editing: { 
-      id: null,
-      label: null
-    },
-    //staging is for anyting added via addable
-    staging: null,
-    currMenuItem: -1,
-    menuMeta,
-    menuItems,
-    clearStaging() {
-      this.staging = null;
-    },
-    commitStaging() {
-      this.menuItems.push(this.staging);
-      this.clearStaging();
-    },
-    updateStaging(label) {
-      if (this.staging)
-        this.staging.label = label;
-      else 
-        this.staging = { label: label };
-    },
-    addItem({icon, label, disabled}) {
-      //TODO
-    },
-    setHovering(id) {
-      if (this.hovering !== id) {
-        this.hovering = id;
-      }
-    },
-    setEditing(id) {
-      //setup the editing for the item
-      if (this.editing.id !== id) {
-        this.editing = {
-          id: id,
-          label: this.menuItems[id].label
-        }
-      }
-    },
-    clearEditing() {
-      this.editing = {
-        id: null,
-        label: null
-      }
-    },
-    updateLabel(label) {
-      this.editing.label = label;
-    },
-    commitEditing() {
-      if (this.editing.id !== null) {
-        this.menuItems[this.editing.id].label = this.editing.label;
-        this.clearEditing();   
-      }
-    },
-    setTrashBin(id) {
-      this.clearEditing(); //so we don't get a editing and trash at the same time
-      this.trashbin = id;
-    },
-    destroyItem(id) {
-      //removes the item
-      this.menuItems = this.menuItems.filter((item, index) => index !== id);
-      this.clearTrashBin();
-      
-    },
-    clearTrashBin() {
-      this.trashbin = null;
-    }
-  });
-};
-
 const Menu = observer(class Menu extends Component {
   constructor(props) {
     super(props);
@@ -112,12 +35,18 @@ const Menu = observer(class Menu extends Component {
       // TODO, onclick of this item, add editable item above it
     }
     */
-
-    this.state = {
-      store: createStore(props),
-      currMenuItem: -1,
-      //menuItems: props.menuItems,
-    };
+    if (props.store) {
+      this.state = {
+        store: props.store,
+        currMenuItem: -1
+      };
+    } else {
+      this.state = {
+        store: createStore(props),
+        currMenuItem: -1,
+        //menuItems: props.menuItems,
+      };
+    }
   }
 
   componentWillMount() {
@@ -290,6 +219,9 @@ const Menu = observer(class Menu extends Component {
 
 Menu.propTypes = {
   menuMeta: PropTypes.shape({
+    store: PropTypes.object, //used if we are injecting a store
+    positioning: PropTypes.object,
+    floating: PropTypes.bool, //used if we are having the menu launch by right click
     checkable: PropTypes.bool,
     addable: PropTypes.bool,
     editable: PropTypes.bool,
@@ -303,6 +235,7 @@ Menu.propTypes = {
     label: PropTypes.string.isRequired,
     disabled: PropTypes.bool
   }))
+
 };
 
 Menu.defaultProps = {

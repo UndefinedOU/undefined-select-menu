@@ -34,6 +34,7 @@ const StyledInput = styled.input`
 `;
 
 //handles lifecycle for the form
+//todo, change thsi to class so we can focus on it
 const StagedDisplay = observer((props) => {
   const commitStaging = (ev) => {
     ev.preventDefault();
