@@ -96,12 +96,16 @@ class MenuLauncher extends Component {
           foo: 'bar',
           positioning: this.state.positioning
         })}
+        {(this.state.positioning.menuOpen) ? (
         <Menu
-          positoning={this.state.positioning}
+          position="absolute"
+          top={`${this.state.positioning.spawnPoint.y}px`}
+          left={`${this.state.positioning.spawnPoint.x}px`}
+          positioning={this.state.positioning}
           menuItems={this.props.menuItems}
           store={this.state.store}
           menuMeta={this.props.menuMeta}
-        />
+        />) : null }
       </WrapperEl>
     )
   }

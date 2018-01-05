@@ -78,6 +78,9 @@ const createSelectPositioningStore = (props) => {
     cursorPosition: {x: 0, y: 0},
     spawnPoint: {x: 0, y: 0},
     menuOpen: false,
+    selected: null,
+    perPage: 10,
+    offset: 0,
 
     openMenu () {
       this.menuOpen = true;

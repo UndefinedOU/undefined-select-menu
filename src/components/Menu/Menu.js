@@ -4,7 +4,7 @@ import MenuItem from './MenuItem';
 import styled from 'styled-components';
 import ReactDOM from 'react-dom';
 import { observable, autorun} from 'mobx';
-import {observer} from 'mobx-react';
+import {observer, propTypes} from 'mobx-react';
 import keydown, { Keys } from 'react-keydown';
 import AddableMenuItem from './AddableMenuItem';
 import createStore from '../../store/menu';
@@ -26,6 +26,8 @@ const StyledMenuBox = styled.ul`
   border: 1px solid blue;
   margin-top: 0px;
   margin-left: 0px;
+  top: ${(props) => props.top};
+  left: ${(props) => props.left};
 `;
 
 const Menu = observer(class Menu extends Component {
@@ -171,12 +173,16 @@ const Menu = observer(class Menu extends Component {
   render () {
     // [icon or check] [label or html or editable] [tips] [shortcuts] [expandable]
     return (
+
         <StyledMenuBox
           onMouseLeave={this.clearHover.bind(this)}
           tabIndex="0"
           ref={instance => { this.topmenu = instance; }}
           position={this.props.position}
+          top={this.props.top}
+          left={this.props.left}
         >
+          {this.props.position}
           {this.state.store.menuItems.map((item, i) =>
             (this.state.store.currMenuItem === i &&
             !this.state.store.menuItems[this.state.store.currMenuItem].disabled)
@@ -226,6 +232,7 @@ const Menu = observer(class Menu extends Component {
 // TODO: scrolling
 
 Menu.propTypes = {
+  
   menuMeta: PropTypes.shape({
     store: PropTypes.object, //used if we are injecting a store
     positioning: PropTypes.object,
@@ -244,11 +251,18 @@ Menu.propTypes = {
     icon: PropTypes.string,
     label: PropTypes.string.isRequired,
     disabled: PropTypes.bool
-  }))
+  })),
+  position: PropTypes.string,
+  store: PropTypes.object,
+  left: PropTypes.string,
+  top: PropTypes.string
 
 };
 
 Menu.defaultProps = {
+  position: 'relative',
+  top: '0',
+  left: '0',
   select: {
     // align: 'left' / 'right' / 'left-wide'
   },
