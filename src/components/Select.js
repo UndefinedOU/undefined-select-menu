@@ -77,6 +77,7 @@ const createSelectPositioningStore = (props) => {
   return observable({
     cursorPosition: {x: 0, y: 0},
     spawnPoint: {x: 0, y: 0},
+    windowPositioning: {x: 0, y:0},
     menuOpen: false,
     selected: null,
     perPage: 10,
@@ -87,6 +88,10 @@ const createSelectPositioningStore = (props) => {
     },
     closeMenu () {
       this.menuOpen = false;
+    },
+    setWindowPositioning(x, y) {
+      this.windowPositioning.x = x;
+      this.windowPositioning.y = y;
     },
     setCursorPosition(x, y) {
       this.cursorPosition.x = x;
@@ -108,12 +113,23 @@ class Select extends Component {
       positioning: createSelectPositioningStore(props),
     };
   }
+  updatePosition() {
+    let element = ReactDOM.findDOMNode(this.displayElement);
+    let topPos = element.getBoundingClientRect().top + window.scrollY;
+    let leftPos = element.getBoundingClientRect().left + window.scrollX;
+    console.log(topPos, leftPos);
+  }
   componentDidMount() { 
     this._ismounted = true;
-    this.state.positioning.displayHeight = ReactDOM.findDOMNode(this.displayElement).style.height;
+    //this.state.positioning.displayHeight = ReactDOM.findDOMNode(this.displayElement).style.height;
+    this.updatePosition();
   }
   componentWillUnmount() {
      this._ismounted = false;
+  }
+  onMouseMove(ev) {
+    this.state.positioning.setCursorPosition(ev.pageX, ev.pageY);
+    console.log(this.state.positioning.cursorPosition.x, this.state.positioning.cursorPosition.y)
   }
   getDisplayHeight() {
     // https://stackoverflow.com/questions/39767482/is-there-a-way-to-check-if-the-react-component-is-unmounted
@@ -136,6 +152,7 @@ class Select extends Component {
       ev.preventDefault();
     }
     this.state.positioning.openMenu();
+    console.log(this.state.positioning.cursorPosition.x, this.state.positioning.cursorPosition.y)
   }
   closeSelect() {
     this.state.positioning.closeMenu();
@@ -143,12 +160,14 @@ class Select extends Component {
   render() {
     return (
       <Wrapper
+        onMouseMove={this.onMouseMove.bind(this)}
         width={this.props.width}
         height={this.props.height}
       >
         <DisplayElement 
           height={this.props.height}
-          ref={(el) => {this.displayElement = el} } onClick={this.openSelect.bind(this)}>
+          ref={(el) => {this.displayElement = el} }
+          onClick={this.openSelect.bind(this)}>
             Display element {this.children}
         </DisplayElement>
          {(this.state.positioning.menuOpen) ? (
