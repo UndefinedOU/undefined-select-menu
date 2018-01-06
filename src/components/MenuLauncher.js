@@ -93,7 +93,7 @@ class MenuLauncher extends Component {
       >
         
         {React.cloneElement(this.props.children, {
-          foo: 'bar',
+          store: this.state.store,
           positioning: this.state.positioning
         })}
         {(this.state.positioning.menuOpen) ? (
