@@ -182,7 +182,7 @@ const Menu = observer(class Menu extends Component {
           top={this.props.top}
           left={this.props.left}
         >
-          {this.props.position}
+          
           {this.state.store.menuItems.map((item, i) =>
             (this.state.store.currMenuItem === i &&
             !this.state.store.menuItems[this.state.store.currMenuItem].disabled)

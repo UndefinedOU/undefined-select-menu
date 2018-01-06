@@ -118,6 +118,7 @@ class Select extends Component {
     let topPos = element.getBoundingClientRect().top + window.scrollY;
     let leftPos = element.getBoundingClientRect().left + window.scrollX;
     console.log(topPos, leftPos);
+    this.state.positioning.setWindowPositioning(leftPos, topPos);
   }
   componentDidMount() { 
     this._ismounted = true;

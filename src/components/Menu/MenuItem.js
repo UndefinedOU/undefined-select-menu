@@ -98,7 +98,6 @@ class MenuItem extends Component {
         onMouseLeave={this.handleMouseLeave}
         onKeyDown={this.handleKeyDown}
         ref={(ref) => { this.ref = ref; }}>
-        {`${this.props.editable}`}
         <Icon
           show={this.props.icon || this.props.isChecked}
           color={this.getColor()}
