@@ -54,6 +54,7 @@ class MenuItem extends Component {
 
   handleClick = (event) => {
       event.preventDefault();
+      this.props.store.selectItem(this.props.id);
       this.props.onClick(event, this.props.id);
   }
 

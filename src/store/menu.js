@@ -17,6 +17,9 @@ const createStore = ({ menuMeta, menuItems }) => {
     currMenuItem: -1,
     menuMeta,
     menuItems,
+    selectItem(id) {
+      this.selected = id;
+    },
     clearStaging() {
       this.staging = null;
     },
