@@ -72,6 +72,13 @@ class MenuLauncher extends Component {
     console.log('right clicked!!');
     this.state.positioning.setSpawnPoint();
     this.state.positioning.openMenu();
+    //add a handler to close this
+    const remover = () => {
+      this.state.positioning.closeMenu();
+      window.removeEventListener('click', remover);
+    };
+    window.addEventListener('click', remover);
+
   }
   onMouseEnter (ev) {
 
