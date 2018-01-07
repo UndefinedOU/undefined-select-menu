@@ -11,7 +11,7 @@ import { chunk } from 'lodash';
 const ITEM_HEIGHT = 24;
 
 const createStore = ({ menuMeta, menuItems }) => {
-  return observable({
+  let store = observable({
     trashbin: null,  //used for confirming deletion
     selected: null,  
     hovering: null,
@@ -33,14 +33,17 @@ const createStore = ({ menuMeta, menuItems }) => {
     switchPage(page) {
       //sitches the page
       this.activePage = page;
-      this.paginateSlot = this.pages[page];
+      this.drawPages();
     },
-    redrawPages() {
-      this.createPages();
-    },
-    createPages() {
+    drawPages() {
       let maxItems = this.maxItems();
       this.pages = chunk(this.menuItems, maxItems);
+      this.paginateSlot = this.pages[this.actvePage];
+
+    },
+    createPages() {
+      this.activePage = 0;
+      this.drawPages();
     },
     maxItems() {
       /* todo: do this later once we have the items part working
@@ -117,6 +120,8 @@ const createStore = ({ menuMeta, menuItems }) => {
       this.trashbin = null;
     }
   });
+  store.createPages();
+  return store;
 };
 
 export default createStore;

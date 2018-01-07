@@ -23,7 +23,7 @@ import createStore from '../../store/menu';
 
 const StyledMenuBox = styled.ul`
   position: ${(props) => props.position || 'relative'};
-  height: ${(props) => props.height };
+  height: ${(props) => props.height }px;
   display: inline-block;
   border: 1px solid blue;
   margin-top: 0px;
