@@ -110,7 +110,8 @@ class MenuLauncher extends Component {
           left={`${this.state.positioning.spawnPoint.x}px`}
           positioning={this.state.positioning}
           menuItems={this.props.menuItems}
-          store={this.state.store}
+          store={this.state.store},
+          positionin={this.state.positiing}
           menuMeta={this.props.menuMeta}
         />) : null }
       </WrapperEl>

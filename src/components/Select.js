@@ -141,6 +141,10 @@ class Select extends Component {
       return '0px';
     }
   }
+  getMenuHeight() {
+    //derives a menu height. lets make this a fixes size for now
+    return 240;
+  }
   getDisplayWidth() {
     if (this._ismounted) {
       return ReactDOM.findDOMNode(this.displayElement).style.width;

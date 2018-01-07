@@ -22,6 +22,7 @@ import createStore from '../../store/menu';
 
 const StyledMenuBox = styled.ul`
   position: ${(props) => props.position || 'relative'};
+  height: ${(props) => props.height };
   display: inline-block;
   border: 1px solid blue;
   margin-top: 0px;
@@ -73,6 +74,10 @@ const Menu = observer(class Menu extends Component {
   componentDidUpdate() {
     if(this.state.active)
       this.focusDiv();
+  }
+  
+  getAbsoluteLocation () {
+    // the location top left
   }
   
   focusDiv() {
@@ -175,6 +180,7 @@ const Menu = observer(class Menu extends Component {
     return (
 
         <StyledMenuBox
+          ref={(box) => {this.box = box}}
           onMouseLeave={this.clearHover.bind(this)}
           tabIndex="0"
           ref={instance => { this.topmenu = instance; }}
@@ -188,6 +194,7 @@ const Menu = observer(class Menu extends Component {
             !this.state.store.menuItems[this.state.store.currMenuItem].disabled)
             ?
               <MenuItem
+                positioning={this.state.positioning}
                 store={this.state.store}
                 ref={instance => { this[`child_${i}`] = instance; }}
                 editable={this.props.menuMeta.editable}
@@ -201,6 +208,7 @@ const Menu = observer(class Menu extends Component {
                 id={i} />
             :
               <MenuItem
+                positioning={this.state.positioning}
                 store={this.state.store}
                 ref={instance => { this[`child_${i}`] = instance; }}
                 editable={this.props.menuMeta.editable}
@@ -254,6 +262,7 @@ Menu.propTypes = {
   })),
   position: PropTypes.string,
   store: PropTypes.object,
+  positioning: PropTypes.object,
   left: PropTypes.string,
   top: PropTypes.string
 

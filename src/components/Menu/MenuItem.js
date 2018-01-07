@@ -43,24 +43,28 @@ const StyledShortcut = styled.div`
 
 class MenuItem extends Component {
 
-  handleMouseOver = (event) => {
+  handleMouseOver (event) {
     event.preventDefault();
     this.props.onMouseOver(event, this.props.id);
   }
 
-  handleMouseLeave = (event) => {
+  handleMouseLeave (event) {
     event.preventDefault();
     this.props.onMouseLeave(event, this.props.id);
   }
 
-  handleClick = (event) => {
+  handleClick (event)  {
     event.preventDefault();
     event.stopPropagation();
     this.props.store.selectItem(this.props.id);
     this.props.onClick(event, this.props.id);
+    debugger
+    if (this.props.positioning) {
+      this.props.positioning.closeMenu(); //both super dipatchers support this
+    }
   }
 
-  getBackgroundColor = () => {
+  getBackgroundColor () {
     return this.props.highlighted ? this.props.hBackgroundColor :
       this.props.backgroundColor;
   }
@@ -96,10 +100,10 @@ class MenuItem extends Component {
     }
     return (
       <StyledMenuItem
-        onClick={this.handleClick}
-        onMouseOver={this.handleMouseOver}
-        onMouseLeave={this.handleMouseLeave}
-        onKeyDown={this.handleKeyDown}
+        onClick={this.handleClick.bind(this)}
+        onMouseOver={this.handleMouseOver.bind(this)}
+        onMouseLeave={this.handleMouseLeave.bind(this)}
+        
         ref={(ref) => { this.ref = ref; }}>
         <Icon
           show={this.props.icon || this.props.isChecked}
@@ -300,6 +304,7 @@ function ExpandableArrow (props) {
 
 MenuItem.propTypes = {
   //icon: 'fa-coffee',
+  positioning:      PropTypes.object,
   isChecked:        PropTypes.bool,
   shortcut:         PropTypes.string,
   label:            PropTypes.string,
