@@ -58,7 +58,6 @@ class MenuItem extends Component {
     event.stopPropagation();
     this.props.store.selectItem(this.props.id);
     this.props.onClick(event, this.props.id);
-    debugger
     if (this.props.positioning) {
       this.props.positioning.closeMenu(); //both super dipatchers support this
     }

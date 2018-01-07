@@ -46,7 +46,6 @@ const Menu = observer(class Menu extends Component {
         store: props.store,
         currMenuItem: -1
       };
-      debugger
       if (!this.props.store.menuItems) {
         this.state.store.menuItems = this.props.menuItems;
       }

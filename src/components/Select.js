@@ -113,7 +113,6 @@ class Select extends Component {
       positioning: createSelectPositioningStore(props),
     };
 
-    debugger
   }
   updatePosition() {
     let element = ReactDOM.findDOMNode(this.displayElement);
