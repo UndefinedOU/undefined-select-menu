@@ -1,9 +1,13 @@
 
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
+import EditableMenuItem from './EditableMenuItem';
+import AddableMenuItem from './AddableMenuItem';
 
-const StyledMenuItem = styled.div`
+const StyledMenuItem = styled.li`
   display: table;
+  height: 24px;
 `;
 
 const StyledLabel = styled.div`
@@ -20,19 +24,6 @@ const StyledLabel = styled.div`
   margin: 1em;
 `;
 
-const StyledEditableLabel = styled.div`
-  cursor: ${props => props.cursor};
-  width: ${props => props.width};
-  max-width: ${props => props.width};
-  display: table-cell;
-  text-align: left;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  background-color: ${props => props.backgroundColor};
-  color: ${props => props.color};
-  margin: 1em;
-`;
 
 const StyledTip = styled.div`
   display: table-cell;
@@ -51,26 +42,28 @@ const StyledShortcut = styled.div`
 `;
 
 class MenuItem extends Component {
-  constructor(props) {
-    super(props);
+
+  handleMouseOver (event) {
+    event.preventDefault();
+    this.props.onMouseOver(event, this.props.id);
   }
 
-  handleMouseOver = (event) => {
-      event.preventDefault();
-      this.props.onMouseOver(event, this.props.id);
+  handleMouseLeave (event) {
+    event.preventDefault();
+    this.props.onMouseLeave(event, this.props.id);
   }
 
-  handleMouseLeave = (event) => {
-      event.preventDefault();
-      this.props.onMouseLeave(event, this.props.id);
+  handleClick (event)  {
+    event.preventDefault();
+    event.stopPropagation();
+    this.props.store.selectItem(this.props.id);
+    this.props.onClick(event, this.props.id);
+    if (this.props.positioning) {
+      this.props.positioning.closeMenu(); //both super dipatchers support this
+    }
   }
 
-  handleClick = (event) => {
-        event.preventDefault();
-        this.props.onClick(event, this.props.id);
-  }
-
-  getBackgroundColor = () => {
+  getBackgroundColor () {
     return this.props.highlighted ? this.props.hBackgroundColor :
       this.props.backgroundColor;
   }
@@ -81,6 +74,9 @@ class MenuItem extends Component {
 
   getCursor = () => {
     return this.props.disabled ? 'not-allowed' : 'default';
+  }
+  updateItemLabel = () => {
+    console.log("Todo on label update");
   }
 
   // handleKeyDown = (event) => {
@@ -103,12 +99,11 @@ class MenuItem extends Component {
     }
     return (
       <StyledMenuItem
-        onClick={this.handleClick}
-        onMouseOver={this.handleMouseOver}
-        onMouseLeave={this.handleMouseLeave}
-        onKeyDown={this.handleKeyDown}
+        onClick={this.handleClick.bind(this)}
+        onMouseOver={this.handleMouseOver.bind(this)}
+        onMouseLeave={this.handleMouseLeave.bind(this)}
+        
         ref={(ref) => { this.ref = ref; }}>
-
         <Icon
           show={this.props.icon || this.props.isChecked}
           color={this.getColor()}
@@ -123,7 +118,11 @@ class MenuItem extends Component {
           cursor={this.getCursor()}
           backgroundColor={this.getBackgroundColor()}
           width={this.props.labelWidth}
-          label={this.props.label}>
+          update={this.updateItemLabel}
+          label={this.props.label}
+          id={this.props.id}
+          store={this.props.store}
+          >
         </EditableLabel>
 
         <Label
@@ -170,6 +169,14 @@ function convertToFAName(FAName) {
   return fullClass;
 }
 
+const AddMenuTab = (props) => {
+  if (props.addable) {
+
+  } else {
+    return null;
+  }
+}
+
 // TODO: Background color
 // HACK: font awesome relies on classnames which conflicts with styled-components,
 // this is to take a string name of a FontAwesome icon
@@ -191,7 +198,7 @@ function Icon(props) {
   );
 }
 
-function Label(props) {
+function Label (props) {
   if (!props.show) {
     return null;
   }
@@ -207,23 +214,26 @@ function Label(props) {
   );
 }
 
-function EditableLabel(props) {
+function EditableLabel (props) {
   if (!props.show) {
     return null;
   }
 
   return (
-    <StyledEditableLabel contentEditable="true"
+    <EditableMenuItem
       color={props.color}
       cursor={props.cursor}
       backgroundColor={props.backgroundColor}
-      width={props.width}>
-      {props.label}
-    </StyledEditableLabel>
+      width={props.width}
+      label={props.label}
+      update={props.update}
+      id={props.id}
+      store={props.store}
+    />
   );
 }
 
-function Tips(props) {
+function Tips (props) {
   if (!props.show) {
     return null;
   }
@@ -257,7 +267,7 @@ function Tips(props) {
   );
 }
 
-function Shortcut(props) {
+function Shortcut (props) {
   if (!props.show) {
     return null;
   }
@@ -272,7 +282,7 @@ function Shortcut(props) {
   );
 }
 
-function ExpandableArrow(props) {
+function ExpandableArrow (props) {
     if (!props.show) {
       return null;
     }
@@ -290,25 +300,46 @@ function ExpandableArrow(props) {
     );
   }
 
+
+MenuItem.propTypes = {
+  //icon: 'fa-coffee',
+  positioning:      PropTypes.object,
+  isChecked:        PropTypes.bool,
+  shortcut:         PropTypes.string,
+  label:            PropTypes.string,
+  color:            PropTypes.string,
+  dColor:           PropTypes.string,
+  font:             PropTypes.node,
+  tips:             PropTypes.array,
+  disabled:         PropTypes.bool,
+  labelWidth:       PropTypes.string,
+  backgroundColor:  PropTypes.string,
+  hBackgroundColor: PropTypes.string,
+  editable:         PropTypes.bool,
+  subMenu:          PropTypes.bool,
+  id:               PropTypes.number,
+  store:            PropTypes.object
+}
+
 // TODO group what data goes to menu and what goes to item
 // TODO disabled choices
 // TODO overriding font property if not a font list?
 // TODO: platform shortcuts
 MenuItem.defaultProps = {
   //icon: 'fa-coffee',
-  isChecked: true,
-  shortcut: '#T',
-  label: 'foo',
-  color: 'red',
-  dColor: 'lightgray',
-  font: null,
-  tips: [100, 200, 300, 'coffee', 'fa-coffee'],
-  disabled: false,
-  labelWidth: '10em',
-  backgroundColor: 'white',
+  isChecked:        true,
+  shortcut:         '#T',
+  label:            'foo',
+  color:            'red',
+  dColor:           'lightgray',
+  font:             null,
+  tips:             [100, 200, 300, 'coffee', 'fa-coffee'],
+  disabled:         false,
+  labelWidth:       '10em',
+  backgroundColor:  'white',
   hBackgroundColor: 'blue',
-  editable: true,
-  subMenu: true,
+  editable:         true,
+  subMenu:          true
 }
 
 export default MenuItem;
