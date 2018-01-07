@@ -246,7 +246,7 @@ const Menu = observer(class Menu extends Component {
             disabled={item.disabled}
             label={item.label}
             highlighted={isHighlighted}
-            key={`item_${item.id}`}
+            key={`item_${i}`}
             id={i}
           />);
         })}
