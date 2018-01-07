@@ -46,6 +46,10 @@ const Menu = observer(class Menu extends Component {
         store: props.store,
         currMenuItem: -1
       };
+      debugger
+      if (!this.props.store.menuItems) {
+        this.state.store.menuItems = this.props.menuItems;
+      }
     } else {
       this.state = {
         store: createStore(props),
@@ -194,7 +198,7 @@ const Menu = observer(class Menu extends Component {
             !this.state.store.menuItems[this.state.store.currMenuItem].disabled)
             ?
               <MenuItem
-                positioning={this.state.positioning}
+                positioning={this.props.positioning}
                 store={this.state.store}
                 ref={instance => { this[`child_${i}`] = instance; }}
                 editable={this.props.menuMeta.editable}
@@ -208,7 +212,7 @@ const Menu = observer(class Menu extends Component {
                 id={i} />
             :
               <MenuItem
-                positioning={this.state.positioning}
+                positioning={this.props.positioning}
                 store={this.state.store}
                 ref={instance => { this[`child_${i}`] = instance; }}
                 editable={this.props.menuMeta.editable}

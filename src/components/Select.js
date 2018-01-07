@@ -109,9 +109,11 @@ class Select extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      menu: createStore(props),
+      store: createStore(props),
       positioning: createSelectPositioningStore(props),
     };
+
+    debugger
   }
   updatePosition() {
     let element = ReactDOM.findDOMNode(this.displayElement);
@@ -173,13 +175,13 @@ class Select extends Component {
           height={this.props.height}
           ref={(el) => {this.displayElement = el} }
           onClick={this.openSelect.bind(this)}>
-            Display element {this.children}
+            Selected: {(this.state.store.selected) ? this.state.store.menuItems[this.state.store.selected].label : null}
         </DisplayElement>
          {(this.state.positioning.menuOpen) ? (
           <Menu
             position="relative"
             itemHeight={ITEM_HEIGHT}
-            positoning={this.state.positioning}
+            positioning={this.state.positioning}
             menuItems={this.props.menuItems}
             store={this.state.store}
             menuMeta={this.props.menuMeta}

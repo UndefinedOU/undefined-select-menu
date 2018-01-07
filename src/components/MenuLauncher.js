@@ -111,7 +111,7 @@ class MenuLauncher extends Component {
           positioning={this.state.positioning}
           menuItems={this.props.menuItems}
           store={this.state.store}
-          positionin={this.state.positiing}
+          positioning={this.state.positioning}
           menuMeta={this.props.menuMeta}
         />) : null }
       </WrapperEl>
