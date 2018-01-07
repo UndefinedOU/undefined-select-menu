@@ -1,34 +1,35 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+
+import MenuItem from './MenuItem';
 import styled from 'styled-components';
 import ReactDOM from 'react-dom';
-// import { observable, autorun } from 'mobx';
-import {
-  observer
-  // propTypes,
-} from 'mobx-react';
-// import keydown, { Keys } from 'react-keydown';
-import MenuItem from './MenuItem';
+import { observable, autorun} from 'mobx';
+import {observer, propTypes} from 'mobx-react';
+import keydown, { Keys } from 'react-keydown';
 import AddableMenuItem from './AddableMenuItem';
 import createStore from '../../store/menu';
 
 /*
   root of he menu,
+
   On creastion, should instantiate a Observer based on the initial values
   We need 3 different observables
     1. menuMeta
     2. menuItems
+
 */
+
 
 const StyledMenuBox = styled.ul`
   position: ${(props) => props.position || 'relative'};
-  height: ${(props) => props.height};
+  height: ${(props) => props.height };
   display: inline-block;
   border: 1px solid blue;
   margin-top: 0px;
   margin-left: 0px;
-  top: ${props => props.top};
-  left: ${props => props.left};
+  top: ${(props) => props.top};
+  left: ${(props) => props.left};
 `;
 
 const Menu = observer(class Menu extends Component {
@@ -44,7 +45,7 @@ const Menu = observer(class Menu extends Component {
     if (props.store) {
       this.state = {
         store: props.store,
-        currMenuItem: -1,
+        currMenuItem: -1
       };
       if (!this.props.store.menuItems) {
         this.state.store.menuItems = this.props.menuItems;
@@ -54,6 +55,7 @@ const Menu = observer(class Menu extends Component {
         store: createStore(props),
         currMenuItem: -1,
         // menuItems: props.menuItems,
+        //menuItems: props.menuItems,
       };
     }
     this.clearHover = this.clearHover.bind(this);
@@ -67,6 +69,10 @@ const Menu = observer(class Menu extends Component {
   componentDidMount() {
     // this.focusDiv();
     this.focusItem(0);
+  }
+
+  componentWillUnmount() {
+      //document.removeEventListener("keydown", this.handleKeyDown.bind(this));
   }
 
   componentDidUpdate() {
@@ -83,8 +89,25 @@ const Menu = observer(class Menu extends Component {
     ReactDOM.findDOMNode(this.refs.topmenu).focus();
   }
 
-  componentWillUnmount() {
-    // document.removeEventListener("keydown", this.handleKeyDown.bind(this));
+  focusItem(i) {
+    this.state.store.selected = i;
+    ReactDOM.findDOMNode(this[`child_${i}`]).focus();
+  }
+
+  clearHover() {
+    this.state.store.hovering = null;
+  }
+
+    // TODO: flash the highlight of a selection and return it to consumer
+    // on Enter or click
+  returnSelected = () => {
+    /*
+    if (this.state.currMenuItem !== -1 &&
+      !this.state.menuItems[this.state.currMenuItem].disabled) {
+      console.log(this.state.menuItems[this.state.currMenuItem]);
+    }
+    */
+
   }
 
   getCursor() {
@@ -125,9 +148,8 @@ const Menu = observer(class Menu extends Component {
 
   // takes `event` and `id` as params, respectively
   handleClick() {
-    this.returnSelected();
+    //this.setState({currMenuItem: cursor});
   }
-
   // takes `event` and `id` as params, respectively
   handleMouseLeave() {
     this.setState({
@@ -158,6 +180,20 @@ const Menu = observer(class Menu extends Component {
         console.log(event.key);
     }
   }
+  //copppying these for now from MenuItem till I figure out a way to dry them up
+  getBackgroundColor = () => {
+    return this.props.highlighted ? this.props.hBackgroundColor :
+      this.props.backgroundColor;
+  }
+
+  getColor = () => {
+    return this.props.disabled ? this.props.dColor : this.props.color;
+  }
+
+  getCursor = () => {
+    return this.props.disabled ? 'not-allowed' : 'default';
+  }
+  // end
 
   // TODO: flash the highlight of a selection and return it to consumer
   // on Enter or click
@@ -229,14 +265,17 @@ const Menu = observer(class Menu extends Component {
   }
 });
 
+
 // TODO: contenteditable={true}
 // TODO: scrolling
 
 Menu.propTypes = {
+
+  
   menuMeta: PropTypes.shape({
-    store: PropTypes.object, // used if we are injecting a store
+    store: PropTypes.object, //used if we are injecting a store
     positioning: PropTypes.object,
-    floating: PropTypes.bool, // used if we are having the menu launch by right click
+    floating: PropTypes.bool, //used if we are having the menu launch by right click
     checkable: PropTypes.bool,
     addable: PropTypes.bool,
     editable: PropTypes.bool,
@@ -256,7 +295,7 @@ Menu.propTypes = {
   store: PropTypes.object,
   positioning: PropTypes.object,
   left: PropTypes.string,
-  top: PropTypes.string,
+  top: PropTypes.string
 
 };
 
