@@ -232,7 +232,11 @@ const Menu = observer(class Menu extends Component {
         top={this.props.top}
         left={this.props.left}
       >
-        {this.state.store.menuItems.map((item, i) => {
+        {((this.state.store.pages.length > 1) && (this.state.store.activePage > 0)) ? (
+          <div>up arrow </div>
+        ) : null}
+
+        {this.state.store.paginateSlot.map((item, i) => {
           const isHighlighted = this.state.store.currMenuItem === i &&
             !this.state.store.menuItems[this.state.store.currMenuItem].disabled;
           return (<MenuItem
@@ -261,6 +265,11 @@ const Menu = observer(class Menu extends Component {
             width={this.props.labelWidth}
           /> : null
         }
+
+        {((this.state.store.pages.length > 1) && (this.state.store.activePage < (this.state.store.pages.length - 1))) ? (
+          <div>down arrow </div>
+        ) : null}
+
       </StyledMenuBox>
     );
   }

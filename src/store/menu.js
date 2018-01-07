@@ -38,7 +38,7 @@ const createStore = ({ menuMeta, menuItems }) => {
     drawPages() {
       let maxItems = this.maxItems();
       this.pages = chunk(this.menuItems, maxItems);
-      this.paginateSlot = this.pages[this.actvePage];
+      this.paginateSlot = this.pages[this.activePage];
 
     },
     createPages() {
@@ -64,6 +64,7 @@ const createStore = ({ menuMeta, menuItems }) => {
     commitStaging() {
       this.menuItems.push(this.staging);
       this.clearStaging();
+      this.drawPages();
     },
     updateStaging(label) {
       if (this.staging)
@@ -114,6 +115,7 @@ const createStore = ({ menuMeta, menuItems }) => {
       //removes the item
       this.menuItems = this.menuItems.filter((item, index) => index !== id);
       this.clearTrashBin();
+      this.drawPages();
       
     },
     clearTrashBin() {
