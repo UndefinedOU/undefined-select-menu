@@ -1,6 +1,14 @@
 import { observable, autorun} from 'mobx';
+import { chunk } from 'lodash';
 
-// TODO: width determined by elements, but has max width
+/*
+ TODO: width determined by elements, but has max width
+    - pagination
+      maxItemsPerPage = (menuHeight - (2 * itemHeight)) / menuHeight
+        if there is more than fits on the page
+*/
+
+const ITEM_HEIGHT = 24;
 
 const createStore = ({ menuMeta, menuItems }) => {
   return observable({
@@ -17,6 +25,33 @@ const createStore = ({ menuMeta, menuItems }) => {
     currMenuItem: -1,
     menuMeta,
     menuItems,
+    menuHeight: 240,
+    paginate: true, //switch on if needed
+    paginateSlot: [], //the items that will be shown on the page
+    pages: [], // the actual pages
+    activePage: 0, //the activly page
+    switchPage(page) {
+      //sitches the page
+      this.activePage = page;
+      this.paginateSlot = this.pages[page];
+    },
+    redrawPages() {
+      this.createPages();
+    },
+    createPages() {
+      let maxItems = this.maxItems();
+      this.pages = chunk(this.menuItems, maxItems);
+    },
+    maxItems() {
+      /* todo: do this later once we have the items part working
+      if ((this.state.store.menuItems.length * ITEM_HEIGHT) > this.menuHeight) {
+        return (menuMeta.height - (2 * ITEM_HEIGHT))/ITEM_HEIGHT;
+      } else {
+        return this.state.store.menuItems.length;
+      }
+      */
+      return 8;
+    },
     selectItem(id) {
       this.selected = id;
     },
@@ -35,6 +70,9 @@ const createStore = ({ menuMeta, menuItems }) => {
     },
     addItem({icon, label, disabled}) {
       //TODO
+    },
+    isHovering(id) {
+      return this.hovering === id
     },
     setHovering(id) {
       if (this.hovering !== id) {

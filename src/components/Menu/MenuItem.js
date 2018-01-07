@@ -45,6 +45,7 @@ class MenuItem extends Component {
 
   handleMouseOver (event) {
     event.preventDefault();
+    //if ()
     this.props.onMouseOver(event, this.props.id);
   }
 

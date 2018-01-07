@@ -226,6 +226,7 @@ const Menu = observer(class Menu extends Component {
         ref={(box) => {this.box = box}}
         onMouseLeave={this.clearHover}
         tabIndex="0"
+        height={this.props.menuMeta.height}
         ref={(instance) => { this.topmenu = instance; }}
         position={this.props.position}
         top={this.props.top}
@@ -280,6 +281,7 @@ Menu.propTypes = {
     addable: PropTypes.bool,
     editable: PropTypes.bool,
     draggable: PropTypes.bool,
+    itemsPerPage: PropTypes.number,
     // defaultSelection: null, //label or?
     highlightColor: PropTypes.string,
     backgroundColor: PropTypes.string,
@@ -314,7 +316,7 @@ Menu.defaultProps = {
     defaultSelection: null, // label or?
     highlightColor: '#00FFFF',
     backgroundColor: '#FFFFFF',
-    height: '100%',
+    height: 250,
     width: '100%',
     // maxWidth
     // TODO: show fonts as images
