@@ -39,6 +39,7 @@ const EditItem = observer(class EditItem extends Component {
   }
   updateValue(ev) {
     ev.preventDefault();
+    ev.stopPropagation();
     this.props.store.updateLabel(ev.target.value);
   }
   commitChanges(ev) {
@@ -48,12 +49,16 @@ const EditItem = observer(class EditItem extends Component {
   exitEditState() {
     this.props.store.clearEditing();
   }
+  stopProp(ev) {
+    ev.stopPropagation();
+  }
   render() {
     return (
       <form onSubmit={this.commitChanges.bind(this)}>
         <StyledInput
           type="text"
           autoFocus
+          onKeyDown={this.stopProp.bind(this)}
           onBlur={this.updateValue.bind(this)}
           onChange={this.updateValue.bind(this)}
           defaultValue={this.props.store.editing.label}>

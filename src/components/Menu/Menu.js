@@ -73,12 +73,14 @@ const Menu = observer(class Menu extends Component {
 
     this.handlers = {
       keydown: null
-    }
+    };
 
     //THis makes sure when we unbind and rebind keys, the reference is preserved so we
     //avoid any multiple bound functions for a single instance tomfoolery
     this.handlers.keydown = this.handleKeyDown.bind(this);
     
+    this.dispose = {};
+
   }
 
   componentWillMount() {
@@ -90,6 +92,13 @@ const Menu = observer(class Menu extends Component {
   componentDidMount() {
     // this.focusDiv();
     //this.focusItem(0);
+    this.dispose.store = autorun(() => {
+      if (this.state.store.staging || this.state.store.editing.label) {
+        this.unbindKeys();
+      } else {
+        this.bindKeys();
+      }
+    });
   }
 
   componentWillUnmount() {
@@ -98,8 +107,11 @@ const Menu = observer(class Menu extends Component {
 
   bindKeys() {
     console.log('binding keys');
-    //debugger
-    document.addEventListener("keydown", this.handlers.keydown);
+    if (this.state.store.staging || this.state.store.editing.label) {
+      this.unbindKeys();
+    } else {
+      document.addEventListener("keydown", this.handlers.keydown);
+    }
     //this.focusDiv()
     
   }
@@ -197,14 +209,16 @@ const Menu = observer(class Menu extends Component {
   // takes `event` and `id` as params, respectively
   handleKeyDown(event) {
     console.log('registered the key: ', event.key);
-    event.preventDefault();
+    //event.preventDefault();
     //this.clearHover(event);
 
     switch (event.key) {
       case 'ArrowUp':
+        event.preventDefault();
         this.decrementCursor();
         break;
       case 'ArrowDown':
+        event.preventDefault();
         this.incrementCursor();
         break;
       case 'Enter':

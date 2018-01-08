@@ -23,11 +23,16 @@ const StagedDisplay = observer((props) => {
   const abortStaging = () => {
     props.store.clearStaging();
   };
+  const stopProp = (ev) => {
+    ev.preventDefault();
+    ev.stopPropagation();
+  }
 
   return (
     <StyledLabel>
       <EditForm onSubmit={commitStaging}>
         <StyledInput
+          onKeydown={stopProp}
           onChange={updateStaging}
           defaultValue=""
         />
