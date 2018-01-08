@@ -92,13 +92,6 @@ const Menu = observer(class Menu extends Component {
   componentDidMount() {
     // this.focusDiv();
     //this.focusItem(0);
-    this.dispose.store = autorun(() => {
-      if (this.state.store.staging || this.state.store.editing.label) {
-        this.unbindKeys();
-      } else {
-        this.bindKeys();
-      }
-    });
   }
 
   componentWillUnmount() {
@@ -107,11 +100,7 @@ const Menu = observer(class Menu extends Component {
 
   bindKeys() {
     console.log('binding keys');
-    if (this.state.store.staging || this.state.store.editing.label) {
-      this.unbindKeys();
-    } else {
-      document.addEventListener("keydown", this.handlers.keydown);
-    }
+    document.addEventListener("keydown", this.handlers.keydown);
     //this.focusDiv()
     
   }
@@ -322,7 +311,21 @@ const Menu = observer(class Menu extends Component {
             id={item.id}
           />);
         })}
-        {this.props.menuMeta.addable ?
+        
+
+        {((this.state.store.pages.length > 1) && (this.state.store.activePage < (this.state.store.pages.length - 1))) ? (
+          <span>
+            <DownButton
+              onClick={this.scrollDown.bind(this)}
+            >
+              down arrow
+            </DownButton>
+
+          </span>
+
+        ) : null}
+
+        {((this.state.store.activePage === (this.state.store.pages.length - 1)) && this.props.menuMeta.addable) ?
           <AddableMenuItem
             positioning={this.props.positioning}
             store={this.state.store}
@@ -332,14 +335,6 @@ const Menu = observer(class Menu extends Component {
             width={this.props.labelWidth}
           /> : null
         }
-
-        {((this.state.store.pages.length > 1) && (this.state.store.activePage < (this.state.store.pages.length - 1))) ? (
-          <DownButton
-            onClick={this.scrollDown.bind(this)}
-          >
-            down arrow
-          </DownButton>
-        ) : null}
 
       </StyledMenuBox>
     );
