@@ -150,12 +150,12 @@ const Menu = observer(class Menu extends Component {
   }
 
   decrementCursor() {
-    console.log(`entering dec cursor: ${this.state.currMenuItem}`);
-    let cursor = this.state.currMenuItem - 1;
-    if (cursor < 0) {
-      cursor = 0;
+    let hovering = this.state.store.hovering; //get the currently selected item
+    let item = this.state.store.menuItems.find(item => item.id === hovering); //get the selected item
+    if ((hovering !== null) && item && item.id > 0) { //do nothing if its the last item
+      this.state.store.hovering = item.id - 1;
+      this.state.store.refocusPage();
     }
-    this.setState({ currMenuItem: cursor }, () => console.log(`DEC CURSPR ${this.state.currMenuItem}`));
   }
 
   incrementCursor () {
@@ -196,13 +196,15 @@ const Menu = observer(class Menu extends Component {
     //this.clearHover(event);
     switch (event.key) {
       case 'ArrowUp':
-        //this.decrementCursor();
+        this.decrementCursor();
         break;
       case 'ArrowDown':
         this.incrementCursor();
         break;
       case 'Enter':
         //this.returnSelected();
+        this.state.store.selectItem(this.state.store.hovering);
+        this.state.store.refocusPage();
         break;
       default:
         console.log(event.key);
