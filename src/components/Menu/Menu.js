@@ -90,18 +90,15 @@ const Menu = observer(class Menu extends Component {
   }
 
   bindKeys() {
+    console.log('binding keys')
     this.handlers.key = this.handleKeyDown.bind(this);
     document.addEventListener("keydown", this.handlers.key);
+    this.focusDiv()
+    
   }
   unbindKeys() {
+    console.log('unbinding keys')
     document.removeEventListener("keydown", this.handlers.key);
-  }
-
-
-  handleKeyDown(ev) {
-    ev.preventDefault();
-    ev.stopPropagation();
-    debugger
   }
 
   componentDidUpdate() {
@@ -112,10 +109,6 @@ const Menu = observer(class Menu extends Component {
   
   getAbsoluteLocation () {
     // the location top left
-  }
-  
-  focusDiv() {
-    ReactDOM.findDOMNode(this.refs.topmenu).focus();
   }
 
   focusItem(i) {
@@ -194,16 +187,19 @@ const Menu = observer(class Menu extends Component {
 
   // takes `event` and `id` as params, respectively
   handleKeyDown(event) {
+    console.log('registered the key')
     event.preventDefault();
+    this.clearHover(event);
+    debugger
     switch (event.key) {
       case 'ArrowUp':
-        this.decrementCursor();
+        //this.decrementCursor();
         break;
       case 'ArrowDown':
-        this.incrementCursor();
+        //this.incrementCursor();
         break;
       case 'Enter':
-        this.returnSelected();
+        //this.returnSelected();
         break;
       default:
         console.log(event.key);
@@ -245,7 +241,8 @@ const Menu = observer(class Menu extends Component {
   }
 
   focusDiv() {
-    ReactDOM.findDOMNode(this.refs.topmenu).focus();
+    //ReactDOM.findDOMNode(this.refs.topmenu).focus();
+    ReactDOM.findDOMNode(this.box).focus();
   }
 
   scrollUp(ev) {
@@ -267,10 +264,9 @@ const Menu = observer(class Menu extends Component {
         onMouseEnter={this.bindKeys.bind(this)}
         onMouseLeave={this.unbindKeys.bind(this)}
         ref={(box) => {this.box = box}}
-        onMouseLeave={this.clearHover}
         tabIndex="0"
         height={this.props.menuMeta.height}
-        ref={(instance) => { this.topmenu = instance; }}
+        
         position={this.props.position}
         top={this.props.top}
         left={this.props.left}
