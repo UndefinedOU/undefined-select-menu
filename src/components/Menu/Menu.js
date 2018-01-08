@@ -3,12 +3,14 @@ import PropTypes from 'prop-types';
 
 import MenuItem from './MenuItem';
 import styled from 'styled-components';
-import ReactDOM from 'react-dom';
+//import ReactDOM from 'react-dom';
 import { observable, autorun} from 'mobx';
 import {observer, propTypes} from 'mobx-react';
 import keydown, { Keys } from 'react-keydown';
 import AddableMenuItem from './AddableMenuItem';
 import createStore from '../../store/menu';
+
+let ReactDOM = require('react-dom');
 
 /*
   root of he menu,
@@ -93,11 +95,11 @@ const Menu = observer(class Menu extends Component {
     console.log('binding keys')
     this.handlers.key = this.handleKeyDown.bind(this);
     document.addEventListener("keydown", this.handlers.key);
-    this.focusDiv()
+    //this.focusDiv()
     
   }
   unbindKeys() {
-    console.log('unbinding keys')
+    console.log('unbinding keys');
     document.removeEventListener("keydown", this.handlers.key);
   }
 
@@ -161,11 +163,10 @@ const Menu = observer(class Menu extends Component {
     // while (this.state.menuItems[i].disabled) {
     //   i++;
     // }
-    let cursor = this.state.currMenuItem + 1;
-    if (cursor >= this.state.menuItems.length) {
-      cursor = this.state.menuItems.length - 1;
-    }
-    this.setState({ currMenuItem: cursor });
+    let selected = this.state.store.selected; //get the currently selected item
+
+    //let item = find(this.store.menuItems, (item) => item.id === selected); //get the selected item
+    
   }
 
   // takes `event` and `id` as params, respectively
@@ -187,7 +188,7 @@ const Menu = observer(class Menu extends Component {
 
   // takes `event` and `id` as params, respectively
   handleKeyDown(event) {
-    console.log('registered the key')
+    console.log('registered the key: ', event.key);
     event.preventDefault();
     this.clearHover(event);
     debugger
@@ -242,7 +243,8 @@ const Menu = observer(class Menu extends Component {
 
   focusDiv() {
     //ReactDOM.findDOMNode(this.refs.topmenu).focus();
-    ReactDOM.findDOMNode(this.box).focus();
+    //debugger
+    //ReactDOM.findDOMNode(this.refs.box).focus();
   }
 
   scrollUp(ev) {
@@ -295,8 +297,8 @@ const Menu = observer(class Menu extends Component {
             disabled={item.disabled}
             label={item.label}
             highlighted={isHighlighted}
-            key={`item_${i}`}
-            id={i}
+            key={`item_${item.id}`}
+            id={item.id}
           />);
         })}
         {this.props.menuMeta.addable ?

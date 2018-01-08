@@ -1,5 +1,5 @@
 import { observable, autorun} from 'mobx';
-import { chunk } from 'lodash';
+import { chunk, extend } from 'lodash';
 
 /*
  TODO: width determined by elements, but has max width
@@ -11,6 +11,14 @@ import { chunk } from 'lodash';
 const ITEM_HEIGHT = 24;
 
 const createStore = ({ menuMeta, menuItems }) => {
+  let annotateItems = (items) => {
+    if (items) {
+      return items.map((item, index) => extend({}, item, { id: index}));
+    } else {
+      return [];
+    }
+  };
+
   let store = observable({
     //activelyHovered: false, //returns true if the menu is selected
     trashbin: null,  //used for confirming deletion
@@ -25,7 +33,7 @@ const createStore = ({ menuMeta, menuItems }) => {
     staging: null,
     currMenuItem: -1,
     menuMeta,
-    menuItems,
+    menuItems: annotateItems(menuItems),
     menuHeight: 240,
     paginate: true, //switch on if needed
     paginateSlot: [], //the items that will be shown on the page
@@ -68,7 +76,9 @@ const createStore = ({ menuMeta, menuItems }) => {
       this.staging = null;
     },
     commitStaging() {
-      this.menuItems.push(this.staging);
+      let menuItems = this.menuItems
+      menuItems.push(this.staging);
+      this.menuItems = annotateItems(menuItems); //reannotate the indeces
       this.clearStaging();
       this.drawPages();
     },
@@ -119,7 +129,7 @@ const createStore = ({ menuMeta, menuItems }) => {
     },
     destroyItem(id) {
       //removes the item
-      this.menuItems = this.menuItems.filter((item, index) => index !== id);
+      this.menuItems = annotateItems(this.menuItems.filter((item, index) => index !== id));
       this.clearTrashBin();
       this.drawPages();
       
