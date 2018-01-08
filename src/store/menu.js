@@ -59,12 +59,12 @@ const createStore = ({ menuMeta, menuItems }) => {
       this.activePage = 0;
       this.drawPages();
     },
-    //sets the active page to wherever the selected is located
+    //sets the active page to wherever the hovering is located
     refocusPage() {
-      //find the page containing the selected
+      //find the page containing the hovering
       //let selectedPage = null;
       this.pages.forEach((page, index) => {
-        if (includes(page.map((item) => item.id), this.selected)) {
+        if (includes(page.map((item) => item.id), this.hovering)) {
           //this.paginateSlot = page;
           this.switchPage(index);
         }
@@ -82,6 +82,7 @@ const createStore = ({ menuMeta, menuItems }) => {
     },
     selectItem(id) {
       this.selected = id;
+      this.setHovering(id);
     },
     clearStaging() {
       this.staging = null;
@@ -103,9 +104,10 @@ const createStore = ({ menuMeta, menuItems }) => {
       //TODO
     },
     isHovering(id) {
-      return this.hovering === id
+      return this.hovering === id;
     },
     setHovering(id) {
+      
       if (this.hovering !== id) {
         this.hovering = id;
       }

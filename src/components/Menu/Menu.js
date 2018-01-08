@@ -164,10 +164,10 @@ const Menu = observer(class Menu extends Component {
     // while (this.state.menuItems[i].disabled) {
     //   i++;
     // }
-    let selected = this.state.store.selected; //get the currently selected item
-    let item = find(this.state.store.menuItems, (item) => item.id === selected); //get the selected item
-    if (item && item.id <= (this.state.store.menuItems.length - 1)) { //do nothing if its the last item
-      this.state.store.selected = item.id + 1;
+    let hovering = this.state.store.hovering; //get the currently selected item
+    let item = this.state.store.menuItems.find(item => item.id === hovering); //get the selected item
+    if ((hovering !== null) && item && item.id < (this.state.store.menuItems.length - 1)) { //do nothing if its the last item
+      this.state.store.hovering = item.id + 1;
       this.state.store.refocusPage();
     }
   }
@@ -193,7 +193,7 @@ const Menu = observer(class Menu extends Component {
   handleKeyDown(event) {
     console.log('registered the key: ', event.key);
     event.preventDefault();
-    this.clearHover(event);
+    //this.clearHover(event);
     switch (event.key) {
       case 'ArrowUp':
         //this.decrementCursor();

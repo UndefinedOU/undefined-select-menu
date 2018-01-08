@@ -148,7 +148,7 @@ const EditableMenuItem = observer(class EditableMenuItem extends Component {
   }
   enterHover() {
     //this.props.store.hovering = this.props.id;
-    this.props.store.setHovering(this.props.id);
+    //this.props.store.setHovering(this.props.id);
   }
   exitHover() {
 
