@@ -3,14 +3,15 @@ import PropTypes from 'prop-types';
 
 import MenuItem from './MenuItem';
 import styled from 'styled-components';
-//import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom';
 import { observable, autorun} from 'mobx';
 import {observer, propTypes} from 'mobx-react';
 import keydown, { Keys } from 'react-keydown';
 import AddableMenuItem from './AddableMenuItem';
 import createStore from '../../store/menu';
+import { find } from 'lodash';
 
-let ReactDOM = require('react-dom');
+//let ReactDOM = require('react-dom');
 
 /*
   root of he menu,
@@ -157,16 +158,18 @@ const Menu = observer(class Menu extends Component {
     this.setState({ currMenuItem: cursor }, () => console.log(`DEC CURSPR ${this.state.currMenuItem}`));
   }
 
-  incrementCursor() {
+  incrementCursor () {
     // findNextNotDisabled();
     // let i = this.state.currMenuItem + 1;
     // while (this.state.menuItems[i].disabled) {
     //   i++;
     // }
     let selected = this.state.store.selected; //get the currently selected item
-
-    //let item = find(this.store.menuItems, (item) => item.id === selected); //get the selected item
-    
+    let item = find(this.state.store.menuItems, (item) => item.id === selected); //get the selected item
+    if (item && item.id <= (this.state.store.menuItems.length - 1)) { //do nothing if its the last item
+      this.state.store.selected = item.id + 1;
+      this.state.store.refocusPage();
+    }
   }
 
   // takes `event` and `id` as params, respectively
@@ -191,13 +194,12 @@ const Menu = observer(class Menu extends Component {
     console.log('registered the key: ', event.key);
     event.preventDefault();
     this.clearHover(event);
-    debugger
     switch (event.key) {
       case 'ArrowUp':
         //this.decrementCursor();
         break;
       case 'ArrowDown':
-        //this.incrementCursor();
+        this.incrementCursor();
         break;
       case 'Enter':
         //this.returnSelected();
@@ -274,6 +276,7 @@ const Menu = observer(class Menu extends Component {
         left={this.props.left}
         onClick={this.preventClose.bind(this)}
       >
+        {this.state.store.selected}
         {((this.state.store.pages.length > 1) && (this.state.store.activePage > 0)) ? (
           <UpButton
             onClick={this.scrollUp.bind(this)}

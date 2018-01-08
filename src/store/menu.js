@@ -1,5 +1,5 @@
 import { observable, autorun} from 'mobx';
-import { chunk, extend } from 'lodash';
+import { chunk, extend, includes, each } from 'lodash';
 
 /*
  TODO: width determined by elements, but has max width
@@ -58,6 +58,17 @@ const createStore = ({ menuMeta, menuItems }) => {
     createPages() {
       this.activePage = 0;
       this.drawPages();
+    },
+    //sets the active page to wherever the selected is located
+    refocusPage() {
+      //find the page containing the selected
+      //let selectedPage = null;
+      this.pages.forEach((page, index) => {
+        if (includes(page.map((item) => item.id), this.selected)) {
+          //this.paginateSlot = page;
+          this.switchPage(index);
+        }
+      });
     },
     maxItems() {
       /* todo: do this later once we have the items part working
