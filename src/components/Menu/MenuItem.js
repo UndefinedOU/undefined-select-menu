@@ -19,16 +19,16 @@ const StyledLabel = styled.div`
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  background-color: ${props => props.backgroundColor};
   color: ${props => props.color};
   margin: 1em;
+  background-color: ${props => (props.highlighted) ? 'yellow' : props.backgroundColor};
 `;
 
 
 const StyledTip = styled.div`
   display: table-cell;
   cursor: ${props => props.cursor};
-  background-color: ${props => props.backgroundColor};
+  
   color: ${props => props.color};
   margin: 1em;
 `;
@@ -36,7 +36,7 @@ const StyledTip = styled.div`
 const StyledShortcut = styled.div`
   display: table-cell;
   cursor: ${props => props.cursor};
-  background-color: ${props => props.backgroundColor};
+  
   color: ${props => props.color};
   margin: 1em;
 `;
@@ -45,6 +45,7 @@ class MenuItem extends Component {
 
   handleMouseOver (event) {
     event.preventDefault();
+    this.props.store.setHovering(this.props.id);
     //if ()
     this.props.onMouseOver(event, this.props.id);
   }
@@ -78,6 +79,10 @@ class MenuItem extends Component {
   }
   updateItemLabel = () => {
     console.log("Todo on label update");
+  }
+
+  isSelected() {
+    return this.props.store.selected === this.id;
   }
 
   // handleKeyDown = (event) => {
@@ -123,6 +128,7 @@ class MenuItem extends Component {
           label={this.props.label}
           id={this.props.id}
           store={this.props.store}
+          highlighted={this.props.highlighted}
           >
         </EditableLabel>
 
@@ -133,6 +139,7 @@ class MenuItem extends Component {
           backgroundColor={this.getBackgroundColor()}
           width={this.props.labelWidth}
           label={this.props.label}>
+          highlighted={this.isSelected()}
         </Label>
 
         <Tips
@@ -209,6 +216,7 @@ function Label (props) {
       color={props.color}
       cursor={props.cursor}
       backgroundColor={props.backgroundColor}
+      highlighted={props.highlighted}
       width={props.width}>
       {props.label}
     </StyledLabel>
@@ -227,6 +235,7 @@ function EditableLabel (props) {
       backgroundColor={props.backgroundColor}
       width={props.width}
       label={props.label}
+      highlighted={props.highlighted}
       update={props.update}
       id={props.id}
       store={props.store}
@@ -319,7 +328,8 @@ MenuItem.propTypes = {
   editable:         PropTypes.bool,
   subMenu:          PropTypes.bool,
   id:               PropTypes.number,
-  store:            PropTypes.object
+  store:            PropTypes.object,
+  highlighted:      PropTypes.highlighted
 }
 
 // TODO group what data goes to menu and what goes to item
@@ -340,7 +350,7 @@ MenuItem.defaultProps = {
   backgroundColor:  'white',
   hBackgroundColor: 'blue',
   editable:         true,
-  subMenu:          true
+  subMenu:          true,
 }
 
 export default MenuItem;

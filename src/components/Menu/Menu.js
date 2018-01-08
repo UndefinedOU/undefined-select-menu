@@ -276,7 +276,7 @@ const Menu = observer(class Menu extends Component {
         left={this.props.left}
         onClick={this.preventClose.bind(this)}
       >
-        {this.state.store.selected}
+        {this.state.store.selected} {this.state.store.hovering}
         {((this.state.store.pages.length > 1) && (this.state.store.activePage > 0)) ? (
           <UpButton
             onClick={this.scrollUp.bind(this)}
@@ -299,7 +299,7 @@ const Menu = observer(class Menu extends Component {
             onFocus={this.handleMouseOver.bind(this)}
             disabled={item.disabled}
             label={item.label}
-            highlighted={isHighlighted}
+            highlighted={this.state.store.hovering === item.id }
             key={`item_${item.id}`}
             id={item.id}
           />);

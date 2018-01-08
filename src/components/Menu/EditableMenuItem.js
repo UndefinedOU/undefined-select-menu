@@ -180,7 +180,7 @@ const EditableMenuItem = observer(class EditableMenuItem extends Component {
   render () {
     return (
       <span
-        onMouseEnter={this.enterHover.bind(this)}
+        
       >
         {this.renderState()}
       </span>
