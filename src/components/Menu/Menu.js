@@ -74,6 +74,9 @@ const Menu = observer(class Menu extends Component {
     this.handlers = {
       keydown: null
     }
+
+    //THis makes sure when we unbind and rebind keys, the reference is preserved so we
+    //avoid any multiple bound functions for a single instance tomfoolery
     this.handlers.keydown = this.handleKeyDown.bind(this);
     
   }
