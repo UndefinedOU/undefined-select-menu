@@ -59,7 +59,7 @@ const Menu = observer(class Menu extends Component {
         currMenuItem: -1
       };
       if (!this.props.store.menuItems) {
-        this.state.store.menuItems = this.props.menuItems;
+        this.state.store.setItems(this.props.menuItems);
       }
     } else {
       this.state = {
@@ -72,8 +72,9 @@ const Menu = observer(class Menu extends Component {
     this.clearHover = this.clearHover.bind(this);
 
     this.handlers = {
-      key: null
+      keydown: null
     }
+    this.handlers.keydown = this.handleKeyDown.bind(this);
     
   }
 
@@ -85,23 +86,24 @@ const Menu = observer(class Menu extends Component {
 
   componentDidMount() {
     // this.focusDiv();
-    this.focusItem(0);
+    //this.focusItem(0);
   }
 
   componentWillUnmount() {
-    
+    this.unbindKeys();
   }
 
   bindKeys() {
-    console.log('binding keys')
-    this.handlers.key = this.handleKeyDown.bind(this);
-    document.addEventListener("keydown", this.handlers.key);
+    console.log('binding keys');
+    //debugger
+    document.addEventListener("keydown", this.handlers.keydown);
     //this.focusDiv()
     
   }
   unbindKeys() {
     console.log('unbinding keys');
-    document.removeEventListener("keydown", this.handlers.key);
+    //debugger
+    document.removeEventListener("keydown", this.handlers.keydown);
   }
 
   componentDidUpdate() {
@@ -194,6 +196,7 @@ const Menu = observer(class Menu extends Component {
     console.log('registered the key: ', event.key);
     event.preventDefault();
     //this.clearHover(event);
+
     switch (event.key) {
       case 'ArrowUp':
         this.decrementCursor();
@@ -240,10 +243,6 @@ const Menu = observer(class Menu extends Component {
     this.state.store.hovering = null;
   }
 
-  focusItem(i) {
-    this.state.store.selected = i;
-    ReactDOM.findDOMNode(this[`child_${i}`]).focus();
-  }
 
   focusDiv() {
     //ReactDOM.findDOMNode(this.refs.topmenu).focus();
@@ -278,7 +277,7 @@ const Menu = observer(class Menu extends Component {
         left={this.props.left}
         onClick={this.preventClose.bind(this)}
       >
-        {this.state.store.selected} {this.state.store.hovering}
+        {`selected ${this.state.store.selected} hovering: ${this.state.store.hovering}`}
         {((this.state.store.pages.length > 1) && (this.state.store.activePage > 0)) ? (
           <UpButton
             onClick={this.scrollUp.bind(this)}
@@ -296,7 +295,7 @@ const Menu = observer(class Menu extends Component {
             ref={(instance) => { this[`child_${i}`] = instance; }}
             editable={this.props.menuMeta.editable}
             onClick={this.handleClick.bind(this)}
-            onMouseOver={this.handleMouseOver.bind(this)}
+            onMouseEnter={this.handleMouseOver.bind(this)}
             onMouseLeave={this.handleMouseLeave.bind(this)}
             onFocus={this.handleMouseOver.bind(this)}
             disabled={item.disabled}
@@ -388,26 +387,26 @@ Menu.defaultProps = {
     // TODO: HTML is a passable prop in our own code
   },
   menuItems: [
-    { icon: null, label: 'one' },
-    { label: 'two', disabled: true },
-    { label: 'three' },
-    { label: 'banananananana' },
-    { label: 'whowhowho' },
-    { icon: null, label: 'one' },
-    { label: 'two', disabled: true },
-    { label: 'three' },
-    { label: 'banananananana' },
-    { label: 'whowhowho' },
-    { icon: null, label: 'one' },
-    { label: 'two', disabled: true },
-    { label: 'three' },
-    { label: 'banananananana' },
-    { label: 'whowhowho' },
-    { icon: null, label: 'one' },
-    { label: 'two', disabled: true },
-    { label: 'three' },
-    { label: 'banananananana' },
-    { label: 'whowhowho' }
+    { icon: null, label: '0one' },
+    { label: '1two', disabled: true },
+    { label: '2three' },
+    { label: '3banananananana' },
+    { label: '4whowhowho' },
+    { icon: null, label: '5one' },
+    { label: '6two', disabled: true },
+    { label: '7three' },
+    { label: '8banananananana' },
+    { label: '9whowhowho' },
+    { icon: null, label: '10one' },
+    { label: '11two', disabled: true },
+    { label: '12three' },
+    { label: '13banananananana' },
+    { label: '14whowhowho' },
+    { icon: null, label: '15one' },
+    { label: '16two', disabled: true },
+    { label: '17three' },
+    { label: '18banananananana' },
+    { label: '19whowhowho' }
   ],
 };
 

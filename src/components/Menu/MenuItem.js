@@ -47,7 +47,7 @@ class MenuItem extends Component {
     event.preventDefault();
     this.props.store.setHovering(this.props.id);
     //if ()
-    this.props.onMouseOver(event, this.props.id);
+    //this.props.onMouseOver(event, this.props.id);
   }
 
   handleMouseLeave (event) {
@@ -106,7 +106,7 @@ class MenuItem extends Component {
     return (
       <StyledMenuItem
         onClick={this.handleClick.bind(this)}
-        onMouseOver={this.handleMouseOver.bind(this)}
+        onMouseEnter={this.handleMouseOver.bind(this)}
         onMouseLeave={this.handleMouseLeave.bind(this)}
         
         ref={(ref) => { this.ref = ref; }}>

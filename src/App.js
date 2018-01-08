@@ -38,6 +38,33 @@ const addableMenuOpts = {
   }
 }
 
+const selectOptions =  {
+  menuMeta: {
+
+  },
+  menuItems: [
+    { icon: null, label: '0one' },
+    { label: '1two', disabled: true },
+    { label: '2three' },
+    { label: '3banananananana' },
+    { label: '4whowhowho' },
+    { icon: null, label: '5one' },
+    { label: '6two', disabled: true },
+    { label: '7three' },
+    { label: '8banananananana' },
+    { label: '9whowhowho' },
+    { icon: null, label: '10one' },
+    { label: '11two', disabled: true },
+    { label: '12three' },
+    { label: '13banananananana' },
+    { label: '14whowhowho' },
+    { icon: null, label: '15one' },
+    { label: '16two', disabled: true },
+    { label: '17three' },
+    { label: '18banananananana' },
+    { label: '19whowhowho' }
+  ],
+}
 
 class App extends Component {
   render () {
@@ -51,13 +78,13 @@ class App extends Component {
         <h1> addable menu</h1>
         <Menu {...addableMenuOpts} />
         <h1>launchable menu</h1>
-        <MenuLauncher width="400px" height="400px">
+        <MenuLauncher width="400px" height="400px" {...selectOptions}>
           <TestSquare> 
             here is a clickable area 
           </TestSquare>
         </MenuLauncher>
         <h1>Select Menu</h1>
-        <Select>
+        <Select {...selectOptions}>
 
         </Select>
 

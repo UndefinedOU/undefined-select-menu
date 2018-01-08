@@ -39,6 +39,11 @@ const createStore = ({ menuMeta, menuItems }) => {
     paginateSlot: [], //the items that will be shown on the page
     pages: [], // the actual pages
     activePage: 0, //the activly page
+    setItems(items) {
+      this.menuItems = annotateItems(items);
+      this.drawPages();
+      this.refocusPage();
+    },
     switchPage(page) {
       //sitches the page
       this.activePage = page;
@@ -54,6 +59,7 @@ const createStore = ({ menuMeta, menuItems }) => {
       let maxItems = this.maxItems();
       this.pages = chunk(this.menuItems, maxItems);
       this.paginateSlot = this.pages[this.activePage];
+      if (!this.paginateSlot) { debugger }
     },
     createPages() {
       this.activePage = 0;
@@ -151,6 +157,7 @@ const createStore = ({ menuMeta, menuItems }) => {
       this.trashbin = null;
     }
   });
+
   store.createPages();
   return store;
 };
