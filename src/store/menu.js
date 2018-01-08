@@ -12,6 +12,7 @@ const ITEM_HEIGHT = 24;
 
 const createStore = ({ menuMeta, menuItems }) => {
   let store = observable({
+    //activelyHovered: false, //returns true if the menu is selected
     trashbin: null,  //used for confirming deletion
     selected: null,  
     hovering: null,
@@ -45,7 +46,6 @@ const createStore = ({ menuMeta, menuItems }) => {
       let maxItems = this.maxItems();
       this.pages = chunk(this.menuItems, maxItems);
       this.paginateSlot = this.pages[this.activePage];
-
     },
     createPages() {
       this.activePage = 0;

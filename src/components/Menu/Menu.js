@@ -67,10 +67,16 @@ const Menu = observer(class Menu extends Component {
       };
     }
     this.clearHover = this.clearHover.bind(this);
+
+    this.handlers = {
+      key: null
+    }
+    
   }
 
   componentWillMount() {
-    // document.addEventListener("keydown", this.handleKeyDown.bind(this));
+    //this.handlers.key = this.handlerKeyDown.bind(this);
+    
     // focus on the first item
   }
 
@@ -80,7 +86,22 @@ const Menu = observer(class Menu extends Component {
   }
 
   componentWillUnmount() {
-      //document.removeEventListener("keydown", this.handleKeyDown.bind(this));
+    
+  }
+
+  bindKeys() {
+    this.handlers.key = this.handleKeyDown.bind(this);
+    document.addEventListener("keydown", this.handlers.key);
+  }
+  unbindKeys() {
+    document.removeEventListener("keydown", this.handlers.key);
+  }
+
+
+  handleKeyDown(ev) {
+    ev.preventDefault();
+    ev.stopPropagation();
+    debugger
   }
 
   componentDidUpdate() {
@@ -243,6 +264,8 @@ const Menu = observer(class Menu extends Component {
     // [icon or check] [label or html or editable] [tips] [shortcuts] [expandable]
     return (
       <StyledMenuBox
+        onMouseEnter={this.bindKeys.bind(this)}
+        onMouseLeave={this.unbindKeys.bind(this)}
         ref={(box) => {this.box = box}}
         onMouseLeave={this.clearHover}
         tabIndex="0"
@@ -309,7 +332,7 @@ const Menu = observer(class Menu extends Component {
 // TODO: scrolling
 
 Menu.propTypes = {
-
+  focused: PropTypes.bool,
   
   menuMeta: PropTypes.shape({
     store: PropTypes.object, //used if we are injecting a store
@@ -340,6 +363,7 @@ Menu.propTypes = {
 };
 
 Menu.defaultProps = {
+  focused: false,  //must be true for keybindings to work
   position: 'relative',
   top: '0',
   left: '0',
