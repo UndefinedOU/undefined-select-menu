@@ -32,6 +32,14 @@ const StyledMenuBox = styled.ul`
   left: ${(props) => props.left};
 `;
 
+const UpButton = styled.li`
+
+`;
+
+const DownButton = styled.li`
+
+`;
+
 const Menu = observer(class Menu extends Component {
   constructor(props) {
     super(props);
@@ -219,6 +227,18 @@ const Menu = observer(class Menu extends Component {
     ReactDOM.findDOMNode(this.refs.topmenu).focus();
   }
 
+  scrollUp(ev) {
+    ev.stopPropagation();
+    this.state.store.prevPage();
+  }
+  scrollDown(ev) {
+    ev.stopPropagation();
+    this.state.store.nextPage();
+  }
+  preventClose(ev) {
+    ev.stopPropagation();
+  }
+
   render() {
     // [icon or check] [label or html or editable] [tips] [shortcuts] [expandable]
     return (
@@ -231,9 +251,14 @@ const Menu = observer(class Menu extends Component {
         position={this.props.position}
         top={this.props.top}
         left={this.props.left}
+        onClick={this.preventClose.bind(this)}
       >
         {((this.state.store.pages.length > 1) && (this.state.store.activePage > 0)) ? (
-          <div>up arrow </div>
+          <UpButton
+            onClick={this.scrollUp.bind(this)}
+          >
+            up arrow
+          </UpButton>
         ) : null}
 
         {this.state.store.paginateSlot.map((item, i) => {
@@ -267,7 +292,11 @@ const Menu = observer(class Menu extends Component {
         }
 
         {((this.state.store.pages.length > 1) && (this.state.store.activePage < (this.state.store.pages.length - 1))) ? (
-          <div>down arrow </div>
+          <DownButton
+            onClick={this.scrollDown.bind(this)}
+          >
+            down arrow
+          </DownButton>
         ) : null}
 
       </StyledMenuBox>
@@ -337,6 +366,21 @@ Menu.defaultProps = {
     { label: 'three' },
     { label: 'banananananana' },
     { label: 'whowhowho' },
+    { icon: null, label: 'one' },
+    { label: 'two', disabled: true },
+    { label: 'three' },
+    { label: 'banananananana' },
+    { label: 'whowhowho' },
+    { icon: null, label: 'one' },
+    { label: 'two', disabled: true },
+    { label: 'three' },
+    { label: 'banananananana' },
+    { label: 'whowhowho' },
+    { icon: null, label: 'one' },
+    { label: 'two', disabled: true },
+    { label: 'three' },
+    { label: 'banananananana' },
+    { label: 'whowhowho' }
   ],
 };
 

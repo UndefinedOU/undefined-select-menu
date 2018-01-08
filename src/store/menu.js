@@ -35,6 +35,12 @@ const createStore = ({ menuMeta, menuItems }) => {
       this.activePage = page;
       this.drawPages();
     },
+    nextPage() {
+      this.switchPage(this.activePage + 1);
+    },
+    prevPage() {
+      this.switchPage(this.activePage - 1);
+    },
     drawPages() {
       let maxItems = this.maxItems();
       this.pages = chunk(this.menuItems, maxItems);
@@ -53,7 +59,7 @@ const createStore = ({ menuMeta, menuItems }) => {
         return this.state.store.menuItems.length;
       }
       */
-      return 8;
+      return 9;
     },
     selectItem(id) {
       this.selected = id;
