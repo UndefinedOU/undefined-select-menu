@@ -28,9 +28,13 @@ const StyledMenuBox = styled.ul`
   position: ${(props) => props.position || 'relative'};
   height: ${(props) => props.height }px;
   display: inline-block;
-  border: 1px solid blue;
-  margin-top: 0px;
-  margin-left: 0px;
+  border: 1px solid #BDBDBD;
+  border-radius: 5px;
+  background-color: white;
+  box-shadow: 5px 5px 15px #DDD;
+  margin-top: 0;
+  margin-left: 0;
+  padding-left: 0;
   top: ${(props) => props.top};
   left: ${(props) => props.left};
 `;
@@ -78,14 +82,14 @@ const Menu = observer(class Menu extends Component {
     //THis makes sure when we unbind and rebind keys, the reference is preserved so we
     //avoid any multiple bound functions for a single instance tomfoolery
     this.handlers.keydown = this.handleKeyDown.bind(this);
-    
+
     this.dispose = {};
 
   }
 
   componentWillMount() {
     //this.handlers.key = this.handlerKeyDown.bind(this);
-    
+
     // focus on the first item
   }
 
@@ -102,7 +106,7 @@ const Menu = observer(class Menu extends Component {
     console.log('binding keys');
     document.addEventListener("keydown", this.handlers.keydown);
     //this.focusDiv()
-    
+
   }
   unbindKeys() {
     console.log('unbinding keys');
@@ -115,7 +119,7 @@ const Menu = observer(class Menu extends Component {
       this.focusDiv();
     }
   }
-  
+
   getAbsoluteLocation () {
     // the location top left
   }
@@ -277,7 +281,7 @@ const Menu = observer(class Menu extends Component {
         ref={(box) => {this.box = box}}
         tabIndex="0"
         height={this.props.menuMeta.height}
-        
+
         position={this.props.position}
         top={this.props.top}
         left={this.props.left}
@@ -311,7 +315,7 @@ const Menu = observer(class Menu extends Component {
             id={item.id}
           />);
         })}
-        
+
 
         {((this.state.store.pages.length > 1) && (this.state.store.activePage < (this.state.store.pages.length - 1))) ? (
           <span>
@@ -347,7 +351,7 @@ const Menu = observer(class Menu extends Component {
 
 Menu.propTypes = {
   focused: PropTypes.bool,
-  
+
   menuMeta: PropTypes.shape({
     store: PropTypes.object, //used if we are injecting a store
     positioning: PropTypes.object,

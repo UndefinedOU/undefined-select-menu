@@ -8,6 +8,10 @@ import AddableMenuItem from './AddableMenuItem';
 const StyledMenuItem = styled.li`
   display: table;
   height: 24px;
+  font-family: sans-serif;
+  padding-left: 20px;
+  background-color: ${props => props.backgroundColor};
+  color: ${props => props.color};
 `;
 
 const StyledLabel = styled.div`
@@ -19,16 +23,14 @@ const StyledLabel = styled.div`
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  color: ${props => props.color};
   margin: 1em;
-  background-color: ${props => (props.highlighted) ? 'yellow' : props.backgroundColor};
 `;
 
 
 const StyledTip = styled.div`
   display: table-cell;
   cursor: ${props => props.cursor};
-  
+
   color: ${props => props.color};
   margin: 1em;
 `;
@@ -36,7 +38,7 @@ const StyledTip = styled.div`
 const StyledShortcut = styled.div`
   display: table-cell;
   cursor: ${props => props.cursor};
-  
+
   color: ${props => props.color};
   margin: 1em;
 `;
@@ -71,7 +73,13 @@ class MenuItem extends Component {
   }
 
   getColor = () => {
-    return this.props.disabled ? this.props.dColor : this.props.color;
+    let color = this.props.color;
+    if (this.props.disabled) {
+      color = this.props.dColor;
+    } else if (this.props.highlighted) {
+      color = this.props.highlightColor;
+    }
+    return color;
   }
 
   getCursor = () => {
@@ -108,13 +116,14 @@ class MenuItem extends Component {
         onClick={this.handleClick.bind(this)}
         onMouseEnter={this.handleMouseOver.bind(this)}
         onMouseLeave={this.handleMouseLeave.bind(this)}
-        
+        backgroundColor={this.getBackgroundColor()}
+        color={this.getColor()}
+
         ref={(ref) => { this.ref = ref; }}>
         <Icon
           show={this.props.icon || this.props.isChecked}
           color={this.getColor()}
           cursor={this.getCursor()}
-          backgroundColor={this.getBackgroundColor()}
           icon={this.props.icon || 'fa-check'}>
         </Icon>
 
@@ -122,7 +131,6 @@ class MenuItem extends Component {
           show={this.props.editable}
           color={this.getColor()}
           cursor={this.getCursor()}
-          backgroundColor={this.getBackgroundColor()}
           width={this.props.labelWidth}
           update={this.updateItemLabel}
           label={this.props.label}
@@ -136,7 +144,6 @@ class MenuItem extends Component {
           show={!this.props.editable}
           color={this.getColor()}
           cursor={this.getCursor()}
-          backgroundColor={this.getBackgroundColor()}
           width={this.props.labelWidth}
           label={this.props.label}>
           highlighted={this.isSelected()}
@@ -146,7 +153,6 @@ class MenuItem extends Component {
           show={this.props.tips}
           color={this.getColor()}
           cursor={this.getCursor()}
-          backgroundColor={this.getBackgroundColor()}
           tips={this.props.tips}>
         </Tips>
 
@@ -154,15 +160,13 @@ class MenuItem extends Component {
           show={this.props.shortcut}
           color={this.getColor()}
           cursor={this.getCursor()}
-          backgroundColor={this.getBackgroundColor()}
           shortcut={this.props.shortcut}>
         </Shortcut>
 
         <ExpandableArrow
           show={this.props.subMenu}
           color={this.getColor()}
-          cursor={this.getCursor()}
-          backgroundColor={this.getBackgroundColor()}>
+          cursor={this.getCursor()}>
         </ExpandableArrow>
 
       </StyledMenuItem>
@@ -318,6 +322,7 @@ MenuItem.propTypes = {
   shortcut:         PropTypes.string,
   label:            PropTypes.string,
   color:            PropTypes.string,
+  highlightColor:   PropTypes.string,
   dColor:           PropTypes.string,
   font:             PropTypes.node,
   tips:             PropTypes.array,
@@ -341,14 +346,15 @@ MenuItem.defaultProps = {
   isChecked:        true,
   shortcut:         '#T',
   label:            'foo',
-  color:            'red',
+  color:            'black',
+  highlightColor:  'white',
   dColor:           'lightgray',
   font:             null,
   tips:             [100, 200, 300, 'coffee', 'fa-coffee'],
   disabled:         false,
   labelWidth:       '10em',
   backgroundColor:  'white',
-  hBackgroundColor: 'blue',
+  hBackgroundColor: '#5D9EFE',
   editable:         true,
   subMenu:          true,
 }
