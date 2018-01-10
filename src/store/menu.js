@@ -97,8 +97,10 @@ const createStore = ({ menuMeta, menuItems }) => {
       return 9;
     },
     selectItem(id) {
-      this.selected = id;
-      this.setHovering(id);
+      if (!this.menuItems[id].disabled) {
+        this.selected = id;
+        this.setHovering(id);
+      }
     },
     clearStaging() {
       this.staging = null;
