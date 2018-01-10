@@ -7,7 +7,7 @@ import {observer} from "mobx-react";
 import keydown, { Keys } from 'react-keydown';
 import { EditForm, StyledDeletable, Noop, StyledInput } from './styles';
 /*
-  Editable component encapsulates the menu item where clicking on it 
+  Editable component encapsulates the menu item where clicking on it
   truncates the menu
 */
 
@@ -24,7 +24,6 @@ const StyledEditableLabel = styled.div`
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  background-color: ${props => props.backgroundColor};
   color: ${props => props.color};
   margin: 1em;
 `;
@@ -74,7 +73,6 @@ const DisplayItem = (props) => {
     <StyledEditableLabel
       color={props.color}
       cursor={props.cursor}
-      backgroundColor={props.backgroundColor}
       width={props.width}>
       {props.label}
     </StyledEditableLabel>
@@ -97,7 +95,6 @@ const HoveringItem = observer((props) => {
     <StyledEditableLabel
       color={props.color}
       cursor={props.cursor}
-      backgroundColor={props.backgroundColor}
       width={props.width}>
       { truncate(props.truncateBy, props.label) }
       <a href="" onClick={setEditMode}><IconDisplay iconType={editIcon} /></a>
@@ -123,11 +120,10 @@ const DeletableItem = observer((props) => {
       <StyledDeletable
         color={props.color}
         cursor={props.cursor}
-        backgroundColor={props.backgroundColor}
         width={props.width}
       >
         <IconDisplay iconType={trashIcon} />
-        Are You Sure? 
+        Are You Sure?
         <a href=""  onClick={commitDeletion}>Yes</a>
         <a href=""  onClick={abortDeletion}>No</a>
       </StyledDeletable>
@@ -160,6 +156,13 @@ const EditableMenuItem = observer(class EditableMenuItem extends Component {
   exitHover() {
 
   }
+  getColor = () => {
+    let color = this.props.color;
+    if (this.isHoverState()) {
+      color = this.props.highlightColor;
+    }
+    return color;
+  }
   isSelectedState() {
     return this.props.store.selected === this.props.id;
   }
@@ -173,7 +176,8 @@ const EditableMenuItem = observer(class EditableMenuItem extends Component {
     return this.props.store.trashbin === this.props.id;
   }
   renderState() {
-    const props = this.props;
+    const props = {...this.props};
+    props.color = this.getColor();
     if (this.isEditState()) {
       return (<EditItem {...props} />);
     } else if (this.isDeleteState()) {
@@ -187,7 +191,7 @@ const EditableMenuItem = observer(class EditableMenuItem extends Component {
   render () {
     return (
       <span
-        
+
       >
         {this.renderState()}
       </span>
@@ -209,7 +213,7 @@ EditableMenuItem.propTypes = {
   update: PropTypes.func.isRequired,
   truncateBy: PropTypes.number, //how many are allowed before cutting it off and adding ...
   color: PropTypes.string,
-  backgroundColor: PropTypes.string,
+  highlightColor: PropTypes.string,
   width: PropTypes.string,  //TODO: handle edge case of 0
   cursor: PropTypes.string.isRequired,
   id: PropTypes.node.isRequired
@@ -218,7 +222,7 @@ EditableMenuItem.propTypes = {
 EditableMenuItem.defaultProps = {
   truncateBy: 10,
   color: 'black',
-  backgroundColor: 'white',
+  highlightColor: 'white',
   width: '100px'
 }
 
