@@ -365,19 +365,19 @@ MenuItem.propTypes = {
 MenuItem.defaultProps = {
   //icon: 'fa-coffee',
   isChecked:        false,
-  shortcut:         '⌘T',
+  shortcut:         '',
   label:            'foo',
   color:            'black',
   highlightColor:  'white',
   dColor:           'lightgray',
   font:             null,
-  tips:             [100, 200, 300, 'coffee', 'fa-coffee'],
+  tips:             [],
   disabled:         false,
   labelWidth:       '10em',
   backgroundColor:  'white',
   hBackgroundColor: '#5D9EFE',
   editable:         true,
-  subMenu:          true,
+  subMenu:          false,
 }
 
 export default MenuItem;
