@@ -28,8 +28,13 @@ const StyledEditableLabel = styled.div`
   margin: 1em;
 `;
 
-
-
+const Link = styled.a`
+  cursor: pointer;
+  color: ${props => props.color};
+  &:visited, &:hover {
+    color: ${props => props.color};
+  }
+`;
 
 const EditItem = observer(class EditItem extends Component {
   componentDidMount() {
@@ -97,8 +102,8 @@ const HoveringItem = observer((props) => {
       cursor={props.cursor}
       width={props.width}>
       { truncate(props.truncateBy, props.label) }
-      <a href="" onClick={setEditMode}><IconDisplay iconType={editIcon} /></a>
-      <a href=""  onClick={setDeleteMode}><IconDisplay iconType={trashIcon} /></a>
+      <Link onClick={setEditMode}><IconDisplay iconType={editIcon} /></Link>
+      <Link onClick={setDeleteMode}><IconDisplay iconType={trashIcon} /></Link>
     </StyledEditableLabel>
   );
 });
@@ -124,8 +129,8 @@ const DeletableItem = observer((props) => {
       >
         <IconDisplay iconType={trashIcon} />
         Are You Sure?
-        <a href=""  onClick={commitDeletion}>Yes</a>
-        <a href=""  onClick={abortDeletion}>No</a>
+        <Link onClick={commitDeletion}>Yes</Link>
+        <Link onClick={abortDeletion}>No</Link>
       </StyledDeletable>
     </div>
   );
