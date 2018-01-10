@@ -323,7 +323,7 @@ const Menu = observer(class Menu extends Component {
         left={this.props.left}
         onClick={this.preventClose.bind(this)}
       >
-        {`selected ${this.state.store.selected} hovering: ${this.state.store.hovering}`}
+        
         {((this.state.store.pages.length > 1) && (this.state.store.activePage > 0)) ? (
           <UpButton
             onClick={this.scrollUp.bind(this)}
