@@ -48,7 +48,7 @@ const DisplayElement = styled.div`
   background-image: url("${Arrow}");
   background-position: right;
   background-repeat: no-repeat;
-  background-size: 7%;
+  background-size: 20px;
   background-color: white;
   border: 1px solid #D9D9D9;
   padding: 0 0 0 15px;

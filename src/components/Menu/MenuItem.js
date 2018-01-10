@@ -6,8 +6,12 @@ import EditableMenuItem from './EditableMenuItem';
 import AddableMenuItem from './AddableMenuItem';
 import CheckIcon from './CheckIcon';
 
+const SECONDARY_COLOR = '#B4B4B4';
+
 const StyledMenuItem = styled.li`
-  display: table;
+  display: grid;
+  grid-template-columns: 2fr 1fr 40px;
+  grid-column-gap: 10px;
   height: 24px;
   font-family: sans-serif;
   padding-left: 20px;
@@ -29,11 +33,11 @@ const StyledLabel = styled.div`
 
 
 const StyledTip = styled.div`
-  display: table-cell;
-  cursor: ${props => props.cursor};
+  padding-right: 5px;
+  display: inline;
 
+  cursor: ${props => props.cursor};
   color: ${props => props.color};
-  margin: 1em;
 `;
 
 const StyledShortcut = styled.div`
@@ -119,63 +123,69 @@ class MenuItem extends Component {
         onMouseLeave={this.handleMouseLeave.bind(this)}
         backgroundColor={this.getBackgroundColor()}
         color={this.getColor()}
-
         ref={(ref) => { this.ref = ref; }}>
-        <Icon
-          show={this.props.icon || this.props.isChecked}
-          color={this.getColor()}
-          cursor={this.getCursor()}
-          icon={this.props.icon || 'fa-check'}>
-        </Icon>
-        <CheckIcon
-          id={this.props.id}
-          checkable={this.props.checkable}
-          store={this.props.store}
-        />
 
-        
+        <div>
+          <Icon
+            show={this.props.icon || this.props.isChecked}
+            color={this.getColor()}
+            cursor={this.getCursor()}
+            icon={this.props.icon || 'fa-check'}>
+          </Icon>
+          <CheckIcon
+            id={this.props.id}
+            checkable={this.props.checkable}
+            store={this.props.store}
+          />
 
-        <EditableLabel
-          show={this.props.editable}
-          color={this.getColor()}
-          cursor={this.getCursor()}
-          width={this.props.labelWidth}
-          update={this.updateItemLabel}
-          label={this.props.label}
-          id={this.props.id}
-          store={this.props.store}
-          highlighted={this.props.highlighted}
-          >
-        </EditableLabel>
 
-        <Label
-          show={!this.props.editable}
-          color={this.getColor()}
-          cursor={this.getCursor()}
-          width={this.props.labelWidth}
-          label={this.props.label}>
-          highlighted={this.isSelected()}
-        </Label>
 
-        <Tips
-          show={this.props.tips}
-          color={this.getColor()}
-          cursor={this.getCursor()}
-          tips={this.props.tips}>
-        </Tips>
+          <EditableLabel
+            show={this.props.editable}
+            color={this.getColor()}
+            cursor={this.getCursor()}
+            width={this.props.labelWidth}
+            update={this.updateItemLabel}
+            label={this.props.label}
+            id={this.props.id}
+            store={this.props.store}
+            highlighted={this.props.highlighted}
+            >
+          </EditableLabel>
 
-        <Shortcut
-          show={this.props.shortcut}
-          color={this.getColor()}
-          cursor={this.getCursor()}
-          shortcut={this.props.shortcut}>
-        </Shortcut>
+          <Label
+            show={!this.props.editable}
+            color={this.getColor()}
+            cursor={this.getCursor()}
+            width={this.props.labelWidth}
+            label={this.props.label}>
+            highlighted={this.isSelected()}
+          </Label>
+        </div>
 
-        <ExpandableArrow
-          show={this.props.subMenu}
-          color={this.getColor()}
-          cursor={this.getCursor()}>
-        </ExpandableArrow>
+        <div>
+          <Tips
+            show={this.props.tips}
+            color={SECONDARY_COLOR}
+            cursor={this.getCursor()}
+            tips={this.props.tips}>
+          </Tips>
+        </div>
+
+        <div>
+          <Shortcut
+            show={this.props.shortcut}
+            color={SECONDARY_COLOR}
+            cursor={this.getCursor()}
+            shortcut={this.props.shortcut}>
+          </Shortcut>
+
+          <ExpandableArrow
+            show={this.props.subMenu}
+            color={SECONDARY_COLOR}
+            cursor={this.getCursor()}>
+          </ExpandableArrow>
+        </div>
 
       </StyledMenuItem>
     );
@@ -261,10 +271,10 @@ function Tips (props) {
   }
 
   const divStyle = {
-    display: 'table-cell',
     color: props.color,
     backgroundColor: props.backgroundColor,
-    margin: 'auto',
+    display: 'inline',
+    paddingRight: '5px'
   };
 
  //TODO change
@@ -353,7 +363,7 @@ MenuItem.propTypes = {
 MenuItem.defaultProps = {
   //icon: 'fa-coffee',
   isChecked:        false,
-  shortcut:         '#T',
+  shortcut:         '⌘T',
   label:            'foo',
   color:            'black',
   highlightColor:  'white',

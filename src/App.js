@@ -67,7 +67,7 @@ const selectOptions =  {
 }
 
 const SelectContainer = styled.div`
-  width: 300px;
+  width: 800px;
 `;
 
 class App extends Component {

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import MenuItem from './MenuItem';
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
 import ReactDOM from 'react-dom';
 import { observable, autorun} from 'mobx';
 import {observer, propTypes} from 'mobx-react';
@@ -26,7 +26,6 @@ import { find } from 'lodash';
 
 const StyledMenuBox = styled.ul`
   position: ${(props) => props.position || 'relative'};
-  height: ${(props) => props.height }px;
   display: inline-block;
   border: 1px solid #BDBDBD;
   border-radius: 5px;
@@ -35,8 +34,13 @@ const StyledMenuBox = styled.ul`
   margin-top: 0;
   margin-left: 0;
   padding-left: 0;
+  margin-right: 30px;
   top: ${(props) => props.top};
   left: ${(props) => props.left};
+
+  ${props => props.height && css`
+    height: ${props.height}px;
+  `}
 `;
 
 const UpButton = styled.li`
