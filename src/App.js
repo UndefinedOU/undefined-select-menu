@@ -56,7 +56,7 @@ const selectOptions =  {
     { icon: null, label: '10one' },
     { label: '11two', disabled: true },
     { label: '12three', checkable: true },
-    { label: '13banananananana' checkable: true },
+    { label: '13banananananana', checkable: true },
     { label: '14whowhowho' },
     { icon: null, label: '15one' },
     { label: '16two', disabled: true },

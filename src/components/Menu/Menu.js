@@ -302,6 +302,7 @@ const Menu = observer(class Menu extends Component {
           return (<MenuItem
             positioning={this.props.positioning}
             store={this.state.store}
+            checkable={item.checkable}
             ref={(instance) => { this[`child_${i}`] = instance; }}
             editable={this.props.menuMeta.editable}
             onClick={this.handleClick.bind(this)}
@@ -416,7 +417,7 @@ Menu.defaultProps = {
     { icon: null, label: '10one' },
     { label: '11two', disabled: true },
     { label: '12three', checkable: true },
-    { label: '13banananananana' checkable: true },
+    { label: '13banananananana', checkable: true },
     { label: '14whowhowho' },
     { icon: null, label: '15one' },
     { label: '16two', disabled: true },

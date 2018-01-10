@@ -29,6 +29,7 @@ const createStore = ({ menuMeta, menuItems }) => {
       id: null,
       label: null
     },
+    checked: observable.map({}),
     //staging is for anyting added via addable
     staging: null,
     currMenuItem: -1,
@@ -39,6 +40,15 @@ const createStore = ({ menuMeta, menuItems }) => {
     paginateSlot: [], //the items that will be shown on the page
     pages: [], // the actual pages
     activePage: 0, //the activly page
+    setChecked(id) {
+      this.checked.set(id, true)
+    },
+    setUnChecked(id) {
+      this.checked.delete(id);
+    },
+    isChecked(id) {
+      return this.checked.has(id);
+    },
     setItems(items) {
       this.menuItems = annotateItems(items);
       this.drawPages();

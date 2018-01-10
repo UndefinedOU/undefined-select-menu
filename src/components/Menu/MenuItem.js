@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import EditableMenuItem from './EditableMenuItem';
 import AddableMenuItem from './AddableMenuItem';
+import CheckIcon from './CheckIcon';
 
 const StyledMenuItem = styled.li`
   display: table;
@@ -126,6 +127,13 @@ class MenuItem extends Component {
           cursor={this.getCursor()}
           icon={this.props.icon || 'fa-check'}>
         </Icon>
+        <CheckIcon
+          id={this.props.id}
+          checkable={this.props.checkable}
+          store={this.props.store}
+        />
+
+        
 
         <EditableLabel
           show={this.props.editable}
@@ -319,6 +327,7 @@ MenuItem.propTypes = {
   //icon: 'fa-coffee',
   positioning:      PropTypes.object,
   isChecked:        PropTypes.bool,
+  checkable:        PropTypes.bool,
   shortcut:         PropTypes.string,
   label:            PropTypes.string,
   color:            PropTypes.string,
@@ -343,7 +352,7 @@ MenuItem.propTypes = {
 // TODO: platform shortcuts
 MenuItem.defaultProps = {
   //icon: 'fa-coffee',
-  isChecked:        true,
+  isChecked:        false,
   shortcut:         '#T',
   label:            'foo',
   color:            'black',
