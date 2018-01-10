@@ -164,10 +164,26 @@ const Menu = observer(class Menu extends Component {
   }
 
   decrementCursor() {
+
+    const findPreviousNode = (id) => {
+      let menuItems = this.state.store.menuItems;
+      let nextId = id - 1;
+
+      while (nextId >= 0) {
+        if (menuItems[nextId].disabled) {
+          nextId--;
+          continue;
+        } else {
+          return nextId;
+        }
+      }
+      return id;
+    };
+
     let hovering = this.state.store.hovering; //get the currently selected item
     let item = this.state.store.menuItems.find(item => item.id === hovering); //get the selected item
     if ((hovering !== null) && item && item.id > 0) { //do nothing if its the last item
-      this.state.store.hovering = item.id - 1;
+      this.state.store.hovering = findPreviousNode(item.id)//item.id - 1;
       this.state.store.refocusPage();
     }
   }
@@ -178,10 +194,26 @@ const Menu = observer(class Menu extends Component {
     // while (this.state.menuItems[i].disabled) {
     //   i++;
     // }
+    const findNextNode = (id) => {
+      let menuItems = this.state.store.menuItems;
+      let nextId = id + 1;
+      
+      while (nextId <= this.state.store.menuItems.length - 1) {
+        if (menuItems[nextId].disabled) {
+          nextId++;
+          continue;
+        } else {
+          return nextId;
+        }
+      }
+      return id;
+    };
+
     let hovering = this.state.store.hovering; //get the currently selected item
     let item = this.state.store.menuItems.find(item => item.id === hovering); //get the selected item
     if ((hovering !== null) && item && item.id < (this.state.store.menuItems.length - 1)) { //do nothing if its the last item
-      this.state.store.hovering = item.id + 1;
+      this.state.store.hovering = findNextNode(item.id); //item.id + 1;
+      
       this.state.store.refocusPage();
     }
   }
@@ -408,7 +440,7 @@ Menu.defaultProps = {
     // TODO: HTML is a passable prop in our own code
   },
   menuItems: [
-    { icon: null, label: '0one' },
+    { icon: null, label: '0one', disabled: true },
     { label: '1two', disabled: true },
     { label: '2three' },
     { label: '3banananananana' },
@@ -427,7 +459,7 @@ Menu.defaultProps = {
     { label: '16two', disabled: true },
     { label: '17three' },
     { label: '18banananananana' },
-    { label: '19whowhowho' }
+    { label: '19whowhowho', disabled: true }
   ],
 };
 
