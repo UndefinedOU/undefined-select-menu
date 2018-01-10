@@ -20,7 +20,7 @@ const TestSquare = observer((props) => {
     <Square>
       ({props.positioning.cursorPosition.x},{props.positioning.cursorPosition.y})
       {props.children}
-      
+
     </Square>
   )
 });
@@ -66,6 +66,10 @@ const selectOptions =  {
   ],
 }
 
+const SelectContainer = styled.div`
+  width: 300px;
+`;
+
 class App extends Component {
   render () {
     let fa = "fa fa-heart";
@@ -79,14 +83,15 @@ class App extends Component {
         <Menu {...addableMenuOpts} />
         <h1>launchable menu</h1>
         <MenuLauncher width="400px" height="400px" {...selectOptions}>
-          <TestSquare> 
-            here is a clickable area 
+          <TestSquare>
+            here is a clickable area
           </TestSquare>
         </MenuLauncher>
         <h1>Select Menu</h1>
-        <Select {...selectOptions}>
-
-        </Select>
+        <SelectContainer>
+          <Select {...selectOptions}>
+          </Select>
+        </SelectContainer>
 
       </div>
     );
