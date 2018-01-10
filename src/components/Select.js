@@ -8,7 +8,7 @@
   The cursor position indicates where the selected item needs
   to line up with the element its overlayed on top of.
 
-  The list of elements needs to be aligned using 
+  The list of elements needs to be aligned using
   absolute positioning in order to make this work.
 
 
@@ -29,24 +29,34 @@ import keydown, { Keys } from 'react-keydown';
 import { observable, autorun} from 'mobx';
 import createStore from '../store/menu'
 import Menu from './Menu/Menu';
+import Arrow from './assets/arrow-up-down.png';
 
-
-const ITEM_HEIGHT = '20px';  //we need to work with fixed sizes for now. otherwise it won't work
+const ITEM_HEIGHT = '24px';  //we need to work with fixed sizes for now. otherwise it won't work
 
 const Wrapper = styled.div`
-  padding: 0px;
-  width: ${(props) => props.width}
-  height: ${(props) => props.height}
-`;
+  font-family: sans-serif;
+  padding: 0;
+  width: ${(props) => props.width};
+  height: ${(props) => props.height};
+  min-height: ${ITEM_HEIGHT};
+  line-height: ${ITEM_HEIGHT};
+  `;
 
 const DisplayElement = styled.div`
   border: 1px solid black;
-  background-color: blue;
-  opacity: 0.5;
+  border-radius: 3px;
+  background-image: url("${Arrow}");
+  background-position: right;
+  background-repeat: no-repeat;
+  background-size: 7%;
+  background-color: white;
+  border: 1px solid #D9D9D9;
+  padding: 0 0 0 15px;
+  color: #2B2B2B;
   cursor: pointer;
   z-index: 0;
   overflow: visible;
-  height: ${(props) => ITEM_HEIGHT};
+  height: ${ITEM_HEIGHT};
 `;
 
 const StyledSelector = styled.ul`
@@ -67,7 +77,7 @@ const StyledOption = styled.li`
   margin: ${(props) => 1 - props.offset}
 `;
 
-/* 
+/*
   Here we create a store
 
 
@@ -121,7 +131,7 @@ class Select extends Component {
     console.log(topPos, leftPos);
     this.state.positioning.setWindowPositioning(leftPos, topPos);
   }
-  componentDidMount() { 
+  componentDidMount() {
     this._ismounted = true;
     //this.state.positioning.displayHeight = ReactDOM.findDOMNode(this.displayElement).style.height;
     this.updatePosition();
@@ -170,7 +180,7 @@ class Select extends Component {
         width={this.props.width}
         height={this.props.height}
       >
-        <DisplayElement 
+        <DisplayElement
           height={this.props.height}
           ref={(el) => {this.displayElement = el} }
           onClick={this.openSelect.bind(this)}>
@@ -186,7 +196,7 @@ class Select extends Component {
             menuMeta={this.props.menuMeta}
           />
          ) : null}
-      
+
       </Wrapper>
     );
   }
