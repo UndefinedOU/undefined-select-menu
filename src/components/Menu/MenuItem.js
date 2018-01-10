@@ -52,7 +52,9 @@ class MenuItem extends Component {
 
   handleMouseOver (event) {
     event.preventDefault();
-    this.props.store.setHovering(this.props.id);
+    if (!this.props.store.menuItems[this.props.id].disabled) {
+      this.props.store.setHovering(this.props.id);
+    }
     //if ()
     //this.props.onMouseOver(event, this.props.id);
   }
