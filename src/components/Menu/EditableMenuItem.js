@@ -54,7 +54,7 @@ const EditItem = observer(class EditItem extends Component {
   }
   render() {
     return (
-      <form onSubmit={this.commitChanges.bind(this)}>
+      <form onClick={this.stopProp} onSubmit={this.commitChanges.bind(this)}>
         <StyledInput
           type="text"
           autoFocus
@@ -84,10 +84,12 @@ const DisplayItem = (props) => {
 const HoveringItem = observer((props) => {
   const setEditMode = (ev) => {
     ev.preventDefault();
+    ev.stopPropagation();
     props.store.setEditing(props.id);
   };
   const setDeleteMode = (ev) => {
     ev.preventDefault();
+    ev.stopPropagation();
     props.store.setTrashBin(props.id);
   };
 
