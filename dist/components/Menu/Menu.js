@@ -2,7 +2,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _templateObject = _taggedTemplateLiteral(['\n  position: ', ';\n  display: inline-block;\n  border: 1px solid #BDBDBD;\n  border-radius: 5px;\n  background-color: white;\n  box-shadow: 5px 5px 15px #DDD;\n  margin-top: 0;\n  margin-left: 0;\n  padding-left: 0;\n  margin-right: 30px;\n  top: ', ';\n  left: ', ';\n\n  ', '\n'], ['\n  position: ', ';\n  display: inline-block;\n  border: 1px solid #BDBDBD;\n  border-radius: 5px;\n  background-color: white;\n  box-shadow: 5px 5px 15px #DDD;\n  margin-top: 0;\n  margin-left: 0;\n  padding-left: 0;\n  margin-right: 30px;\n  top: ', ';\n  left: ', ';\n\n  ', '\n']),
     _templateObject2 = _taggedTemplateLiteral(['\n    height: ', 'px;\n  '], ['\n    height: ', 'px;\n  ']),
-    _templateObject3 = _taggedTemplateLiteral(['\n\n'], ['\n\n']);
+    _templateObject3 = _taggedTemplateLiteral(['\n  cursor: pointer;\n'], ['\n  cursor: pointer;\n']);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -24,6 +24,7 @@ import keydown, { Keys } from 'react-keydown';
 import AddableMenuItem from './AddableMenuItem';
 import createStore from '../../store/menu';
 import { find } from 'lodash';
+import IconDisplay from './IconDisplay';
 
 //let ReactDOM = require('react-dom');
 
@@ -199,31 +200,66 @@ var Menu = observer(function (_Component) {
   }, {
     key: 'decrementCursor',
     value: function decrementCursor() {
+      var _this2 = this;
+
+      var findPreviousNode = function findPreviousNode(id) {
+        var menuItems = _this2.state.store.menuItems;
+        var nextId = id - 1;
+
+        while (nextId >= 0) {
+          if (menuItems[nextId].disabled) {
+            nextId--;
+            continue;
+          } else {
+            return nextId;
+          }
+        }
+        return id;
+      };
+
       var hovering = this.state.store.hovering; //get the currently selected item
       var item = this.state.store.menuItems.find(function (item) {
         return item.id === hovering;
       }); //get the selected item
       if (hovering !== null && item && item.id > 0) {
         //do nothing if its the last item
-        this.state.store.hovering = item.id - 1;
+        this.state.store.hovering = findPreviousNode(item.id); //item.id - 1;
         this.state.store.refocusPage();
       }
     }
   }, {
     key: 'incrementCursor',
     value: function incrementCursor() {
+      var _this3 = this;
+
       // findNextNotDisabled();
       // let i = this.state.currMenuItem + 1;
       // while (this.state.menuItems[i].disabled) {
       //   i++;
       // }
+      var findNextNode = function findNextNode(id) {
+        var menuItems = _this3.state.store.menuItems;
+        var nextId = id + 1;
+
+        while (nextId <= _this3.state.store.menuItems.length - 1) {
+          if (menuItems[nextId].disabled) {
+            nextId++;
+            continue;
+          } else {
+            return nextId;
+          }
+        }
+        return id;
+      };
+
       var hovering = this.state.store.hovering; //get the currently selected item
       var item = this.state.store.menuItems.find(function (item) {
         return item.id === hovering;
       }); //get the selected item
       if (hovering !== null && item && item.id < this.state.store.menuItems.length - 1) {
         //do nothing if its the last item
-        this.state.store.hovering = item.id + 1;
+        this.state.store.hovering = findNextNode(item.id); //item.id + 1;
+
         this.state.store.refocusPage();
       }
     }
@@ -328,7 +364,7 @@ var Menu = observer(function (_Component) {
   }, {
     key: 'render',
     value: function render() {
-      var _this2 = this;
+      var _this4 = this;
 
       // [icon or check] [label or html or editable] [tips] [shortcuts] [expandable]
       return React.createElement(
@@ -337,7 +373,7 @@ var Menu = observer(function (_Component) {
           onMouseEnter: this.bindKeys.bind(this),
           onMouseLeave: this.unbindKeys.bind(this),
           ref: function ref(box) {
-            _this2.box = box;
+            _this4.box = box;
           },
           tabIndex: '0',
           height: this.props.menuMeta.height,
@@ -347,31 +383,31 @@ var Menu = observer(function (_Component) {
           left: this.props.left,
           onClick: this.preventClose.bind(this)
         },
-        'selected ' + this.state.store.selected + ' hovering: ' + this.state.store.hovering,
         this.state.store.pages.length > 1 && this.state.store.activePage > 0 ? React.createElement(
           UpButton,
           {
             onClick: this.scrollUp.bind(this)
           },
-          'up arrow'
+          React.createElement(IconDisplay, { iconType: 'fa-backward' }),
+          ' Previous...'
         ) : null,
         this.state.store.paginateSlot.map(function (item, i) {
-          var isHighlighted = _this2.state.store.currMenuItem === i && !_this2.state.store.menuItems[_this2.state.store.currMenuItem].disabled;
+          var isHighlighted = _this4.state.store.currMenuItem === i && !_this4.state.store.menuItems[_this4.state.store.currMenuItem].disabled;
           return React.createElement(MenuItem, {
-            positioning: _this2.props.positioning,
-            store: _this2.state.store,
+            positioning: _this4.props.positioning,
+            store: _this4.state.store,
             checkable: item.checkable,
             ref: function ref(instance) {
-              _this2['child_' + i] = instance;
+              _this4['child_' + i] = instance;
             },
-            editable: _this2.props.menuMeta.editable,
-            onClick: _this2.handleClick.bind(_this2),
-            onMouseEnter: _this2.handleMouseOver.bind(_this2),
-            onMouseLeave: _this2.handleMouseLeave.bind(_this2),
-            onFocus: _this2.handleMouseOver.bind(_this2),
+            editable: _this4.props.menuMeta.editable,
+            onClick: _this4.handleClick.bind(_this4),
+            onMouseEnter: _this4.handleMouseOver.bind(_this4),
+            onMouseLeave: _this4.handleMouseLeave.bind(_this4),
+            onFocus: _this4.handleMouseOver.bind(_this4),
             disabled: item.disabled,
             label: item.label,
-            highlighted: _this2.state.store.hovering === item.id,
+            highlighted: _this4.state.store.hovering === item.id,
             key: 'item_' + item.id,
             id: item.id
           });
@@ -384,7 +420,8 @@ var Menu = observer(function (_Component) {
             {
               onClick: this.scrollDown.bind(this)
             },
-            'down arrow'
+            React.createElement(IconDisplay, { iconType: 'fa-forward' }),
+            ' More...'
           )
         ) : null,
         this.state.store.activePage === this.state.store.pages.length - 1 && this.props.menuMeta.addable ? React.createElement(AddableMenuItem, {
@@ -458,7 +495,7 @@ Menu.defaultProps = {
     // TODO: show fonts as images
     // TODO: HTML is a passable prop in our own code
   },
-  menuItems: [{ icon: null, label: '0one' }, { label: '1two', disabled: true }, { label: '2three' }, { label: '3banananananana' }, { label: '4whowhowho' }, { icon: null, label: '5one' }, { label: '6two', disabled: true }, { label: '7three' }, { label: '8banananananana' }, { label: '9whowhowho' }, { icon: null, label: '10one' }, { label: '11two', disabled: true }, { label: '12three', checkable: true }, { label: '13banananananana', checkable: true }, { label: '14whowhowho' }, { icon: null, label: '15one' }, { label: '16two', disabled: true }, { label: '17three' }, { label: '18banananananana' }, { label: '19whowhowho' }]
+  menuItems: [{ icon: null, label: '0one', disabled: true }, { label: '1two', disabled: true }, { label: '2three' }, { label: '3banananananana' }, { label: '4whowhowho' }, { icon: null, label: '5one' }, { label: '6two', disabled: true }, { label: '7three' }, { label: '8banananananana' }, { label: '9whowhowho' }, { icon: null, label: '10one' }, { label: '11two', disabled: true }, { label: '12three', checkable: true }, { label: '13banananananana', checkable: true }, { label: '14whowhowho' }, { icon: null, label: '15one' }, { label: '16two', disabled: true }, { label: '17three' }, { label: '18banananananana' }, { label: '19whowhowho', disabled: true }]
 };
 
 export default Menu;

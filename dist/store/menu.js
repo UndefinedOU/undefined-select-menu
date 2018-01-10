@@ -109,8 +109,10 @@ var createStore = function createStore(_ref) {
       return 9;
     },
     selectItem: function selectItem(id) {
-      this.selected = id;
-      this.setHovering(id);
+      if (!this.menuItems[id].disabled) {
+        this.selected = id;
+        this.setHovering(id);
+      }
     },
     clearStaging: function clearStaging() {
       this.staging = null;
