@@ -10,6 +10,7 @@ import keydown, { Keys } from 'react-keydown';
 import AddableMenuItem from './AddableMenuItem';
 import createStore from '../../store/menu';
 import { find } from 'lodash';
+import IconDisplay from './IconDisplay';
 
 //let ReactDOM = require('react-dom');
 
@@ -328,7 +329,7 @@ const Menu = observer(class Menu extends Component {
           <UpButton
             onClick={this.scrollUp.bind(this)}
           >
-            up arrow
+            <IconDisplay iconType="fa-backward" /> Previous...
           </UpButton>
         ) : null}
 
@@ -359,7 +360,7 @@ const Menu = observer(class Menu extends Component {
             <DownButton
               onClick={this.scrollDown.bind(this)}
             >
-              down arrow
+              <IconDisplay iconType="fa-forward" /> More...
             </DownButton>
 
           </span>
