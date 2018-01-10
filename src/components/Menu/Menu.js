@@ -45,11 +45,11 @@ const StyledMenuBox = styled.ul`
 `;
 
 const UpButton = styled.li`
-
+  cursor: pointer;
 `;
 
 const DownButton = styled.li`
-
+  cursor: pointer;
 `;
 
 const Menu = observer(class Menu extends Component {
