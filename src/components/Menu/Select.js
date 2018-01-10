@@ -26,8 +26,7 @@ class Select extends Component {
 
   render() {
     let FAIcon = convertToFAName(this.props.icon);
-    return (
-    );
+    return;
   }
 }
 
