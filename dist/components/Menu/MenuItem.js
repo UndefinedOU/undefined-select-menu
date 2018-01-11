@@ -235,7 +235,6 @@ function Icon(props) {
     return null;
   }
   var divStyle = {
-    display: 'table-cell',
     color: props.color,
     backgroundColor: props.backgroundColor,
     margin: 'auto'

@@ -23,12 +23,11 @@ const StyledLabel = styled.div`
   cursor: ${props => props.cursor};
   width: ${props => props.width};
   max-width: ${props => props.width};
-  display: table-cell;
   text-align: left;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  margin: 1em;
+  display: inline;
 `;
 
 
