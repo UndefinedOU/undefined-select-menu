@@ -72,6 +72,10 @@ const SelectContainer = styled.div`
 `;
 
 class App extends Component {
+  addItem = () => {
+    selectOptions.menuItems.push({label: 'new item'});
+  }
+
   render () {
     let fa = "fa fa-heart";
     return (
@@ -93,6 +97,7 @@ class App extends Component {
           <Select {...selectOptions}>
           </Select>
         </SelectContainer>
+        <button onClick={this.addItem}>Add item into Select</button>
 
       </div>
     );
