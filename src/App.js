@@ -78,10 +78,10 @@ class App extends Component {
       store: null
     };
   }
-  addItem = () => {
+  addItem() {
     //selectOptions.menuItems.push({label: 'new item'});
     if (this.state.store) {
-      this.state.store.menuItems.push({label: 'new item'});
+      this.state.store.addItem({label: 'new item'});
     }
   }
   onSelect = (selected, id) => {
@@ -93,7 +93,6 @@ class App extends Component {
   getStore = (store) => {
     this.setState({'store': store});
   }
-
   render () {
     let fa = "fa fa-heart";
     return (
@@ -121,7 +120,7 @@ class App extends Component {
           >
           </Select>
         </SelectContainer>
-        <button onClick={this.addItem}>Add item into Select</button>
+        <button onClick={this.addItem.bind(this)}>Add item into Select</button>
 
       </div>
     );

@@ -185,6 +185,7 @@ class Select extends Component {
           ref={(el) => {this.displayElement = el} }
           onClick={this.openSelect.bind(this)}>
             Selected: {(this.state.store.selected) ? this.state.store.menuItems[this.state.store.selected].label : null}
+            hovering: {`${this.state.store.hovering}`}
         </DisplayElement>
          {(this.state.positioning.menuOpen) ? (
           <Menu

@@ -199,9 +199,11 @@ const Menu = observer(class Menu extends Component {
 
     let hovering = this.state.store.hovering; //get the currently selected item
     let item = this.state.store.menuItems.find(item => item.id === hovering); //get the selected item
+    
     if ((hovering !== null) && item && item.id > 0) { //do nothing if its the last item
       this.state.store.hovering = findPreviousNode(item.id)//item.id - 1;
       this.state.store.refocusPage();
+      
     }
   }
 
@@ -228,9 +230,9 @@ const Menu = observer(class Menu extends Component {
 
     let hovering = this.state.store.hovering; //get the currently selected item
     let item = this.state.store.menuItems.find(item => item.id === hovering); //get the selected item
+
     if ((hovering !== null) && item && item.id < (this.state.store.menuItems.length - 1)) { //do nothing if its the last item
       this.state.store.hovering = findNextNode(item.id); //item.id + 1;
-      
       this.state.store.refocusPage();
     }
   }
@@ -313,13 +315,17 @@ const Menu = observer(class Menu extends Component {
     //ReactDOM.findDOMNode(this.refs.box).focus();
   }
 
-  scrollUp(ev) {
+  scrollUp(ev, id) {
     ev.stopPropagation();
-    this.state.store.prevPage();
+    this.state.store.setHovering(id);
+    this.decrementCursor();
+
   }
-  scrollDown(ev) {
+  scrollDown(ev, id) {
     ev.stopPropagation();
-    this.state.store.nextPage();
+    //this.state.store.nextPage();
+    this.state.store.setHovering(id);
+    this.incrementCursor();
   }
   preventClose(ev) {
     ev.stopPropagation();
@@ -327,6 +333,7 @@ const Menu = observer(class Menu extends Component {
 
   render() {
     // [icon or check] [label or html or editable] [tips] [shortcuts] [expandable]
+    let paginateSlot = this.state.store.paginateSlot;
     return (
       <StyledMenuBox
         onMouseEnter={this.bindKeys.bind(this)}
@@ -343,7 +350,7 @@ const Menu = observer(class Menu extends Component {
         
         {((this.state.store.pages.length > 1) && (this.state.store.activePage > 0)) ? (
           <UpButton
-            onClick={this.scrollUp.bind(this)}
+            onClick={(ev) => { this.scrollUp(ev, paginateSlot[0].id) }}
           >
             <IconDisplay iconType="fa-backward" /> Previous...
           </UpButton>
@@ -374,7 +381,7 @@ const Menu = observer(class Menu extends Component {
         {((this.state.store.pages.length > 1) && (this.state.store.activePage < (this.state.store.pages.length - 1))) ? (
           <span>
             <DownButton
-              onClick={this.scrollDown.bind(this)}
+              onClick={(ev) => { this.scrollDown(ev, paginateSlot[paginateSlot.length - 1].id) }}
             >
               <IconDisplay iconType="fa-forward" /> More...
             </DownButton>
