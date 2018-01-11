@@ -77,6 +77,9 @@ const Menu = observer(class Menu extends Component {
         // menuItems: props.menuItems,
         //menuItems: props.menuItems,
       };
+
+      this.props.onInit(this.state.store);
+      
     }
     this.clearHover = this.clearHover.bind(this);
 
@@ -88,14 +91,27 @@ const Menu = observer(class Menu extends Component {
     //avoid any multiple bound functions for a single instance tomfoolery
     this.handlers.keydown = this.handleKeyDown.bind(this);
 
-    this.dispose = {};
-
+    autorun(() => {
+      let store = this.state.store;
+      props.onUpdate({
+        menuItems: store.menuItems
+      });
+    });
+    
+    autorun(() => {
+      let store = this.state.store;
+      
+      if (store.selected) {
+        props.onSelect(store.menuItems[store.selected], store.selected);
+      }
+    });
+    props.getStore(this.state.store);
   }
 
   componentWillMount() {
     //this.handlers.key = this.handlerKeyDown.bind(this);
-
     // focus on the first item
+    
   }
 
   componentDidMount() {
@@ -389,7 +405,10 @@ const Menu = observer(class Menu extends Component {
 
 Menu.propTypes = {
   focused: PropTypes.bool,
-
+  onInit: PropTypes.func,
+  onUpdate: PropTypes.func,
+  onSelect: PropTypes.func,
+  getStore: PropTypes.func,
   menuMeta: PropTypes.shape({
     store: PropTypes.object, //used if we are injecting a store
     positioning: PropTypes.object,
@@ -423,6 +442,10 @@ Menu.defaultProps = {
   position: 'relative',
   top: '0',
   left: '0',
+  onInit: (store) => {},
+  onUpdate: (store) => {},
+  getStore: (store) => {},
+  onSelect: () => {},
   select: {
   // align: 'left' / 'right' / 'left-wide'
   },

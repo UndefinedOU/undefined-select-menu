@@ -72,8 +72,26 @@ const SelectContainer = styled.div`
 `;
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      store: null
+    };
+  }
   addItem = () => {
-    selectOptions.menuItems.push({label: 'new item'});
+    //selectOptions.menuItems.push({label: 'new item'});
+    if (this.state.store) {
+      this.state.store.menuItems.push({label: 'new item'});
+    }
+  }
+  onSelect = (selected, id) => {
+    //debugger
+  }
+  onUpdate = (menuItems) => {
+    //debugger
+  }
+  getStore = (store) => {
+    this.setState({'store': store});
   }
 
   render () {
@@ -94,7 +112,13 @@ class App extends Component {
         </MenuLauncher>
         <h1>Select Menu</h1>
         <SelectContainer>
-          <Select {...selectOptions}>
+          <Select
+            {...selectOptions}
+            onSelect={this.onSelect}
+            onUpdate={this.onUpdate}
+            getStore={this.getStore}
+          
+          >
           </Select>
         </SelectContainer>
         <button onClick={this.addItem}>Add item into Select</button>

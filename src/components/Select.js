@@ -194,6 +194,7 @@ class Select extends Component {
             menuItems={this.props.menuItems}
             store={this.state.store}
             menuMeta={this.props.menuMeta}
+            {...this.props}
           />
          ) : null}
 
