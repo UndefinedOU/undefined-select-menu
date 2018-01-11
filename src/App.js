@@ -40,7 +40,8 @@ const addableMenuOpts = {
 
 const selectOptions =  {
   menuMeta: {
-
+    editable: true,
+    addable: true
   },
   menuItems: [
     { icon: null, label: '0one' },
