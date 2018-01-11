@@ -123,7 +123,22 @@ class Select extends Component {
       positioning: createSelectPositioningStore(props),
     };
 
+    //hack to make  sure it closes when you click off the element
+    this.handlers = {}
+    this.handlers.closer = this.externalClose.bind(this);
+
   }
+  externalClose(ev) {
+    this.closeSelect();
+    document.removeEventListener('click', this.handlers.closer);
+  }
+  bindEscape() {
+    document.addEventListener('click', this.handlers.closer);
+  }
+  unbindEscape() {
+    document.removeEventListener('click', this.handlers.closer);
+  }
+
   updatePosition() {
     let element = ReactDOM.findDOMNode(this.displayElement);
     let topPos = element.getBoundingClientRect().top + window.scrollY;
@@ -166,9 +181,16 @@ class Select extends Component {
   openSelect(ev) {
     if (ev) {
       ev.preventDefault();
+      ev.stopPropagation();
     }
-    this.state.positioning.openMenu();
-    console.log(this.state.positioning.cursorPosition.x, this.state.positioning.cursorPosition.y)
+    if (this.state.positioning.menuOpen && !this.state.store.editing.label) {
+      this.state.positioning.closeMenu();
+    } else {
+      this.state.positioning.openMenu();
+    }
+    
+    
+    //console.log(this.state.positioning.cursorPosition.x, this.state.positioning.cursorPosition.y)
   }
   closeSelect() {
     this.state.positioning.closeMenu();
@@ -176,11 +198,14 @@ class Select extends Component {
   render() {
     return (
       <Wrapper
+        onMouseEnter={this.unbindEscape.bind(this)}
+        onMouseLeave={this.bindEscape.bind(this)}
         onMouseMove={this.onMouseMove.bind(this)}
         width={this.props.width}
         height={this.props.height}
       >
         <DisplayElement
+
           height={this.props.height}
           ref={(el) => {this.displayElement = el} }
           onClick={this.openSelect.bind(this)}>
@@ -194,6 +219,7 @@ class Select extends Component {
             menuItems={this.props.menuItems}
             store={this.state.store}
             menuMeta={this.props.menuMeta}
+            {...this.props}
           />
          ) : null}
 

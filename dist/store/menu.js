@@ -75,7 +75,6 @@ var createStore = function createStore(_ref) {
       this.pages = chunk(this.menuItems, maxItems);
       this.paginateSlot = this.pages[this.activePage];
       if (!this.paginateSlot) {
-        debugger;
       }
     },
     createPages: function createPages() {
