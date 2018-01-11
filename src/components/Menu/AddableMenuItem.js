@@ -55,7 +55,9 @@ const UnstagedDisplay = observer((props) => {
 })
 
 class AddableMenuItem extends Component {
-
+  handleClick(ev) {
+    //ev.stopPropagation();
+  }
   render () {
     return (
       <StyledMenuItem

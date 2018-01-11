@@ -123,7 +123,22 @@ class Select extends Component {
       positioning: createSelectPositioningStore(props),
     };
 
+    //hack to make  sure it closes when you click off the element
+    this.handlers = {}
+    this.handlers.closer = this.externalClose.bind(this);
+
   }
+  externalClose(ev) {
+    this.closeSelect();
+    document.removeEventListener('click', this.handlers.closer);
+  }
+  bindEscape() {
+    document.addEventListener('click', this.handlers.closer);
+  }
+  unbindEscape() {
+    document.removeEventListener('click', this.handlers.closer);
+  }
+
   updatePosition() {
     let element = ReactDOM.findDOMNode(this.displayElement);
     let topPos = element.getBoundingClientRect().top + window.scrollY;
@@ -172,13 +187,6 @@ class Select extends Component {
       this.state.positioning.closeMenu();
     } else {
       this.state.positioning.openMenu();
-      let closer = () => {
-        if (!this.state.store.editing.label) { 
-          this.state.positioning.closeMenu();
-          document.removeEventListener('click', closer);
-        }
-      };
-      document.addEventListener('click', closer);
     }
     
     
@@ -190,6 +198,8 @@ class Select extends Component {
   render() {
     return (
       <Wrapper
+        onMouseEnter={this.unbindEscape.bind(this)}
+        onMouseLeave={this.bindEscape.bind(this)}
         onMouseMove={this.onMouseMove.bind(this)}
         width={this.props.width}
         height={this.props.height}
