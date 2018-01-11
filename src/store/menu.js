@@ -50,48 +50,29 @@ const createStore = ({ menuMeta, menuItems }) => {
     },
     setItems(items) {
       this.menuItems = annotateItems(items);
-      this.drawPages();
-      this.refocusPage();
     },
+    
     switchPage(page) {
       //sitches the page
       this.activePage = page;
       this.drawPages();
     },
     nextPage() {
-      //this.switchPage(this.activePage + 1);
     },
     prevPage() {
-      //this.switchPage(this.activePage - 1);
-      
+
     },
     drawPages() {
-      /*
-      let maxItems = this.maxItems();
-      this.pages = chunk(this.menuItems, maxItems);
-      this.paginateSlot = this.pages[this.activePage];
-      if (!this.paginateSlot) { debugger }
-      */
+
     },
     createPages() {
       this.activePage = 0;
-      //this.drawPages();
     },
     //sets the active page to wherever the hovering is located
     refocusPage() {
-      //find the page containing the hovering
-      //let selectedPage = null;
-      /*
-      debugger
-      this.pages.forEach((page, index) => {
-        if (includes(page.map((item) => item.id), this.hovering)) {
-          //this.paginateSlot = page;
-          this.switchPage(index);
-        }
-      });
-      */
-    },
 
+    },
+    
     selectItem(id) {
       if (!this.menuItems[id].disabled) {
         this.selected = id;
@@ -203,7 +184,6 @@ const createStore = ({ menuMeta, menuItems }) => {
 
   });
 
-  extendedStore.drawPages();
   return extendedStore;
 };
 
