@@ -272,7 +272,10 @@ const Menu = observer(class Menu extends Component {
       case 'Enter':
         //this.returnSelected();
         this.state.store.selectItem(this.state.store.hovering);
-        this.state.store.refocusPage();
+        if (this.props.positioning) {
+          this.props.positioning.closeMenu();
+        }
+        //this.state.store.refocusPage();
         break;
       default:
         console.log(event.key);

@@ -166,9 +166,23 @@ class Select extends Component {
   openSelect(ev) {
     if (ev) {
       ev.preventDefault();
+      ev.stopPropagation();
     }
-    this.state.positioning.openMenu();
-    console.log(this.state.positioning.cursorPosition.x, this.state.positioning.cursorPosition.y)
+    if (this.state.positioning.menuOpen && !this.state.store.editing.label) {
+      this.state.positioning.closeMenu();
+    } else {
+      this.state.positioning.openMenu();
+      let closer = () => {
+        if (!this.state.store.editing.label) { 
+          this.state.positioning.closeMenu();
+          document.removeEventListener('click', closer);
+        }
+      };
+      document.addEventListener('click', closer);
+    }
+    
+    
+    //console.log(this.state.positioning.cursorPosition.x, this.state.positioning.cursorPosition.y)
   }
   closeSelect() {
     this.state.positioning.closeMenu();
@@ -181,11 +195,11 @@ class Select extends Component {
         height={this.props.height}
       >
         <DisplayElement
+
           height={this.props.height}
           ref={(el) => {this.displayElement = el} }
           onClick={this.openSelect.bind(this)}>
             Selected: {(this.state.store.selected) ? this.state.store.menuItems[this.state.store.selected].label : null}
-            hovering: {`${this.state.store.hovering}`}
         </DisplayElement>
          {(this.state.positioning.menuOpen) ? (
           <Menu
