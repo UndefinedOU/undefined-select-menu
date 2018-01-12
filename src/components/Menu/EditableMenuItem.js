@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import IconDisplay from './IconDisplay';
-import {observer} from "mobx-react";
+import { observable, autorun, extendObservable} from 'mobx';
+import { observer } from "mobx-react";
 import keydown, { Keys } from 'react-keydown';
 import { EditForm, StyledDeletable, Noop, StyledInput } from './styles';
 /*
@@ -44,12 +45,14 @@ const EditItem = observer(class EditItem extends Component {
   updateValue(ev) {
     ev.preventDefault();
     ev.stopPropagation();
+    
     this.props.store.updateLabel(ev.target.value);
   }
   commitChanges(ev) {
+    debugger
     ev.preventDefault()
     ev.stopPropagation();
-    
+
     this.props.store.commitEditing();
   }
   exitEditState() {
@@ -115,6 +118,7 @@ const DeletableItem = observer((props) => {
   const commitDeletion = (ev) => {
     ev.preventDefault();
     ev.stopPropagation();
+    
     props.store.destroyItem(props.store.trashbin);
   };
 

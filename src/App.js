@@ -92,7 +92,7 @@ class App extends Component {
     //debugger
   }
   onUpdate({menuItems}) {
-    debugger
+    //debugger
   }
   getStore = (store) => {
     this.setState({'store': store});

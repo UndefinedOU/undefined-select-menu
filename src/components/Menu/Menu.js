@@ -112,11 +112,7 @@ const Menu = observer(class Menu extends Component {
     props.getStore(this.state.store);
   }
 
-  componentWillMount() {
-    //this.handlers.key = this.handlerKeyDown.bind(this);
-    // focus on the first item
 
-  }
 
   componentDidMount() {
     // this.focusDiv();
@@ -277,7 +273,7 @@ const Menu = observer(class Menu extends Component {
         //this.returnSelected();
         this.state.store.selectItem(this.state.store.hovering);
         if (this.state.store.editing.label) {
-          this.state.store.commitEditing();
+          //this.state.store.commitEditing();
         } else if (this.props.positioning) {
           this.props.positioning.closeMenu();
         }
