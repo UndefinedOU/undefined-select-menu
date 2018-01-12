@@ -79,7 +79,7 @@ const Menu = observer(class Menu extends Component {
       };
 
       this.props.onInit(this.state.store);
-      
+
     }
     this.clearHover = this.clearHover.bind(this);
 
@@ -97,10 +97,10 @@ const Menu = observer(class Menu extends Component {
         menuItems: store.menuItems
       });
     });
-    
+
     autorun(() => {
       let store = this.state.store;
-      
+
       if (store.selected) {
         props.onSelect(store.menuItems[store.selected], store.selected);
       }
@@ -111,7 +111,7 @@ const Menu = observer(class Menu extends Component {
   componentWillMount() {
     //this.handlers.key = this.handlerKeyDown.bind(this);
     // focus on the first item
-    
+
   }
 
   componentDidMount() {
@@ -199,11 +199,11 @@ const Menu = observer(class Menu extends Component {
 
     let hovering = this.state.store.hovering; //get the currently selected item
     let item = this.state.store.menuItems.find(item => item.id === hovering); //get the selected item
-    
+
     if ((hovering !== null) && item && item.id > 0) { //do nothing if its the last item
       this.state.store.hovering = findPreviousNode(item.id)//item.id - 1;
       this.state.store.refocusPage();
-      
+
     }
   }
 
@@ -216,7 +216,7 @@ const Menu = observer(class Menu extends Component {
     const findNextNode = (id) => {
       let menuItems = this.state.store.menuItems;
       let nextId = id + 1;
-      
+
       while (nextId <= this.state.store.menuItems.length - 1) {
         if (menuItems[nextId].disabled) {
           nextId++;
@@ -350,7 +350,7 @@ const Menu = observer(class Menu extends Component {
         left={this.props.left}
         onClick={this.preventClose.bind(this)}
       >
-        
+
         {((this.state.store.pages.length > 1) && (this.state.store.activePage > 0)) ? (
           <UpButton
             onClick={(ev) => { this.scrollUp(ev, paginateSlot[0].id) }}
@@ -443,11 +443,12 @@ Menu.propTypes = {
   store: PropTypes.object,
   positioning: PropTypes.object,
   left: PropTypes.string,
-  top: PropTypes.string
-
+  top: PropTypes.string,
+  selected: PropTypes.number
 };
 
 Menu.defaultProps = {
+  selected: 0,
   focused: false,  //must be true for keybindings to work
   position: 'relative',
   top: '0',

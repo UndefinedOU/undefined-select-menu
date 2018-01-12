@@ -55,6 +55,7 @@ var addableMenuOpts = {
 };
 
 var selectOptions = {
+  selected: 0,
   menuMeta: {
     editable: true,
     addable: true
@@ -85,7 +86,8 @@ var App = function (_Component) {
     };
 
     _this.state = {
-      store: null
+      store: null,
+      selectOptions: selectOptions
     };
     return _this;
   }
@@ -93,10 +95,12 @@ var App = function (_Component) {
   _createClass(App, [{
     key: 'addItem',
     value: function addItem() {
-      //selectOptions.menuItems.push({label: 'new item'});
-      if (this.state.store) {
-        this.state.store.addItem({ label: 'new item' });
-      }
+      selectOptions.menuItems.push({ label: 'new item' });
+      selectOptions.selected = selectOptions.menuItems.length - 1;
+      this.setState({ selectOptions: selectOptions });
+      // if (this.state.store) {
+      //   this.state.store.addItem({label: 'new item'});
+      // }
     }
   }, {
     key: 'render',

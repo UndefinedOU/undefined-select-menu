@@ -499,11 +499,12 @@ Menu.propTypes = {
   store: PropTypes.object,
   positioning: PropTypes.object,
   left: PropTypes.string,
-  top: PropTypes.string
-
+  top: PropTypes.string,
+  selected: PropTypes.number
 };
 
 Menu.defaultProps = {
+  selected: 0,
   focused: false, //must be true for keybindings to work
   position: 'relative',
   top: '0',

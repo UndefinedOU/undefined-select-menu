@@ -11,18 +11,23 @@ import { chunk, extend, includes, each } from 'lodash';
 
 const ITEM_HEIGHT = 24;
 
-const createStore = ({ menuMeta, menuItems }) => {
+const createStore = ({ menuMeta, menuItems, selected }) => {
   let annotateItems = (items) => {
     items.forEach((item, index) => item.id = index);
     return items;
   };
 
-  const selected = menuItems.length > 0 ? 0 : null;
+  let selectedIndex = null;
+  if (typeof(selected) === 'number') {
+    selectedIndex = selected;
+  } else if (menuItems.length > 0) {
+    selectedIndex = 0;
+  }
 
   let store = observable({
     //activelyHovered: false, //returns true if the menu is selected
     trashbin: null,  //used for confirming deletion
-    selected,
+    selected: selectedIndex,
     hovering: null,
     //editing is used for tracking changes to label on he editables
     editing: {

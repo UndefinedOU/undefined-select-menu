@@ -169,6 +169,11 @@ var Select = function (_Component) {
       this._ismounted = false;
     }
   }, {
+    key: 'componentWillReceiveProps',
+    value: function componentWillReceiveProps(nextProps) {
+      this.setState({ store: createStore(nextProps) });
+    }
+  }, {
     key: 'onMouseMove',
     value: function onMouseMove(ev) {
       this.state.positioning.setCursorPosition(ev.pageX, ev.pageY);
@@ -243,8 +248,7 @@ var Select = function (_Component) {
               _this2.displayElement = el;
             },
             onClick: this.openSelect.bind(this) },
-          'Selected: ',
-          this.state.store.selected ? this.state.store.menuItems[this.state.store.selected].label : null
+          this.state.store.selected !== null ? this.state.store.menuItems[this.state.store.selected].label : null
         ),
         this.state.positioning.menuOpen ? React.createElement(Menu, Object.assign({
           position: 'relative',

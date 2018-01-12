@@ -154,6 +154,11 @@ class Select extends Component {
   componentWillUnmount() {
      this._ismounted = false;
   }
+
+  componentWillReceiveProps (nextProps) {
+    this.setState({ store: createStore(nextProps)});
+  }
+
   onMouseMove(ev) {
     this.state.positioning.setCursorPosition(ev.pageX, ev.pageY);
     console.log(this.state.positioning.cursorPosition.x, this.state.positioning.cursorPosition.y)

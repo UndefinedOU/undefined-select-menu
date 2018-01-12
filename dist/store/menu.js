@@ -12,7 +12,8 @@ var ITEM_HEIGHT = 24;
 
 var createStore = function createStore(_ref) {
   var menuMeta = _ref.menuMeta,
-      menuItems = _ref.menuItems;
+      menuItems = _ref.menuItems,
+      selected = _ref.selected;
 
   var annotateItems = function annotateItems(items) {
     items.forEach(function (item, index) {
@@ -21,10 +22,17 @@ var createStore = function createStore(_ref) {
     return items;
   };
 
+  var selectedIndex = null;
+  if (typeof selected === 'number') {
+    selectedIndex = selected;
+  } else if (menuItems.length > 0) {
+    selectedIndex = 0;
+  }
+
   var store = observable({
     //activelyHovered: false, //returns true if the menu is selected
     trashbin: null, //used for confirming deletion
-    selected: null,
+    selected: selectedIndex,
     hovering: null,
     //editing is used for tracking changes to label on he editables
     editing: {
