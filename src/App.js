@@ -80,7 +80,8 @@ class App extends Component {
       selectOptions
     };
   }
-  addItem() {
+  addItem(ev) {
+    ev.stopPropagation();
     selectOptions.menuItems.push({label: 'new item'});
     selectOptions.selected = selectOptions.menuItems.length - 1;
     this.setState({selectOptions});
@@ -92,7 +93,7 @@ class App extends Component {
     //debugger
   }
   onUpdate({menuItems}) {
-    debugger
+    //debugger
   }
   getStore = (store) => {
     this.setState({'store': store});

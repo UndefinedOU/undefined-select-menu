@@ -83,19 +83,18 @@ const Menu = observer(class Menu extends Component {
     this.handlers.keydown = this.handleKeyDown.bind(this);
     //let store = this.state.store;
     autorun(() => {
-      let store = this.state.store;
+      //let store = this.state.store;
       
       props.onUpdate({
-        menuItems: store.menuItems.toJS()
+        menuItems: this.state.store.menuItems.toJS()
       });
       
 
     });
     
-
     autorun(() => {
       let store = this.state.store;
-
+      
       if (store.selected) {
         props.onSelect(store.menuItems[store.selected], store.selected);
       }

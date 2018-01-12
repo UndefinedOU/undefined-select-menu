@@ -49,7 +49,6 @@ const EditItem = observer(class EditItem extends Component {
     this.props.store.updateLabel(ev.target.value);
   }
   commitChanges(ev) {
-    debugger
     ev.preventDefault()
     ev.stopPropagation();
 

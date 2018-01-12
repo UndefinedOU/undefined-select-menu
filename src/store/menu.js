@@ -58,6 +58,11 @@ const createStore = ({ menuMeta, menuItems, selected }) => {
     setItems(items) {
       this.menuItems.replace(annotateItems(items));
     },
+    updateFromProps(props) {
+      this.menuItems.replace(annotateItems(props.menuItems));
+      //this.selected = props.selected || selectedIndex; //let the top level componenet decide
+
+    },
 
     switchPage(page) {
       //sitches the page
