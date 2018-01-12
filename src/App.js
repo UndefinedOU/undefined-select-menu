@@ -87,8 +87,8 @@ class App extends Component {
   onSelect = (selected, id) => {
     //debugger
   }
-  onUpdate = (menuItems) => {
-    //debugger
+  onUpdate({menuItems}) {
+    debugger
   }
   getStore = (store) => {
     this.setState({'store': store});

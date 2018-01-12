@@ -32,7 +32,7 @@ const createStore = ({ menuMeta, menuItems }) => {
     staging: null,
     currMenuItem: -1,
     menuMeta,
-    menuItems: annotateItems(menuItems),
+    menuItems: observable(annotateItems(menuItems)),
     coreItems: menuItems,
     menuHeight: 240,
     paginate: true, //switch on if needed
@@ -49,7 +49,7 @@ const createStore = ({ menuMeta, menuItems }) => {
       return this.checked.has(id);
     },
     setItems(items) {
-      this.menuItems = annotateItems(items);
+      this.menuItems = observable(annotateItems(items));
     },
     
     switchPage(page) {

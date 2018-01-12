@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import MenuItem from './MenuItem';
 import styled, {css} from 'styled-components';
 import ReactDOM from 'react-dom';
-import { observable, autorun} from 'mobx';
+import { observable, autorun, observe} from 'mobx';
 import {observer, propTypes} from 'mobx-react';
 import keydown, { Keys } from 'react-keydown';
 import AddableMenuItem from './AddableMenuItem';
@@ -90,13 +90,19 @@ const Menu = observer(class Menu extends Component {
     //THis makes sure when we unbind and rebind keys, the reference is preserved so we
     //avoid any multiple bound functions for a single instance tomfoolery
     this.handlers.keydown = this.handleKeyDown.bind(this);
-
+    //let store = this.state.store;
     autorun(() => {
       let store = this.state.store;
+      
       props.onUpdate({
         menuItems: store.menuItems
       });
+      
+
     });
+    observe(this.state.store.menuItems, (change) => {
+      debugger
+    })
     
     autorun(() => {
       let store = this.state.store;
@@ -272,7 +278,9 @@ const Menu = observer(class Menu extends Component {
       case 'Enter':
         //this.returnSelected();
         this.state.store.selectItem(this.state.store.hovering);
-        if (this.props.positioning) {
+        if (this.state.store.editing.label) {
+          this.state.store.commitEditing();
+        } else if (this.props.positioning) {
           this.props.positioning.closeMenu();
         }
         //this.state.store.refocusPage();
