@@ -139,10 +139,9 @@ const createStore = ({ menuMeta, menuItems, selected }) => {
       if (this.editing.id !== null) {
         let item = this.menuItems[this.editing.id];
         item.label = this.editing.label;
-        debugger
-        this.menuItems[this.editing.id] = item;
-        this.menuItems.push({id: 9000})
-        this.menuItems.pop();
+        menuItems = this.menuItems;
+        menuItems[this.editing.id] = item;
+        this.menuItems.replace(menuItems);
         this.clearEditing();
       }
     },
@@ -168,7 +167,6 @@ const createStore = ({ menuMeta, menuItems, selected }) => {
       return 'rii';
     },
     get pages() {
-      debugger
       return chunk(this.menuItems, this.maxItems);
     },
     get maxItems() {

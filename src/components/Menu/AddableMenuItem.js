@@ -13,10 +13,13 @@ import { StyledMenuItem, StyledLabel, EditForm, StyledInput } from './styles';
 const StagedDisplay = observer((props) => {
   const commitStaging = (ev) => {
     ev.preventDefault();
+    ev.stopPropagation();
+    
     props.store.commitStaging();
   };
 
   const updateStaging = (ev) => {
+    
     props.store.updateStaging(ev.target.value);
   }
 
@@ -26,6 +29,7 @@ const StagedDisplay = observer((props) => {
   const stopProp = (ev) => {
     ev.preventDefault();
     ev.stopPropagation();
+    
   }
 
   return (

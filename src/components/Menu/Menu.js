@@ -55,13 +55,6 @@ const DownButton = styled.li`
 const Menu = observer(class Menu extends Component {
   constructor(props) {
     super(props);
-    /*
-    let menuItems = JSON.parse(JSON.stringify(this.props.menuItems));
-    if (this.props.menuMeta.addable) {
-      menuItems.push({label: "New Item +", newItem: true});
-      // TODO, onclick of this item, add editable item above it
-    }
-    */
     if (props.store) {
       this.state = {
         store: props.store,
@@ -74,8 +67,6 @@ const Menu = observer(class Menu extends Component {
       this.state = {
         store: createStore(props),
         currMenuItem: -1,
-        // menuItems: props.menuItems,
-        //menuItems: props.menuItems,
       };
 
       this.props.onInit(this.state.store);
@@ -273,7 +264,9 @@ const Menu = observer(class Menu extends Component {
         //this.returnSelected();
         this.state.store.selectItem(this.state.store.hovering);
         if (this.state.store.editing.label) {
-          //this.state.store.commitEditing();
+          this.state.store.commitEditing();
+        } else if (this.state.store.staging) {
+          this.state.store.commitStaging();
         } else if (this.props.positioning) {
           this.props.positioning.closeMenu();
         }
