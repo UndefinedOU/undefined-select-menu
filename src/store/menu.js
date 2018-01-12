@@ -39,7 +39,7 @@ const createStore = ({ menuMeta, menuItems, selected }) => {
     staging: null,
     currMenuItem: -1,
     menuMeta,
-    menuItems: observable(annotateItems(menuItems)),
+    menuItems: annotateItems(menuItems),
     coreItems: menuItems,
     menuHeight: 240,
     paginate: true, //switch on if needed
@@ -56,7 +56,7 @@ const createStore = ({ menuMeta, menuItems, selected }) => {
       return this.checked.has(id);
     },
     setItems(items) {
-      this.menuItems = observable(annotateItems(items));
+      this.menuItems = annotateItems(items);
     },
 
     switchPage(page) {
@@ -100,7 +100,7 @@ const createStore = ({ menuMeta, menuItems, selected }) => {
       let menuItems = this.menuItems
       item.id = menuItems.length;
       menuItems.push(item);
-      this.menuItems = annotateItems(menuItems); //reannotate the indeces
+      //this.menuItems = annotateItems(menuItems); //reannotate the indeces
     },
     updateStaging(label) {
       if (this.staging)

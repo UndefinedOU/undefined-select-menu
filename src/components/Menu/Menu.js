@@ -95,15 +95,11 @@ const Menu = observer(class Menu extends Component {
       let store = this.state.store;
       
       props.onUpdate({
-        menuItems: store.menuItems
+        menuItems: store.menuItems.toJS()
       });
       
 
     });
-
-    observe(this.state.store.menuItems, (change) => {
-      debugger
-    })
     
 
     autorun(() => {

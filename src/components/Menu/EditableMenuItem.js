@@ -48,6 +48,8 @@ const EditItem = observer(class EditItem extends Component {
   }
   commitChanges(ev) {
     ev.preventDefault()
+    ev.stopPropagation();
+    
     this.props.store.commitEditing();
   }
   exitEditState() {
@@ -112,6 +114,7 @@ const DeletableItem = observer((props) => {
 
   const commitDeletion = (ev) => {
     ev.preventDefault();
+    ev.stopPropagation();
     props.store.destroyItem(props.store.trashbin);
   };
 
