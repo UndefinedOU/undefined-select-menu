@@ -1,7 +1,7 @@
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _templateObject = _taggedTemplateLiteral(['\n  display: grid;\n  grid-template-columns: 2fr 1fr 40px;\n  grid-column-gap: 10px;\n  height: 24px;\n  font-family: sans-serif;\n  padding-left: 20px;\n  background-color: ', ';\n  color: ', ';\n'], ['\n  display: grid;\n  grid-template-columns: 2fr 1fr 40px;\n  grid-column-gap: 10px;\n  height: 24px;\n  font-family: sans-serif;\n  padding-left: 20px;\n  background-color: ', ';\n  color: ', ';\n']),
-    _templateObject2 = _taggedTemplateLiteral(['\n  cursor: ', ';\n  width: ', ';\n  max-width: ', ';\n  display: table-cell;\n  text-align: left;\n  overflow: hidden;\n  white-space: nowrap;\n  text-overflow: ellipsis;\n  margin: 1em;\n'], ['\n  cursor: ', ';\n  width: ', ';\n  max-width: ', ';\n  display: table-cell;\n  text-align: left;\n  overflow: hidden;\n  white-space: nowrap;\n  text-overflow: ellipsis;\n  margin: 1em;\n']),
+    _templateObject2 = _taggedTemplateLiteral(['\n  cursor: ', ';\n  width: ', ';\n  max-width: ', ';\n  text-align: left;\n  overflow: hidden;\n  white-space: nowrap;\n  text-overflow: ellipsis;\n  display: inline;\n'], ['\n  cursor: ', ';\n  width: ', ';\n  max-width: ', ';\n  text-align: left;\n  overflow: hidden;\n  white-space: nowrap;\n  text-overflow: ellipsis;\n  display: inline;\n']),
     _templateObject3 = _taggedTemplateLiteral(['\n  padding-right: 5px;\n  display: inline;\n\n  cursor: ', ';\n  color: ', ';\n'], ['\n  padding-right: 5px;\n  display: inline;\n\n  cursor: ', ';\n  color: ', ';\n']),
     _templateObject4 = _taggedTemplateLiteral(['\n  display: table-cell;\n  cursor: ', ';\n\n  color: ', ';\n  margin: 1em;\n'], ['\n  display: table-cell;\n  cursor: ', ';\n\n  color: ', ';\n  margin: 1em;\n']);
 
@@ -81,7 +81,7 @@ var MenuItem = function (_Component) {
     key: 'handleMouseOver',
     value: function handleMouseOver(event) {
       event.preventDefault();
-      if (!this.props.store.menuItems[this.props.id].disabled) {
+      if (this.props.store.menuItems[this.props.id] && !this.props.store.menuItems[this.props.id].disabled) {
         this.props.store.setHovering(this.props.id);
       }
       //if ()
@@ -235,6 +235,7 @@ function Icon(props) {
     return null;
   }
   var divStyle = {
+    display: 'table-cell',
     color: props.color,
     backgroundColor: props.backgroundColor,
     margin: 'auto'

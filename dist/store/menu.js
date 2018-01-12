@@ -1,4 +1,4 @@
-import { observable, autorun } from 'mobx';
+import { observable, autorun, extendObservable } from 'mobx';
 import { chunk, extend, includes, each } from 'lodash';
 
 /*
@@ -15,13 +15,10 @@ var createStore = function createStore(_ref) {
       menuItems = _ref.menuItems;
 
   var annotateItems = function annotateItems(items) {
-    if (items) {
-      return items.map(function (item, index) {
-        return extend({}, item, { id: index });
-      });
-    } else {
-      return [];
-    }
+    items.forEach(function (item, index) {
+      return item.id = index;
+    });
+    return items;
   };
 
   var store = observable({
@@ -40,11 +37,12 @@ var createStore = function createStore(_ref) {
     currMenuItem: -1,
     menuMeta: menuMeta,
     menuItems: annotateItems(menuItems),
+    coreItems: menuItems,
     menuHeight: 240,
     paginate: true, //switch on if needed
-    paginateSlot: [], //the items that will be shown on the page
-    pages: [], // the actual pages
-    activePage: 0, //the activly page
+    //paginateSlot: [], //the items that will be shown on the page
+    //pages: [], // the actual pages
+    //activePage: 0, //the activly page
     setChecked: function setChecked(id) {
       this.checked.set(id, true);
     },
@@ -56,57 +54,21 @@ var createStore = function createStore(_ref) {
     },
     setItems: function setItems(items) {
       this.menuItems = annotateItems(items);
-      this.drawPages();
-      this.refocusPage();
     },
     switchPage: function switchPage(page) {
       //sitches the page
       this.activePage = page;
       this.drawPages();
     },
-    nextPage: function nextPage() {
-      this.switchPage(this.activePage + 1);
-    },
-    prevPage: function prevPage() {
-      this.switchPage(this.activePage - 1);
-    },
-    drawPages: function drawPages() {
-      var maxItems = this.maxItems();
-      this.pages = chunk(this.menuItems, maxItems);
-      this.paginateSlot = this.pages[this.activePage];
-      if (!this.paginateSlot) {
-      }
-    },
+    nextPage: function nextPage() {},
+    prevPage: function prevPage() {},
+    drawPages: function drawPages() {},
     createPages: function createPages() {
       this.activePage = 0;
-      this.drawPages();
     },
 
     //sets the active page to wherever the hovering is located
-    refocusPage: function refocusPage() {
-      var _this = this;
-
-      //find the page containing the hovering
-      //let selectedPage = null;
-      this.pages.forEach(function (page, index) {
-        if (includes(page.map(function (item) {
-          return item.id;
-        }), _this.hovering)) {
-          //this.paginateSlot = page;
-          _this.switchPage(index);
-        }
-      });
-    },
-    maxItems: function maxItems() {
-      /* todo: do this later once we have the items part working
-      if ((this.state.store.menuItems.length * ITEM_HEIGHT) > this.menuHeight) {
-        return (menuMeta.height - (2 * ITEM_HEIGHT))/ITEM_HEIGHT;
-      } else {
-        return this.state.store.menuItems.length;
-      }
-      */
-      return 9;
-    },
+    refocusPage: function refocusPage() {},
     selectItem: function selectItem(id) {
       if (!this.menuItems[id].disabled) {
         this.selected = id;
@@ -121,17 +83,15 @@ var createStore = function createStore(_ref) {
       menuItems.push(this.staging);
       this.menuItems = annotateItems(menuItems); //reannotate the indeces
       this.clearStaging();
-      this.drawPages();
+    },
+    addItem: function addItem(item) {
+      var menuItems = this.menuItems;
+      item.id = menuItems.length;
+      menuItems.push(item);
+      this.menuItems = annotateItems(menuItems); //reannotate the indeces
     },
     updateStaging: function updateStaging(label) {
       if (this.staging) this.staging.label = label;else this.staging = { label: label };
-    },
-    addItem: function addItem(_ref2) {
-      //TODO
-
-      var icon = _ref2.icon,
-          label = _ref2.label,
-          disabled = _ref2.disabled;
     },
     isHovering: function isHovering(id) {
       return this.hovering === id;
@@ -183,8 +143,45 @@ var createStore = function createStore(_ref) {
     }
   });
 
-  store.createPages();
-  return store;
+  //store.createPages();
+  var extendedStore = extendObservable(store, {
+    get foo() {
+      return 'rii';
+    },
+    get pages() {
+      return chunk(this.menuItems, this.maxItems);
+    },
+    get maxItems() {
+      /* todo: do this later once we have the items part working
+      if ((this.state.store.menuItems.length * ITEM_HEIGHT) > this.menuHeight) {
+        return (menuMeta.height - (2 * ITEM_HEIGHT))/ITEM_HEIGHT;
+      } else {
+        return this.state.store.menuItems.length;
+      }
+      */
+      return 9;
+    },
+    get activePage() {
+      var _this = this;
+
+      var active = 0;
+      this.pages.forEach(function (page, index) {
+        if (includes(page.map(function (item) {
+          return item.id;
+        }), _this.hovering)) {
+          //this.paginateSlot = page;
+          active = index;
+        }
+      });
+      return active;
+    },
+    get paginateSlot() {
+      return this.pages[this.activePage];
+    }
+
+  });
+
+  return extendedStore;
 };
 
 export default createStore;

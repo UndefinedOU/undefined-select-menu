@@ -124,10 +124,30 @@ var Select = function (_Component) {
       positioning: createSelectPositioningStore(props)
     };
 
+    //hack to make  sure it closes when you click off the element
+    _this.handlers = {};
+    _this.handlers.closer = _this.externalClose.bind(_this);
+
     return _this;
   }
 
   _createClass(Select, [{
+    key: 'externalClose',
+    value: function externalClose(ev) {
+      this.closeSelect();
+      document.removeEventListener('click', this.handlers.closer);
+    }
+  }, {
+    key: 'bindEscape',
+    value: function bindEscape() {
+      document.addEventListener('click', this.handlers.closer);
+    }
+  }, {
+    key: 'unbindEscape',
+    value: function unbindEscape() {
+      document.removeEventListener('click', this.handlers.closer);
+    }
+  }, {
     key: 'updatePosition',
     value: function updatePosition() {
       var element = ReactDOM.findDOMNode(this.displayElement);
@@ -185,9 +205,15 @@ var Select = function (_Component) {
     value: function openSelect(ev) {
       if (ev) {
         ev.preventDefault();
+        ev.stopPropagation();
       }
-      this.state.positioning.openMenu();
-      console.log(this.state.positioning.cursorPosition.x, this.state.positioning.cursorPosition.y);
+      if (this.state.positioning.menuOpen && !this.state.store.editing.label) {
+        this.state.positioning.closeMenu();
+      } else {
+        this.state.positioning.openMenu();
+      }
+
+      //console.log(this.state.positioning.cursorPosition.x, this.state.positioning.cursorPosition.y)
     }
   }, {
     key: 'closeSelect',
@@ -202,6 +228,8 @@ var Select = function (_Component) {
       return React.createElement(
         Wrapper,
         {
+          onMouseEnter: this.unbindEscape.bind(this),
+          onMouseLeave: this.bindEscape.bind(this),
           onMouseMove: this.onMouseMove.bind(this),
           width: this.props.width,
           height: this.props.height
@@ -209,6 +237,7 @@ var Select = function (_Component) {
         React.createElement(
           DisplayElement,
           {
+
             height: this.props.height,
             ref: function ref(el) {
               _this2.displayElement = el;
@@ -217,14 +246,14 @@ var Select = function (_Component) {
           'Selected: ',
           this.state.store.selected ? this.state.store.menuItems[this.state.store.selected].label : null
         ),
-        this.state.positioning.menuOpen ? React.createElement(Menu, {
+        this.state.positioning.menuOpen ? React.createElement(Menu, Object.assign({
           position: 'relative',
           itemHeight: ITEM_HEIGHT,
           positioning: this.state.positioning,
           menuItems: this.props.menuItems,
           store: this.state.store,
           menuMeta: this.props.menuMeta
-        }) : null
+        }, this.props)) : null
       );
     }
   }]);
