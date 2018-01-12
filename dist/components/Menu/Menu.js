@@ -284,9 +284,9 @@ var Menu = observer(function (_Component) {
 
   }, {
     key: 'handleClick',
-    value: function handleClick() {}
-    //this.setState({currMenuItem: cursor});
-
+    value: function handleClick(e, id) {
+      this.props.onChange(e, id);
+    }
     // takes `event` and `id` as params, respectively
 
   }, {
@@ -473,6 +473,7 @@ Menu.propTypes = {
   focused: PropTypes.bool,
   onInit: PropTypes.func,
   onUpdate: PropTypes.func,
+  onChange: PropTypes.func,
   onSelect: PropTypes.func,
   getStore: PropTypes.func,
   menuMeta: PropTypes.shape({
@@ -509,6 +510,7 @@ Menu.defaultProps = {
   position: 'relative',
   top: '0',
   left: '0',
+  onChange: function onChange() {},
   onInit: function onInit(store) {},
   onUpdate: function onUpdate(store) {},
   getStore: function getStore(store) {},

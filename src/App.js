@@ -97,6 +97,10 @@ class App extends Component {
   getStore = (store) => {
     this.setState({'store': store});
   }
+  onChange = (e, index) => {
+    selectOptions.selected = index;
+    this.setState({selectOptions});
+  }
   render () {
     let fa = "fa fa-heart";
     return (
@@ -120,6 +124,7 @@ class App extends Component {
             onSelect={this.onSelect}
             onUpdate={this.onUpdate}
             getStore={this.getStore}
+            onChange={this.onChange}
 
           >
           </Select>

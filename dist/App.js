@@ -85,6 +85,11 @@ var App = function (_Component) {
       _this.setState({ 'store': store });
     };
 
+    _this.onChange = function (e, index) {
+      selectOptions.selected = index;
+      _this.setState({ selectOptions: selectOptions });
+    };
+
     _this.state = {
       store: null,
       selectOptions: selectOptions
@@ -152,7 +157,8 @@ var App = function (_Component) {
           React.createElement(Select, Object.assign({}, selectOptions, {
             onSelect: this.onSelect,
             onUpdate: this.onUpdate,
-            getStore: this.getStore
+            getStore: this.getStore,
+            onChange: this.onChange
 
           }))
         ),

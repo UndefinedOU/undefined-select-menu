@@ -238,8 +238,8 @@ const Menu = observer(class Menu extends Component {
   }
 
   // takes `event` and `id` as params, respectively
-  handleClick() {
-    //this.setState({currMenuItem: cursor});
+  handleClick(e, id) {
+    this.props.onChange(e, id);
   }
   // takes `event` and `id` as params, respectively
   handleMouseLeave() {
@@ -417,6 +417,7 @@ Menu.propTypes = {
   focused: PropTypes.bool,
   onInit: PropTypes.func,
   onUpdate: PropTypes.func,
+  onChange: PropTypes.func,
   onSelect: PropTypes.func,
   getStore: PropTypes.func,
   menuMeta: PropTypes.shape({
@@ -453,6 +454,7 @@ Menu.defaultProps = {
   position: 'relative',
   top: '0',
   left: '0',
+  onChange: () => {},
   onInit: (store) => {},
   onUpdate: (store) => {},
   getStore: (store) => {},
