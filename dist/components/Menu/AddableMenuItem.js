@@ -79,6 +79,11 @@ var AddableMenuItem = function (_Component) {
   }
 
   _createClass(AddableMenuItem, [{
+    key: 'handleClick',
+    value: function handleClick(ev) {
+      //ev.stopPropagation();
+    }
+  }, {
     key: 'render',
     value: function render() {
       var _this2 = this;

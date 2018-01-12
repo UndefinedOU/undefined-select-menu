@@ -11,19 +11,26 @@ import { chunk, extend, includes, each } from 'lodash';
 
 const ITEM_HEIGHT = 24;
 
-const createStore = ({ menuMeta, menuItems }) => {
+const createStore = ({ menuMeta, menuItems, selected }) => {
   let annotateItems = (items) => {
     items.forEach((item, index) => item.id = index);
     return items;
   };
 
+  let selectedIndex = null;
+  if (typeof(selected) === 'number') {
+    selectedIndex = selected;
+  } else if (menuItems.length > 0) {
+    selectedIndex = 0;
+  }
+
   let store = observable({
     //activelyHovered: false, //returns true if the menu is selected
     trashbin: null,  //used for confirming deletion
-    selected: null,  
+    selected: selectedIndex,
     hovering: null,
     //editing is used for tracking changes to label on he editables
-    editing: { 
+    editing: {
       id: null,
       label: null
     },
@@ -51,7 +58,7 @@ const createStore = ({ menuMeta, menuItems }) => {
     setItems(items) {
       this.menuItems = observable(annotateItems(items));
     },
-    
+
     switchPage(page) {
       //sitches the page
       this.activePage = page;
@@ -72,7 +79,7 @@ const createStore = ({ menuMeta, menuItems }) => {
     refocusPage() {
 
     },
-    
+
     selectItem(id) {
       if (!this.menuItems[id].disabled) {
         this.selected = id;
@@ -98,14 +105,14 @@ const createStore = ({ menuMeta, menuItems }) => {
     updateStaging(label) {
       if (this.staging)
         this.staging.label = label;
-      else 
+      else
         this.staging = { label: label };
     },
     isHovering(id) {
       return this.hovering === id;
     },
     setHovering(id) {
-      
+
       if (this.hovering !== id) {
         this.hovering = id;
       }
@@ -131,7 +138,7 @@ const createStore = ({ menuMeta, menuItems }) => {
     commitEditing() {
       if (this.editing.id !== null) {
         this.menuItems[this.editing.id].label = this.editing.label;
-        this.clearEditing();   
+        this.clearEditing();
       }
     },
     setTrashBin(id) {
@@ -143,7 +150,7 @@ const createStore = ({ menuMeta, menuItems }) => {
       this.menuItems = annotateItems(this.menuItems.filter((item, index) => index !== id));
       this.clearTrashBin();
       this.drawPages();
-      
+
     },
     clearTrashBin() {
       this.trashbin = null;

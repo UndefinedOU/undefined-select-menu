@@ -55,7 +55,11 @@ var addableMenuOpts = {
 };
 
 var selectOptions = {
-  menuMeta: {},
+  selected: 0,
+  menuMeta: {
+    editable: true,
+    addable: true
+  },
   menuItems: [{ icon: null, label: '0one' }, { label: '1two', disabled: true }, { label: '2three' }, { label: '3banananananana' }, { label: '4whowhowho' }, { icon: null, label: '5one' }, { label: '6two', disabled: true }, { label: '7three' }, { label: '8banananananana' }, { label: '9whowhowho' }, { icon: null, label: '10one' }, { label: '11two', disabled: true }, { label: '12three', checkable: true }, { label: '13banananananana', checkable: true }, { label: '14whowhowho' }, { icon: null, label: '15one' }, { label: '16two', disabled: true }, { label: '17three' }, { label: '18banananananana' }, { label: '19whowhowho' }]
 };
 
@@ -64,13 +68,46 @@ var SelectContainer = styled.div(_templateObject2);
 var App = function (_Component) {
   _inherits(App, _Component);
 
-  function App() {
+  function App(props) {
     _classCallCheck(this, App);
 
-    return _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).apply(this, arguments));
+    var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
+
+    _this.onSelect = function (selected, id) {
+      //debugger
+    };
+
+    _this.onUpdate = function (menuItems) {
+      //debugger
+    };
+
+    _this.getStore = function (store) {
+      _this.setState({ 'store': store });
+    };
+
+    _this.onChange = function (e, index) {
+      selectOptions.selected = index;
+      _this.setState({ selectOptions: selectOptions });
+    };
+
+    _this.state = {
+      store: null,
+      selectOptions: selectOptions
+    };
+    return _this;
   }
 
   _createClass(App, [{
+    key: 'addItem',
+    value: function addItem() {
+      selectOptions.menuItems.push({ label: 'new item' });
+      selectOptions.selected = selectOptions.menuItems.length - 1;
+      this.setState({ selectOptions: selectOptions });
+      // if (this.state.store) {
+      //   this.state.store.addItem({label: 'new item'});
+      // }
+    }
+  }, {
     key: 'render',
     value: function render() {
       var fa = "fa fa-heart";
@@ -117,7 +154,18 @@ var App = function (_Component) {
         React.createElement(
           SelectContainer,
           null,
-          React.createElement(Select, selectOptions)
+          React.createElement(Select, Object.assign({}, selectOptions, {
+            onSelect: this.onSelect,
+            onUpdate: this.onUpdate,
+            getStore: this.getStore,
+            onChange: this.onChange
+
+          }))
+        ),
+        React.createElement(
+          'button',
+          { onClick: this.addItem.bind(this) },
+          'Add item into Select'
         )
       );
     }

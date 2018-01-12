@@ -39,6 +39,7 @@ const addableMenuOpts = {
 }
 
 const selectOptions =  {
+  selected: 0,
   menuMeta: {
     editable: true,
     addable: true
@@ -75,14 +76,17 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      store: null
+      store: null,
+      selectOptions
     };
   }
   addItem() {
-    //selectOptions.menuItems.push({label: 'new item'});
-    if (this.state.store) {
-      this.state.store.addItem({label: 'new item'});
-    }
+    selectOptions.menuItems.push({label: 'new item'});
+    selectOptions.selected = selectOptions.menuItems.length - 1;
+    this.setState({selectOptions});
+    // if (this.state.store) {
+    //   this.state.store.addItem({label: 'new item'});
+    // }
   }
   onSelect = (selected, id) => {
     //debugger
@@ -92,6 +96,10 @@ class App extends Component {
   }
   getStore = (store) => {
     this.setState({'store': store});
+  }
+  onChange = (e, index) => {
+    selectOptions.selected = index;
+    this.setState({selectOptions});
   }
   render () {
     let fa = "fa fa-heart";
@@ -116,7 +124,8 @@ class App extends Component {
             onSelect={this.onSelect}
             onUpdate={this.onUpdate}
             getStore={this.getStore}
-          
+            onChange={this.onChange}
+
           >
           </Select>
         </SelectContainer>

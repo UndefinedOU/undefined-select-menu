@@ -154,6 +154,11 @@ class Select extends Component {
   componentWillUnmount() {
      this._ismounted = false;
   }
+
+  componentWillReceiveProps (nextProps) {
+    this.setState({ store: createStore(nextProps)});
+  }
+
   onMouseMove(ev) {
     this.state.positioning.setCursorPosition(ev.pageX, ev.pageY);
     console.log(this.state.positioning.cursorPosition.x, this.state.positioning.cursorPosition.y)
@@ -188,8 +193,8 @@ class Select extends Component {
     } else {
       this.state.positioning.openMenu();
     }
-    
-    
+
+
     //console.log(this.state.positioning.cursorPosition.x, this.state.positioning.cursorPosition.y)
   }
   closeSelect() {
@@ -209,7 +214,7 @@ class Select extends Component {
           height={this.props.height}
           ref={(el) => {this.displayElement = el} }
           onClick={this.openSelect.bind(this)}>
-            Selected: {(this.state.store.selected) ? this.state.store.menuItems[this.state.store.selected].label : null}
+            {(this.state.store.selected !== null) ? this.state.store.menuItems[this.state.store.selected].label : null}
         </DisplayElement>
          {(this.state.positioning.menuOpen) ? (
           <Menu

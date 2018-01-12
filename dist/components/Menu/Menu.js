@@ -104,6 +104,8 @@ var Menu = observer(function (_Component) {
         // menuItems: props.menuItems,
         //menuItems: props.menuItems,
       };
+
+      _this.props.onInit(_this.state.store);
     }
     _this.clearHover = _this.clearHover.bind(_this);
 
@@ -115,8 +117,21 @@ var Menu = observer(function (_Component) {
     //avoid any multiple bound functions for a single instance tomfoolery
     _this.handlers.keydown = _this.handleKeyDown.bind(_this);
 
-    _this.dispose = {};
+    autorun(function () {
+      var store = _this.state.store;
+      props.onUpdate({
+        menuItems: store.menuItems
+      });
+    });
 
+    autorun(function () {
+      var store = _this.state.store;
+
+      if (store.selected) {
+        props.onSelect(store.menuItems[store.selected], store.selected);
+      }
+    });
+    props.getStore(_this.state.store);
     return _this;
   }
 
@@ -124,8 +139,8 @@ var Menu = observer(function (_Component) {
     key: 'componentWillMount',
     value: function componentWillMount() {
       //this.handlers.key = this.handlerKeyDown.bind(this);
-
       // focus on the first item
+
     }
   }, {
     key: 'componentDidMount',
@@ -221,6 +236,7 @@ var Menu = observer(function (_Component) {
       var item = this.state.store.menuItems.find(function (item) {
         return item.id === hovering;
       }); //get the selected item
+
       if (hovering !== null && item && item.id > 0) {
         //do nothing if its the last item
         this.state.store.hovering = findPreviousNode(item.id); //item.id - 1;
@@ -256,10 +272,10 @@ var Menu = observer(function (_Component) {
       var item = this.state.store.menuItems.find(function (item) {
         return item.id === hovering;
       }); //get the selected item
+
       if (hovering !== null && item && item.id < this.state.store.menuItems.length - 1) {
         //do nothing if its the last item
         this.state.store.hovering = findNextNode(item.id); //item.id + 1;
-
         this.state.store.refocusPage();
       }
     }
@@ -268,9 +284,9 @@ var Menu = observer(function (_Component) {
 
   }, {
     key: 'handleClick',
-    value: function handleClick() {}
-    //this.setState({currMenuItem: cursor});
-
+    value: function handleClick(e, id) {
+      this.props.onChange(e, id);
+    }
     // takes `event` and `id` as params, respectively
 
   }, {
@@ -309,7 +325,10 @@ var Menu = observer(function (_Component) {
         case 'Enter':
           //this.returnSelected();
           this.state.store.selectItem(this.state.store.hovering);
-          this.state.store.refocusPage();
+          if (this.props.positioning) {
+            this.props.positioning.closeMenu();
+          }
+          //this.state.store.refocusPage();
           break;
         default:
           console.log(event.key);
@@ -346,15 +365,18 @@ var Menu = observer(function (_Component) {
     }
   }, {
     key: 'scrollUp',
-    value: function scrollUp(ev) {
+    value: function scrollUp(ev, id) {
       ev.stopPropagation();
-      this.state.store.prevPage();
+      this.state.store.setHovering(id);
+      this.decrementCursor();
     }
   }, {
     key: 'scrollDown',
-    value: function scrollDown(ev) {
+    value: function scrollDown(ev, id) {
       ev.stopPropagation();
-      this.state.store.nextPage();
+      //this.state.store.nextPage();
+      this.state.store.setHovering(id);
+      this.incrementCursor();
     }
   }, {
     key: 'preventClose',
@@ -367,6 +389,7 @@ var Menu = observer(function (_Component) {
       var _this4 = this;
 
       // [icon or check] [label or html or editable] [tips] [shortcuts] [expandable]
+      var paginateSlot = this.state.store.paginateSlot;
       return React.createElement(
         StyledMenuBox,
         {
@@ -386,7 +409,9 @@ var Menu = observer(function (_Component) {
         this.state.store.pages.length > 1 && this.state.store.activePage > 0 ? React.createElement(
           UpButton,
           {
-            onClick: this.scrollUp.bind(this)
+            onClick: function onClick(ev) {
+              _this4.scrollUp(ev, paginateSlot[0].id);
+            }
           },
           React.createElement(IconDisplay, { iconType: 'fa-backward' }),
           ' Previous...'
@@ -418,7 +443,9 @@ var Menu = observer(function (_Component) {
           React.createElement(
             DownButton,
             {
-              onClick: this.scrollDown.bind(this)
+              onClick: function onClick(ev) {
+                _this4.scrollDown(ev, paginateSlot[paginateSlot.length - 1].id);
+              }
             },
             React.createElement(IconDisplay, { iconType: 'fa-forward' }),
             ' More...'
@@ -444,7 +471,11 @@ var Menu = observer(function (_Component) {
 
 Menu.propTypes = {
   focused: PropTypes.bool,
-
+  onInit: PropTypes.func,
+  onUpdate: PropTypes.func,
+  onChange: PropTypes.func,
+  onSelect: PropTypes.func,
+  getStore: PropTypes.func,
   menuMeta: PropTypes.shape({
     store: PropTypes.object, //used if we are injecting a store
     positioning: PropTypes.object,
@@ -469,15 +500,21 @@ Menu.propTypes = {
   store: PropTypes.object,
   positioning: PropTypes.object,
   left: PropTypes.string,
-  top: PropTypes.string
-
+  top: PropTypes.string,
+  selected: PropTypes.number
 };
 
 Menu.defaultProps = {
+  selected: 0,
   focused: false, //must be true for keybindings to work
   position: 'relative',
   top: '0',
   left: '0',
+  onChange: function onChange() {},
+  onInit: function onInit(store) {},
+  onUpdate: function onUpdate(store) {},
+  getStore: function getStore(store) {},
+  onSelect: function onSelect() {},
   select: {
     // align: 'left' / 'right' / 'left-wide'
   },
