@@ -188,8 +188,8 @@ class Select extends Component {
     } else {
       this.state.positioning.openMenu();
     }
-    
-    
+
+
     //console.log(this.state.positioning.cursorPosition.x, this.state.positioning.cursorPosition.y)
   }
   closeSelect() {
@@ -209,7 +209,7 @@ class Select extends Component {
           height={this.props.height}
           ref={(el) => {this.displayElement = el} }
           onClick={this.openSelect.bind(this)}>
-            Selected: {(this.state.store.selected) ? this.state.store.menuItems[this.state.store.selected].label : null}
+            {(this.state.store.selected !== null) ? this.state.store.menuItems[this.state.store.selected].label : null}
         </DisplayElement>
          {(this.state.positioning.menuOpen) ? (
           <Menu
