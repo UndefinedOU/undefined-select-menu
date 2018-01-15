@@ -156,7 +156,11 @@ class Select extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    this.setState({ store: createStore(nextProps)});
+    //this.setState({ store: createStore(nextProps)});
+    if (this.state.store) {
+      //TODO: show to Yurenju
+      //this.state.store.updateFromProps(nextProps);
+    }
   }
 
   onMouseMove(ev) {
@@ -201,6 +205,7 @@ class Select extends Component {
     this.state.positioning.closeMenu();
   }
   render() {
+    //debugger
     return (
       <Wrapper
         onMouseEnter={this.unbindEscape.bind(this)}

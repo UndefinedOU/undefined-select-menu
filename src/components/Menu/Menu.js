@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import MenuItem from './MenuItem';
 import styled, {css} from 'styled-components';
 import ReactDOM from 'react-dom';
-import { observable, autorun} from 'mobx';
+import { observable, autorun, observe} from 'mobx';
 import {observer, propTypes} from 'mobx-react';
 import keydown, { Keys } from 'react-keydown';
 import AddableMenuItem from './AddableMenuItem';
@@ -55,13 +55,6 @@ const DownButton = styled.li`
 const Menu = observer(class Menu extends Component {
   constructor(props) {
     super(props);
-    /*
-    let menuItems = JSON.parse(JSON.stringify(this.props.menuItems));
-    if (this.props.menuMeta.addable) {
-      menuItems.push({label: "New Item +", newItem: true});
-      // TODO, onclick of this item, add editable item above it
-    }
-    */
     if (props.store) {
       this.state = {
         store: props.store,
@@ -74,8 +67,6 @@ const Menu = observer(class Menu extends Component {
       this.state = {
         store: createStore(props),
         currMenuItem: -1,
-        // menuItems: props.menuItems,
-        //menuItems: props.menuItems,
       };
 
       this.props.onInit(this.state.store);
@@ -90,17 +81,20 @@ const Menu = observer(class Menu extends Component {
     //THis makes sure when we unbind and rebind keys, the reference is preserved so we
     //avoid any multiple bound functions for a single instance tomfoolery
     this.handlers.keydown = this.handleKeyDown.bind(this);
-
+    //let store = this.state.store;
     autorun(() => {
-      let store = this.state.store;
+      //let store = this.state.store;
+      
       props.onUpdate({
-        menuItems: store.menuItems
+        menuItems: this.state.store.menuItems.toJS()
       });
-    });
+      
 
+    });
+    
     autorun(() => {
       let store = this.state.store;
-
+      
       if (store.selected) {
         props.onSelect(store.menuItems[store.selected], store.selected);
       }
@@ -108,11 +102,7 @@ const Menu = observer(class Menu extends Component {
     props.getStore(this.state.store);
   }
 
-  componentWillMount() {
-    //this.handlers.key = this.handlerKeyDown.bind(this);
-    // focus on the first item
 
-  }
 
   componentDidMount() {
     // this.focusDiv();
@@ -272,7 +262,11 @@ const Menu = observer(class Menu extends Component {
       case 'Enter':
         //this.returnSelected();
         this.state.store.selectItem(this.state.store.hovering);
-        if (this.props.positioning) {
+        if (this.state.store.editing.label) {
+          this.state.store.commitEditing();
+        } else if (this.state.store.staging) {
+          this.state.store.commitStaging();
+        } else if (this.props.positioning) {
           this.props.positioning.closeMenu();
         }
         //this.state.store.refocusPage();

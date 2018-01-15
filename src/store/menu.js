@@ -56,7 +56,12 @@ const createStore = ({ menuMeta, menuItems, selected }) => {
       return this.checked.has(id);
     },
     setItems(items) {
-      this.menuItems = annotateItems(items);
+      this.menuItems.replace(annotateItems(items));
+    },
+    updateFromProps(props) {
+      this.menuItems.replace(annotateItems(props.menuItems));
+      //this.selected = props.selected || selectedIndex; //let the top level componenet decide
+
     },
 
     switchPage(page) {
@@ -90,9 +95,9 @@ const createStore = ({ menuMeta, menuItems, selected }) => {
       this.staging = null;
     },
     commitStaging() {
-      let menuItems = this.menuItems
+      let menuItems = this.menuItems.slice();
       menuItems.push(this.staging);
-      this.menuItems = annotateItems(menuItems); //reannotate the indeces
+      this.menuItems.replace(annotateItems(menuItems)); //reannotate the indeces
       this.clearStaging();
 
     },
@@ -100,7 +105,7 @@ const createStore = ({ menuMeta, menuItems, selected }) => {
       let menuItems = this.menuItems
       item.id = menuItems.length;
       menuItems.push(item);
-      this.menuItems = annotateItems(menuItems); //reannotate the indeces
+      //this.menuItems = annotateItems(menuItems); //reannotate the indeces
     },
     updateStaging(label) {
       if (this.staging)
@@ -137,7 +142,11 @@ const createStore = ({ menuMeta, menuItems, selected }) => {
     },
     commitEditing() {
       if (this.editing.id !== null) {
-        this.menuItems[this.editing.id].label = this.editing.label;
+        let item = this.menuItems[this.editing.id];
+        item.label = this.editing.label;
+        menuItems = this.menuItems;
+        menuItems[this.editing.id] = item;
+        this.menuItems.replace(menuItems);
         this.clearEditing();
       }
     },
@@ -147,7 +156,7 @@ const createStore = ({ menuMeta, menuItems, selected }) => {
     },
     destroyItem(id) {
       //removes the item
-      this.menuItems = annotateItems(this.menuItems.filter((item, index) => index !== id));
+      this.menuItems.replace(annotateItems(this.menuItems.filter((item, index) => index !== id)));
       this.clearTrashBin();
       this.drawPages();
 
@@ -160,7 +169,7 @@ const createStore = ({ menuMeta, menuItems, selected }) => {
   //store.createPages();
   let extendedStore = extendObservable(store, {
     get foo() {
-      return 'rii'
+      return 'rii';
     },
     get pages() {
       return chunk(this.menuItems, this.maxItems);
